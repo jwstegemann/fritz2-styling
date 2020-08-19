@@ -36,8 +36,7 @@ fun HtmlElements.myButton(bg: String, init: HtmlElements.(Flow<String>) -> Any):
         """, "test"
     )
 
-    val context = storeOf(1)
-    context.data.watch()
+    val context = storeOf(1).watch()
 
     val msgs = context.handleAndOffer<String> { model ->
         offer("you clicked $model times")
