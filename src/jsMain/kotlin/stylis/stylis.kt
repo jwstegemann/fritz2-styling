@@ -4,7 +4,7 @@ package stylis
 
 external fun compile(css: String): dynamic
 
-external fun serialize(children: dynamic, callback: dynamic):  List<String>
+external fun serialize(children: dynamic, callback: dynamic): String
 
 external fun stringify(element: dynamic, index: dynamic, children: dynamic, callback: dynamic): dynamic
 

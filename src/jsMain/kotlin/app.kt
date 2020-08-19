@@ -1,85 +1,77 @@
+import dev.fritz2.binding.RootStore
+import dev.fritz2.binding.handledBy
+import dev.fritz2.binding.storeOf
+import dev.fritz2.binding.watch
 import dev.fritz2.dom.html.A
 import dev.fritz2.dom.html.HtmlElements
 import dev.fritz2.dom.html.render
 import dev.fritz2.dom.mount
-import org.w3c.dom.HTMLStyleElement
-import org.w3c.dom.css.CSSStyleSheet
-import org.w3c.dom.css.StyleSheet
-import org.w3c.dom.css.get
-import stylis.compile
-import stylis.serialize
-import stylis.stringify
-import kotlin.browser.document
+import kotlinx.coroutines.flow.Flow
+import kotlin.browser.window
 
-/*
-inline fun <T> styled(crossinline factory: (String?, String?, T.() -> Unit) -> T): (String?, String?, T.() -> Unit) -> T = { baseClass, id, content ->
-    console.log("bin da")
-    factory(baseClass, id, content)
+val colors = listOf("green", "red", "blue", "yellow", "orange")
+
+enum class Visibility(override val css: String) : StyleState {
+    visible( // language=CSS prefix=".dummy {" suffix="}"
+        """
+            display: block 
+        """
+    ),
+    hidden( // language=CSS prefix=".dummy {" suffix="}"
+        "display: none"
+    )
 }
 
 
-operator fun <A, B, R, FUN : (A, B) -> R> FUN.invoke(partial: A) = { other: B -> invoke(partial, other) }
-operator fun <A, B, C, R, FUN : (A, B, C) -> R> FUN.invoke(partial: A) = { b: B, c: C -> invoke(partial, b, c) }
-operator fun <A, B, C, D, R, FUN : (A, B, C, D) -> R> FUN.invoke(partial: A) = { b: B, c: C, d: D -> invoke(partial, b, c, d) }
-operator fun <A, B, C, D, E, R, FUN : (A, B, C, D, E) -> R> FUN.invoke(partial: A) = { b: B, c: C, d: D, e: E -> invoke(partial, b, c, d, e) }
-operator fun <A, B, C, D, E, F, R, FUN : (A, B, C, D, E, F) -> R> FUN.invoke(partial: A) = { b: B, c: C, d: D, e: E, f: F -> invoke(partial, b, c, d, e, f) }
+fun HtmlElements.myButton(bg: String, init: HtmlElements.(Flow<String>) -> Any): A {
+    val myStyle = style( // language=CSS prefix=".dummy {" suffix="}"
+        """
+            border: 1px solid black;
+            background-color: $bg;
+            color: white;
+            display: block;
+            margin: 10px;
+            padding: 5px;
+            width: 100px;
+        """, "test"
+    )
 
+    val context = storeOf(1)
+    context.data.watch()
 
-val add = { a: Int, b: Int, c: Int, d: Int, e: Int -> a + b + c + d + e}
-*/
-
-typealias Property = Pair<String, String>
-typealias Rule = List<Property>
-
-object Styling {
-    val sheet  by lazy {
-        val style = document.createElement("style") as HTMLStyleElement;
-        // WebKit hack
-        style.appendChild(document.createTextNode(""));
-        document.head!!.appendChild(style)
-        style.sheet!! as CSSStyleSheet
+    val msgs = context.handleAndOffer<String> { model ->
+        offer("you clicked $model times")
+        model + 1
     }
 
-    fun addRule(className: String, rule: Rule) {
-        val properties = rule.joinToString(separator = ";") { "${it.first}: ${it.second}" }
-        sheet.insertRule(".$className { $properties }",0)
-    }
-
-    fun addRule(className: String, rule: String) {
-        sheet.insertRule(".$className { $rule }",0)
+    return a(myStyle) {
+        className = Visibility.hidden.whenever(context.data) { it > 5 }
+        clicks handledBy msgs
+        init(msgs)
+        +"ClickMe!"
     }
 }
 
-
-
-
-
-fun HtmlElements.button(): A {
-    return a {}
-}
-
-//import {compile, serialize, stringify} from 'stylis'
 
 fun main() {
+    style(Visibility::class)
 
-    val x = serialize(compile( // language=CSS
-        """
-        .test {
-            border: 2px solid red;
-            background-color: yellow;
-            color: red;
+    val model = object : RootStore<String>("") {
+        val showMessage = handle<String> { _, msg ->
+            window.alert(msg)
+            msg
         }
-        
-    """.trimIndent()), ::stringify)
+    }
 
-    println("result: ${x}")
-
-
-    //Styling.addRule("myTest", x)
+    model.data.watch()
 
     render {
-        p("myTest") {
-            text("Hello World!")
+        div {
+            (0..4).forEach { bg ->
+                myButton(colors[bg]) { msgs ->
+                    msgs handledBy model.showMessage
+                }
+            }
         }
     }.mount("target")
 }
