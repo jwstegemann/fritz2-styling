@@ -34,12 +34,32 @@ object Styling {
 
 typealias StyleClass = String
 
-fun style(css: String, prefix: String = ""): StyleClass =
+fun style(css: String, prefix: String = "css-"): StyleClass =
     "$prefix${generateAlphabeticName(css.hashCode().absoluteValue)}".also { className ->
-        console.log("++++ $css +++")
-
         serialize(compile(" .$className { $css } "), Styling.middleware)
     }
+
+fun style(
+    sm: String? = null,
+    md: String? = null,
+    lg: String? = null,
+    xl: String? = null,
+    prefix: String = "css-"
+): StyleClass {
+    val combinedCss = StringBuilder()
+    if (sm != null) combinedCss.append(sm)
+    if (md != null) combinedCss.append(" @media screen and (min-width: 30em) { $md }")
+    if (lg != null) combinedCss.append(" @media screen and (min-width: 48em) { $lg }")
+    if (xl != null) combinedCss.append(" @media screen and (min-width: 64em) { $xl }")
+
+    return combinedCss.toString().let { css ->
+        console.log("+++ css: $css")
+
+        "$prefix${generateAlphabeticName(css.hashCode().absoluteValue)}".also { className ->
+            serialize(compile(" .$className { $css } "), Styling.middleware)
+        }
+    }
+}
 
 inline fun <T> StyleClass.whenever(upstream: Flow<T>, crossinline mapper: suspend (T) -> Boolean): Flow<String> =
     upstream.map { value ->

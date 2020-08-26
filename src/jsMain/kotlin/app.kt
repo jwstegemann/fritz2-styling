@@ -28,7 +28,7 @@ val btn = style( // language=CSS prefix=".dummy {" suffix="}"
     """, "btn-"
 )
 
-inline fun HtmlElements.myButton(styling: Style<SpaceColor>, crossinline init: HtmlElements.(Flow<String>) -> Any): A {
+inline fun HtmlElements.myButton(styling: StyleClass? = null, crossinline init: HtmlElements.(Flow<String>) -> Any): A {
 
     val context = storeOf(1).watch()
 
@@ -37,7 +37,7 @@ inline fun HtmlElements.myButton(styling: Style<SpaceColor>, crossinline init: H
         model + 1
     }
 
-    return a("$btn ${use(styling)}") {
+    return a("$btn ${styling.orEmpty()}") {
         className = hidden.whenever(context.data) { it > 5 }
         clicks handledBy msgs
         init(msgs)
@@ -59,9 +59,9 @@ fun main() {
     render {
         div {
             (0..4).forEach { bg ->
-                myButton({
-                    bgColor(colors[bg], lg = "white")
-                }) { msgs ->
+                myButton(
+                    style("background-color: ${colors[bg]};", lg = "background-color: white;")
+                ) { msgs ->
                     msgs handledBy model.showMessage
                 }
             }
