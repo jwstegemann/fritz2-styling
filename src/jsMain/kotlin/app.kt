@@ -11,22 +11,33 @@ import kotlin.browser.window
 
 val colors = listOf("green", "red", "blue", "yellow", "orange")
 
-val hidden = style( // language=CSS prefix=".dummy {" suffix="}"
+val hidden = staticStyle(
+    "hidden", // language=CSS prefix=".dummy {" suffix="}"
     """
-        display: none;
-    """, "hidden"
+        display: none !important;
+    """
 )
 
-val btn = style( // language=CSS prefix=".dummy {" suffix="}"
+val btn = staticStyle(
+    "btn", // language=CSS prefix=".dummy {" suffix="}"
     """
             display: block;
             border: 1px solid black;
             color: aqua;
             margin: 10px;
             padding: 5px;
-            width: 100px;
-    """, "btn-"
+            width: 100px; 
+    """
 )
+
+
+
+
+
+
+
+
+
 
 inline fun HtmlElements.myButton(styling: StyleClass? = null, crossinline init: HtmlElements.(Flow<String>) -> Any): A {
 
@@ -60,7 +71,11 @@ fun main() {
         div {
             (0..4).forEach { bg ->
                 myButton(
-                    style("background-color: ${colors[bg]};", lg = "background-color: white;")
+                    style( // language=CSS prefix=".dummy {" suffix="}"
+                        sm = "background-color: ${colors[bg]};",
+                        // language=CSS prefix=".dummy {" suffix="}"
+                        lg = "background-color: white;"
+                    )
                 ) { msgs ->
                     msgs handledBy model.showMessage
                 }
