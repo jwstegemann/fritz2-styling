@@ -11,30 +11,24 @@ import kotlin.browser.window
 
 val colors = listOf("green", "red", "blue", "yellow", "orange")
 
-enum class Visibility(override val css: String) : StyleState {
-    visible( // language=CSS prefix=".dummy {" suffix="}"
-        """
-            display: block 
-        """
-    ),
-    hidden( // language=CSS prefix=".dummy {" suffix="}"
-        "display: none"
-    )
-}
+val hidden = style( // language=CSS prefix=".dummy {" suffix="}"
+    """
+        display: none;
+    """, "hidden"
+)
 
-
-fun HtmlElements.myButton(bg: String, init: HtmlElements.(Flow<String>) -> Any): A {
-    val myStyle = style( // language=CSS prefix=".dummy {" suffix="}"
-        """
-            border: 1px solid black;
-            background-color: $bg;
-            color: white;
+val btn = style( // language=CSS prefix=".dummy {" suffix="}"
+    """
             display: block;
+            border: 1px solid black;
+            color: aqua;
             margin: 10px;
             padding: 5px;
             width: 100px;
-        """, "test"
-    )
+    """, "btn-"
+)
+
+inline fun HtmlElements.myButton(styling: Style<SpaceColor>, crossinline init: HtmlElements.(Flow<String>) -> Any): A {
 
     val context = storeOf(1).watch()
 
@@ -43,8 +37,8 @@ fun HtmlElements.myButton(bg: String, init: HtmlElements.(Flow<String>) -> Any):
         model + 1
     }
 
-    return a(myStyle) {
-        className = Visibility.hidden.whenever(context.data) { it > 5 }
+    return a("$btn ${use(styling)}") {
+        className = hidden.whenever(context.data) { it > 5 }
         clicks handledBy msgs
         init(msgs)
         +"ClickMe!"
@@ -53,8 +47,6 @@ fun HtmlElements.myButton(bg: String, init: HtmlElements.(Flow<String>) -> Any):
 
 
 fun main() {
-    style(Visibility::class)
-
     val model = object : RootStore<String>("") {
         val showMessage = handle<String> { _, msg ->
             window.alert(msg)
@@ -67,7 +59,9 @@ fun main() {
     render {
         div {
             (0..4).forEach { bg ->
-                myButton(colors[bg]) { msgs ->
+                myButton({
+                    bgColor(colors[bg], lg = "white")
+                }) { msgs ->
                     msgs handledBy model.showMessage
                 }
             }
