@@ -11,7 +11,7 @@ import kotlin.browser.document
 object Styling {
     private var counter = 0
 
-    val rules = mutableSetOf<String>()
+    val rules = mutableSetOf<Int>()
 
     private val sheet by lazy {
         val style = document.createElement("style") as HTMLStyleElement
@@ -35,15 +35,16 @@ object Styling {
 typealias StyleClass = String
 
 fun staticStyle(name: String, css: String): StyleClass {
-    if (!Styling.rules.contains(name)) {
-        serialize(compile(".$name { $css }"), Styling.middleware)
-        Styling.rules.add(name)
-    }
+    serialize(compile(".$name { $css }"), Styling.middleware)
     return name
 }
 
-fun style(css: String, prefix: String = "css-"): StyleClass =
-    staticStyle("$prefix${generateAlphabeticName(hash.v3(css))}", css)
+fun style(css: String, prefix: String = "css-"): StyleClass {
+    val hash = hash.v3(css)
+    return "$prefix${generateAlphabeticName(hash)}".also {
+        if (Styling.rules.contains(hash)) staticStyle(it, css)
+    }
+}
 
 fun style(
     sm: String? = null,
