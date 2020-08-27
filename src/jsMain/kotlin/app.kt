@@ -11,31 +11,26 @@ import kotlin.browser.window
 
 val colors = listOf("green", "red", "blue", "yellow", "orange")
 
-val hidden = style( // language=CSS prefix=".dummy {" suffix="}"
+val hidden = staticStyle(
+    "hidden", // language=CSS prefix=".dummy {" suffix="}"
     """
-        display: none;
-    """, "hidden"
+        display: none !important;
+    """
 )
 
-val btn = style( // language=CSS prefix=".dummy {" suffix="}"
+val btn = staticStyle(
+    "btn", // language=CSS prefix=".dummy {" suffix="}"
     """
             display: block;
             border: 1px solid black;
             color: aqua;
             margin: 10px;
             padding: 5px;
-            width: 100px;
-    """, "btn-"
+            width: 100px; 
+    """
 )
 
-
-interface Hugo : StyleParams, Space, Color
-
-inline fun HtmlElements.myButton(
-    a: Style<Space> = {},
-    b: Style<Hugo> = {},
-    crossinline init: HtmlElements.(Flow<String>) -> Any
-): A {
+inline fun HtmlElements.myButton(styling: Style<SpaceColor>, crossinline init: HtmlElements.(Flow<String>) -> Any): A {
 
     val context = storeOf(1).watch()
 
@@ -44,13 +39,14 @@ inline fun HtmlElements.myButton(
         model + 1
     }
 
-    return a("$btn ${use(b)}") {
+    return a("$btn ${use(styling)}") {
         className = hidden.whenever(context.data) { it > 5 }
         clicks handledBy msgs
         init(msgs)
         +"ClickMe!"
     }
 }
+
 
 fun main() {
     val model = object : RootStore<String>("") {
@@ -65,7 +61,7 @@ fun main() {
     render {
         div {
             (0..4).forEach { bg ->
-                myButton(b = {
+                myButton({
                     bgColor(colors[bg], lg = "white")
                 }) { msgs ->
                     msgs handledBy model.showMessage
@@ -74,3 +70,16 @@ fun main() {
         }
     }.mount("target")
 }
+
+/*
+                myButton(
+                    style( // language=CSS prefix=".dummy {" suffix="}"
+                        sm = "background-color: ${colors[bg]};",
+                        // language=CSS prefix=".dummy {" suffix="}"
+                        lg = "background-color: white;"
+                    )
+                ) { msgs ->
+                    msgs handledBy model.showMessage
+                }
+
+ */

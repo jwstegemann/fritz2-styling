@@ -24,6 +24,7 @@ kotlin {
             val jsMain by getting {
                 dependencies {
                     implementation(npm("stylis"))
+                    implementation(npm("murmurhash"))
                 }
             }
         }

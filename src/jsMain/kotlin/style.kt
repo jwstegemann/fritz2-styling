@@ -7,10 +7,11 @@ import stylis.middleware
 import stylis.serialize
 import stylis.stringify
 import kotlin.browser.document
-import kotlin.math.absoluteValue
 
 object Styling {
     private var counter = 0
+
+    val rules = mutableSetOf<String>()
 
     private val sheet by lazy {
         val style = document.createElement("style") as HTMLStyleElement
@@ -23,7 +24,6 @@ object Styling {
     private val addRuleMiddleware: (dynamic) -> dynamic = { value ->
         if (value.root == null)
             with(value["return"]) {
-                //FIXME: append!
                 if (this != null) sheet.insertRule(this as String, counter++)
             }
         undefined
@@ -34,12 +34,32 @@ object Styling {
 
 typealias StyleClass = String
 
-fun style(css: String, prefix: String = ""): StyleClass =
-    "$prefix${generateAlphabeticName(css.hashCode().absoluteValue)}".also { className ->
-        console.log("++++ $css +++")
-
-        serialize(compile(" .$className { $css } "), Styling.middleware)
+fun staticStyle(name: String, css: String): StyleClass {
+    if (!Styling.rules.contains(name)) {
+        serialize(compile(".$name { $css }"), Styling.middleware)
+        Styling.rules.add(name)
     }
+    return name
+}
+
+fun style(css: String, prefix: String = "css-"): StyleClass =
+    staticStyle("$prefix${generateAlphabeticName(hash.v3(css))}", css)
+
+fun style(
+    sm: String? = null,
+    md: String? = null,
+    lg: String? = null,
+    xl: String? = null,
+    prefix: String = "css-"
+): StyleClass {
+    val combinedCss = StringBuilder()
+    if (sm != null) combinedCss.append(sm)
+    if (md != null) combinedCss.append(" @media screen and (min-width: 30em) { $md }")
+    if (lg != null) combinedCss.append(" @media screen and (min-width: 48em) { $lg }")
+    if (xl != null) combinedCss.append(" @media screen and (min-width: 64em) { $xl }")
+
+    return style(combinedCss.toString(), prefix)
+}
 
 inline fun <T> StyleClass.whenever(upstream: Flow<T>, crossinline mapper: suspend (T) -> Boolean): Flow<String> =
     upstream.map { value ->
