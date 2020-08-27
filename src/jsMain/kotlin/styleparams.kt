@@ -30,7 +30,7 @@ interface Color : StyleParams {
 }
 
 
-abstract class BaseStyleParams : StyleParams {
+class BaseStyleParams : Space, Color {
     private val sm = mutableListOf<String>()
     private val md = mutableListOf<String>()
     private val lg = mutableListOf<String>()
@@ -55,11 +55,20 @@ abstract class BaseStyleParams : StyleParams {
 }
 
 
-class SpaceColor() : BaseStyleParams(), Space, Color
+inline fun <T : StyleParams> use(styling: Style<T>, prefix: String = "css-"): StyleClass {
+    val x = BaseStyleParams()
+    (x.unsafeCast<T>()).styling()
+    return style(x.toCss(), prefix)
+}
 
-inline fun use(styling: SpaceColor.() -> Unit, prefix: String = "css-"): StyleClass =
-    style(SpaceColor().also(styling).toCss(), prefix)
+/*
+inline fun <reified T : StyleParams, reified A : StyleParams> use(a: Style<T>, b: Style<T>, prefix: String = "css-"): StyleClass {
+    val x = BaseStyleParams()
+    (x as T).a()
+    (x as T).b()
+    return style(x.toCss(), prefix)
+}
 
-
+ */
 
 typealias Style<T> = T.() -> Unit

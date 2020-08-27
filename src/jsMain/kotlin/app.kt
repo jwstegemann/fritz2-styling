@@ -28,7 +28,14 @@ val btn = style( // language=CSS prefix=".dummy {" suffix="}"
     """, "btn-"
 )
 
-inline fun HtmlElements.myButton(styling: Style<SpaceColor>, crossinline init: HtmlElements.(Flow<String>) -> Any): A {
+
+interface Hugo : StyleParams, Space, Color
+
+inline fun HtmlElements.myButton(
+    a: Style<Space> = {},
+    b: Style<Hugo> = {},
+    crossinline init: HtmlElements.(Flow<String>) -> Any
+): A {
 
     val context = storeOf(1).watch()
 
@@ -37,14 +44,13 @@ inline fun HtmlElements.myButton(styling: Style<SpaceColor>, crossinline init: H
         model + 1
     }
 
-    return a("$btn ${use(styling)}") {
+    return a("$btn ${use(b)}") {
         className = hidden.whenever(context.data) { it > 5 }
         clicks handledBy msgs
         init(msgs)
         +"ClickMe!"
     }
 }
-
 
 fun main() {
     val model = object : RootStore<String>("") {
@@ -59,7 +65,7 @@ fun main() {
     render {
         div {
             (0..4).forEach { bg ->
-                myButton({
+                myButton(b = {
                     bgColor(colors[bg], lg = "white")
                 }) { msgs ->
                     msgs handledBy model.showMessage
