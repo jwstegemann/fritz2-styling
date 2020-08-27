@@ -1,3 +1,5 @@
+package dev.fritz2.styling
+
 interface StyleParams {
     val addSm: (String) -> StringBuilder
     val addMd: (String) -> StringBuilder
@@ -17,8 +19,6 @@ inline fun <T> StyleParams.property(
     if (lg != null) addLg(entry(lg))
     if (xl != null) addXl(entry(xl))
 }
-
-typealias Property = String
 
 interface Space : StyleParams {
     fun margin(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =

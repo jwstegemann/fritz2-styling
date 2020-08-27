@@ -6,6 +6,7 @@ import dev.fritz2.dom.html.A
 import dev.fritz2.dom.html.HtmlElements
 import dev.fritz2.dom.html.render
 import dev.fritz2.dom.mount
+import dev.fritz2.styling.*
 import kotlinx.coroutines.flow.Flow
 import kotlin.browser.window
 
@@ -41,7 +42,7 @@ inline fun HtmlElements.myButton(styling: Style<Color> = {}, crossinline init: H
     }
 
 //    return a("$btn $styling") {
-    return a("$btn ${DefaultTheme.use(styling)}") {
+    return a("$btn ${Default.use(styling)}") {
         className = hidden.whenever(context.data) { it > 5 }
         clicks handledBy msgs
         init(msgs)

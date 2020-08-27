@@ -1,3 +1,7 @@
+package dev.fritz2.styling
+
+typealias Property = String
+
 class ResponsiveValue<T>(val sm: T, val md: T = sm, val lg: T = md, val xl: T = lg)
 
 interface Theme {
@@ -11,7 +15,7 @@ interface Theme {
 
 }
 
-object DefaultTheme : Theme {
+object Default : Theme {
     override val breakPoints = ResponsiveValue("", "38em", "52em", "66em")
 
     override val mediaQueryMd: String = "@media screen and (min-width: ${breakPoints.md})"

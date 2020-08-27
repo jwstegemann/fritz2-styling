@@ -1,3 +1,5 @@
+package dev.fritz2.styling
+
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.w3c.dom.HTMLStyleElement

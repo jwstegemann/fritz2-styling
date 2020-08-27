@@ -1,3 +1,5 @@
+package dev.fritz2.styling
+
 import dev.fritz2.binding.Store
 import dev.fritz2.binding.watch
 
