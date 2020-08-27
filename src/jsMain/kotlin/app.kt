@@ -30,7 +30,8 @@ val btn = staticStyle(
     """
 )
 
-inline fun HtmlElements.myButton(styling: Style<SpaceColor>, crossinline init: HtmlElements.(Flow<String>) -> Any): A {
+inline fun HtmlElements.myButton(styling: StyleClass? = null, crossinline init: HtmlElements.(Flow<String>) -> Any): A {
+//inline fun HtmlElements.myButton(styling: Style<Color> = {}, crossinline init: HtmlElements.(Flow<String>) -> Any): A {
 
     val context = storeOf(1).watch()
 
@@ -39,7 +40,7 @@ inline fun HtmlElements.myButton(styling: Style<SpaceColor>, crossinline init: H
         model + 1
     }
 
-    return a("$btn ${use(styling)}") {
+    return a("$btn $styling}") {
         className = hidden.whenever(context.data) { it > 5 }
         clicks handledBy msgs
         init(msgs)
@@ -61,9 +62,27 @@ fun main() {
     render {
         div {
             (0..4).forEach { bg ->
-                myButton({
-                    bgColor(colors[bg], lg = "white")
-                }) { msgs ->
+                /*
+                 * style params
+                 */
+//                myButton({
+//                    bgColor(colors[bg], lg = "white")
+//                }) { msgs ->
+//                    msgs handledBy model.showMessage
+//                }
+//            }
+
+                /*
+                 * pure css
+                 */
+                myButton(
+                    DefaultTheme.style(
+                        // language=CSS prefix=".dummy {" suffix="}"
+                        { "background-color: ${colors[bg]};" }, // access variables from scope
+                        // language=CSS prefix=".dummy {" suffix="}"
+                        lg = { "margin: ${space.lg}" } // access value from theme
+                    )
+                ) { msgs ->
                     msgs handledBy model.showMessage
                 }
             }
@@ -71,15 +90,3 @@ fun main() {
     }.mount("target")
 }
 
-/*
-                myButton(
-                    style( // language=CSS prefix=".dummy {" suffix="}"
-                        sm = "background-color: ${colors[bg]};",
-                        // language=CSS prefix=".dummy {" suffix="}"
-                        lg = "background-color: white;"
-                    )
-                ) { msgs ->
-                    msgs handledBy model.showMessage
-                }
-
- */

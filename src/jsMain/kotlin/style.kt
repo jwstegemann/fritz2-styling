@@ -46,20 +46,22 @@ fun style(css: String, prefix: String = "css-"): StyleClass {
     }
 }
 
-fun style(
-    sm: String? = null,
-    md: String? = null,
-    lg: String? = null,
-    xl: String? = null,
+fun <T : Theme> T.style(
+    sm: T.() -> String = { "" },
+    md: T.() -> String = { "" },
+    lg: T.() -> String = { "" },
+    xl: T.() -> String = { "" },
     prefix: String = "css-"
 ): StyleClass {
-    val combinedCss = StringBuilder()
-    if (sm != null) combinedCss.append(sm)
-    if (md != null) combinedCss.append(" @media screen and (min-width: 30em) { $md }")
-    if (lg != null) combinedCss.append(" @media screen and (min-width: 48em) { $lg }")
-    if (xl != null) combinedCss.append(" @media screen and (min-width: 64em) { $xl }")
+    val combinedCss = StringBuilder(this.sm())
+    combinedCss.append(this.mediaQueryMd, "{", this.md(), "}")
+    combinedCss.append(this.mediaQueryLg, "{", this.lg(), "}")
+    combinedCss.append(this.mediaQueryXl, "{", this.xl(), "}")
 
-    return style(combinedCss.toString(), prefix)
+    return combinedCss.toString().let {
+        if (it.isNotEmpty()) style(combinedCss.toString(), prefix)
+        else it
+    }
 }
 
 inline fun <T> StyleClass.whenever(upstream: Flow<T>, crossinline mapper: suspend (T) -> Boolean): Flow<String> =
