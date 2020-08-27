@@ -40,7 +40,7 @@ inline fun HtmlElements.myButton(styling: StyleClass? = null, crossinline init: 
         model + 1
     }
 
-    return a("$btn $styling}") {
+    return a("$btn $styling") {
         className = hidden.whenever(context.data) { it > 5 }
         clicks handledBy msgs
         init(msgs)
@@ -80,7 +80,8 @@ fun main() {
                         // language=CSS prefix=".dummy {" suffix="}"
                         { "background-color: ${colors[bg]};" }, // access variables from scope
                         // language=CSS prefix=".dummy {" suffix="}"
-                        lg = { "margin: ${space.lg}" } // access value from theme
+                        lg = { "margin: ${space.lg};" }, // access value from theme
+                        prefix = "myStyle"
                     )
                 ) { msgs ->
                     msgs handledBy model.showMessage

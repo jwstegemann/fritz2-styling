@@ -35,14 +35,17 @@ object Styling {
 typealias StyleClass = String
 
 fun staticStyle(name: String, css: String): StyleClass {
+    console.log("*** $name -> $css ***")
     serialize(compile(".$name { $css }"), Styling.middleware)
     return name
 }
 
-fun style(css: String, prefix: String = "css-"): StyleClass {
+fun style(css: String, prefix: String = "dyn"): StyleClass {
     val hash = hash.v3(css)
-    return "$prefix${generateAlphabeticName(hash)}".also {
-        if (Styling.rules.contains(hash)) staticStyle(it, css)
+    return "$prefix-${generateAlphabeticName(hash)}".also {
+        console.log("+++ $it +++")
+        if (!Styling.rules.contains(hash)) staticStyle(it, css)
+        Styling.rules.add(hash)
     }
 }
 
@@ -54,12 +57,12 @@ fun <T : Theme> T.style(
     prefix: String = "css-"
 ): StyleClass {
     val combinedCss = StringBuilder(this.sm())
-    combinedCss.append(this.mediaQueryMd, "{", this.md(), "}")
-    combinedCss.append(this.mediaQueryLg, "{", this.lg(), "}")
-    combinedCss.append(this.mediaQueryXl, "{", this.xl(), "}")
+    this.md().also { if (it.isNotEmpty()) combinedCss.append(this.mediaQueryMd, "{", it, "}") }
+    this.lg().also { if (it.isNotEmpty()) combinedCss.append(this.mediaQueryLg, "{", it, "}") }
+    this.xl().also { if (it.isNotEmpty()) combinedCss.append(this.mediaQueryXl, "{", it, "}") }
 
     return combinedCss.toString().let {
-        if (it.isNotEmpty()) style(combinedCss.toString(), prefix)
+        if (it.isNotEmpty()) style(it, prefix)
         else it
     }
 }
