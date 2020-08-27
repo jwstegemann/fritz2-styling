@@ -77,7 +77,7 @@ fun main() {
                  * pure css
                  */
 //                myButton(
-//                    DefaultTheme.style(
+//                    Default.style(
 //                        // language=CSS prefix=".dummy {" suffix="}"
 //                        { "background-color: ${colors[bg]};" }, // access variables from scope
 //                        // language=CSS prefix=".dummy {" suffix="}"
@@ -87,6 +87,7 @@ fun main() {
 //                ) { msgs ->
 //                    msgs handledBy model.showMessage
 //                }
+
             }
         }
     }.mount("target")
