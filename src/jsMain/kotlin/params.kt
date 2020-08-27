@@ -44,8 +44,8 @@ class StyleParamsImpl(val theme: Theme) : Space, Color {
 
     fun toCss(): String {
         if (md.isNotEmpty()) sm.append(theme.mediaQueryMd, "{", md, "}")
-        if (lg.isNotEmpty()) sm.append(theme.mediaQueryMd, "{", lg, "}")
-        if (xl.isNotEmpty()) sm.append(theme.mediaQueryMd, "{", xl, "}")
+        if (lg.isNotEmpty()) sm.append(theme.mediaQueryLg, "{", lg, "}")
+        if (xl.isNotEmpty()) sm.append(theme.mediaQueryXl, "{", xl, "}")
 
         return sm.toString()
     }
@@ -53,7 +53,7 @@ class StyleParamsImpl(val theme: Theme) : Space, Color {
 
 typealias Style<T> = T.() -> Unit
 
-inline fun <T : StyleParams> Theme.use(styling: Style<T>, prefix: String = "css-"): StyleClass {
+inline fun <T : StyleParams> Theme.use(styling: Style<T>, prefix: String = "s"): StyleClass {
     val base = StyleParamsImpl(this)
     (base.unsafeCast<T>()).styling()
     return base.toCss().let {
@@ -63,7 +63,7 @@ inline fun <T : StyleParams> Theme.use(styling: Style<T>, prefix: String = "css-
 }
 
 /*
-inline fun <reified T : StyleParams, reified A : StyleParams> use(a: Style<T>, b: Style<T>, prefix: String = "css-"): StyleClass {
+inline fun <reified T : StyleParams, reified A : StyleParams> use(a: Style<T>, b: Style<T>, prefix: String = "s-"): StyleClass {
     val x = BaseStyleParams()
     (x as T).a()
     (x as T).b()

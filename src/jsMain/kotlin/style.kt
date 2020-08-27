@@ -35,15 +35,13 @@ object Styling {
 typealias StyleClass = String
 
 fun staticStyle(name: String, css: String): StyleClass {
-    console.log("*** $name -> $css ***")
     serialize(compile(".$name { $css }"), Styling.middleware)
     return name
 }
 
-fun style(css: String, prefix: String = "dyn"): StyleClass {
+fun style(css: String, prefix: String = "s"): StyleClass {
     val hash = hash.v3(css)
     return "$prefix-${generateAlphabeticName(hash)}".also {
-        console.log("+++ $it +++")
         if (!Styling.rules.contains(hash)) staticStyle(it, css)
         Styling.rules.add(hash)
     }
@@ -54,7 +52,7 @@ fun <T : Theme> T.style(
     md: T.() -> String = { "" },
     lg: T.() -> String = { "" },
     xl: T.() -> String = { "" },
-    prefix: String = "css-"
+    prefix: String = "s"
 ): StyleClass {
     val combinedCss = StringBuilder(this.sm())
     this.md().also { if (it.isNotEmpty()) combinedCss.append(this.mediaQueryMd, "{", it, "}") }

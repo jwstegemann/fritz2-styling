@@ -30,8 +30,8 @@ val btn = staticStyle(
     """
 )
 
-inline fun HtmlElements.myButton(styling: StyleClass? = null, crossinline init: HtmlElements.(Flow<String>) -> Any): A {
-//inline fun HtmlElements.myButton(styling: Style<Color> = {}, crossinline init: HtmlElements.(Flow<String>) -> Any): A {
+//inline fun HtmlElements.myButton(styling: StyleClass? = null, crossinline init: HtmlElements.(Flow<String>) -> Any): A {
+inline fun HtmlElements.myButton(styling: Style<Color> = {}, crossinline init: HtmlElements.(Flow<String>) -> Any): A {
 
     val context = storeOf(1).watch()
 
@@ -40,7 +40,8 @@ inline fun HtmlElements.myButton(styling: StyleClass? = null, crossinline init: 
         model + 1
     }
 
-    return a("$btn $styling") {
+//    return a("$btn $styling") {
+    return a("$btn ${DefaultTheme.use(styling)}") {
         className = hidden.whenever(context.data) { it > 5 }
         clicks handledBy msgs
         init(msgs)
@@ -65,27 +66,26 @@ fun main() {
                 /*
                  * style params
                  */
-//                myButton({
-//                    bgColor(colors[bg], lg = "white")
-//                }) { msgs ->
-//                    msgs handledBy model.showMessage
-//                }
-//            }
+                myButton({
+                    bgColor(colors[bg], lg = "white")
+                }) { msgs ->
+                    msgs handledBy model.showMessage
+                }
 
                 /*
                  * pure css
                  */
-                myButton(
-                    DefaultTheme.style(
-                        // language=CSS prefix=".dummy {" suffix="}"
-                        { "background-color: ${colors[bg]};" }, // access variables from scope
-                        // language=CSS prefix=".dummy {" suffix="}"
-                        lg = { "margin: ${space.lg};" }, // access value from theme
-                        prefix = "myStyle"
-                    )
-                ) { msgs ->
-                    msgs handledBy model.showMessage
-                }
+//                myButton(
+//                    DefaultTheme.style(
+//                        // language=CSS prefix=".dummy {" suffix="}"
+//                        { "background-color: ${colors[bg]};" }, // access variables from scope
+//                        // language=CSS prefix=".dummy {" suffix="}"
+//                        lg = { "margin: ${space.lg};" }, // access value from theme
+//                        prefix = "myStyle"
+//                    )
+//                ) { msgs ->
+//                    msgs handledBy model.showMessage
+//                }
             }
         }
     }.mount("target")
