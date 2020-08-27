@@ -10,7 +10,7 @@ import stylis.serialize
 import stylis.stringify
 import kotlin.browser.document
 
-object Styling {
+internal object Styling {
     private var counter = 0
 
     val rules = mutableSetOf<Int>()
