@@ -6,9 +6,10 @@ import dev.fritz2.styling.Default
 import dev.fritz2.styling.params.BasicStyleParams
 import dev.fritz2.styling.params.Style
 import dev.fritz2.styling.params.use
-import dev.fritz2.styling.style
+import dev.fritz2.styling.staticStyle
 
-val link = style(
+val link = staticStyle(
+    "link",
     """
     transition: all 0.15s ease-out;
     cursor: pointer;
@@ -34,7 +35,7 @@ val link = style(
 
 inline fun HtmlElements.link(styles: Style<BasicStyleParams> = {}, crossinline init: A.() -> Any): A {
 
-    return a("$link ${Default.use(styles)}") {
+    return a("$link ${Default.use(styles, "link")}") {
         init()
     }
 

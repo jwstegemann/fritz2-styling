@@ -10,7 +10,7 @@ import dev.fritz2.styling.params.use
 
 inline fun HtmlElements.box(styles: Style<FlexStyleParams> = {}, crossinline init: Div.() -> Any): Div {
 
-    return div(Default.use(styles)) {
+    return div(Default.use(styles, "box")) {
         init()
     }
 

@@ -16,11 +16,8 @@ fun main() {
             padding(Default.space[4])
             border("1px solid lightgrey")
             display(md = " flex")
-            //TODO: add prefix here
         }) {
-            box({
-                flexShrink("0")
-            }) {
+            box({ flexShrink("0") }) {
                 image({
                     borderRadius(Default.radii[1])
                     width(md = "10rem")
@@ -29,19 +26,14 @@ fun main() {
                     alt = const("Woman paying for a purchase")
                 }
             }
-            box({
-                marginTop(Default.space[4], md = "0")
-                marginLeft(md = Default.space[6])
-            }) {
+            box({ marginTop(Default.space[4], md = "0"); marginLeft(md = Default.space[6]) }) {
                 text({
                     fontWeight("bold")
                     textTransform("uppercase")
                     fontSize(Default.fontSizes[0])
                     letterSpacing("0.025em")
                     color("#2C7A7B")
-                }) {
-                    +"Marketing"
-                }
+                }) { +"Marketing" }
                 link({
                     marginTop(Default.space[1])
                     display("block")
@@ -52,10 +44,7 @@ fun main() {
                     href = const("#")
                     +"Finding customers for your new business"
                 }
-                text({
-                    marginTop(Default.space[2])
-                    color("#718096")
-                }) {
+                text({ marginTop(Default.space[2]); color("#718096") }) {
                     +"Getting a new business off the ground is a lot of hard work. Here are five ideas you can use to find your first customers."
                 }
             }

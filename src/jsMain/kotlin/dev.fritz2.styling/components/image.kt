@@ -11,7 +11,7 @@ import dev.fritz2.styling.params.use
 inline fun HtmlElements.image(styles: Style<BasicStyleParams> = {}, crossinline init: Img.() -> Unit): Img {
 
     //FIXME: how to deal with attributes we want to add things to from component and init?
-    return img(Default.use(styles)) {
+    return img(Default.use(styles, "img")) {
         init()
     }
 

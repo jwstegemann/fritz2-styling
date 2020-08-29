@@ -10,7 +10,7 @@ import dev.fritz2.styling.params.use
 
 inline fun HtmlElements.text(styles: Style<BasicStyleParams> = {}, crossinline init: P.() -> Any = {}): P {
 
-    return p(Default.use(styles)) {
+    return p(Default.use(styles, "text")) {
         init()
     }
 
