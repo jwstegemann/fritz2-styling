@@ -49,13 +49,11 @@ class StyleParamsImpl(val theme: Theme) : Background, Border, Color, Flexbox, Gr
 typealias Style<T> = T.() -> Unit
 
 
-interface BasicStyleParams : Space, Color, Border, Typo, Background, Position, Shadow
+interface BasicStyleParams : Space, Color, Border, Typo, Background, Position, Shadow, Layout
 
-interface LayoutStyleParams : BasicStyleParams, Layout
+interface FlexStyleParams : BasicStyleParams, Flexbox
 
-interface FlexStyleParams : LayoutStyleParams, Flexbox
-
-interface GridStyleParams : LayoutStyleParams, GridLayout
+interface GridStyleParams : BasicStyleParams, GridLayout
 
 
 inline fun <T : StyleParams> Theme.use(styling: Style<T>, prefix: String = "s"): StyleClass {

@@ -37,7 +37,26 @@ object Default : Theme {
     override val mediaQueryLg: String = "@media screen and (min-width: ${breakPoints.lg})"
     override val mediaQueryXl: String = "@media screen and (min-width: ${breakPoints.xl})"
 
-    override val space: List<Property> = listOf("0.2em", "0.4em")
+    override val space: List<Property> = listOf(
+        "0",
+        "0.25rem",
+        "0.5rem",
+        "0.75rem",
+        "1rem",
+        "1.25rem",
+        "1.5rem",
+        "2rem",
+        "2.5rem",
+        "3rem",
+        "4rem",
+        "5rem",
+        "6rem",
+        "8rem",
+        "10rem",
+        "12rem",
+        "14rem",
+        "16rem"
+    )
 
     override val fontSizes: List<Property> = listOf(
         "0.75rem",
@@ -69,7 +88,14 @@ object Default : Theme {
 
     override val borderWidths: List<Property> = listOf()
     override val borderStyles: List<Property> = listOf()
-    override val radii: List<Property> = listOf()
+
+    override val radii: List<Property> = listOf(
+        "0.125rem",
+        "0.25rem",
+        "0.5rem",
+        "9999px"
+    )
+
     override val shadows: List<Property> = listOf()
     override val zIndices: List<Property> = listOf()
 }

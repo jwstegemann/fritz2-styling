@@ -21,6 +21,9 @@ interface Typo : StyleParams {
     fun textAlign(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
         property(sm, md, lg, xl) { "text-align: $it;" }
 
+    fun textTransform(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
+        property(sm, md, lg, xl) { "text-transform: $it;" }
+
     fun fontStyle(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
         property(sm, md, lg, xl) { "font-style: $it;" }
 
