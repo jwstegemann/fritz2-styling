@@ -1,4 +1,8 @@
-package dev.fritz2.styling
+package dev.fritz2.styling.params
+
+import dev.fritz2.styling.StyleClass
+import dev.fritz2.styling.Theme
+import dev.fritz2.styling.style
 
 interface StyleParams {
     val addSm: (String) -> StringBuilder
@@ -20,18 +24,9 @@ inline fun <T> StyleParams.property(
     if (xl != null) addXl(entry(xl))
 }
 
-interface Space : StyleParams {
-    fun margin(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "margin: $it;" }
-}
 
-interface Color : StyleParams {
-    fun bgColor(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "background-color: $it;" }
-}
-
-
-class StyleParamsImpl(val theme: Theme) : Space, Color {
+class StyleParamsImpl(val theme: Theme) : Background, Border, Color, Flexbox, GridLayout, Layout, Position, Shadow,
+    Space, Typo {
     private val sm = StringBuilder()
     private val md = StringBuilder()
     private val lg = StringBuilder()
@@ -52,6 +47,16 @@ class StyleParamsImpl(val theme: Theme) : Space, Color {
 }
 
 typealias Style<T> = T.() -> Unit
+
+
+interface BasicStyleParams : Space, Color, Border, Typo, Background, Position, Shadow
+
+interface LayoutStyleParams : BasicStyleParams, Layout
+
+interface FlexStyleParams : LayoutStyleParams, Flexbox
+
+interface GridStyleParams : LayoutStyleParams, GridLayout
+
 
 inline fun <T : StyleParams> Theme.use(styling: Style<T>, prefix: String = "s"): StyleClass {
     val base = StyleParamsImpl(this)
