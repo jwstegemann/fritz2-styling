@@ -13,7 +13,7 @@ inline fun <T : Theme> ThemedContext<T>.box(
     crossinline init: ThemedContext<T>.() -> Any
 ): Div {
 
-    return renderContext.div(theme.use(styles, "box")) {
+    return div(theme.use(styles, "box")) {
         ThemedContext(this, this@box.theme).init()
     }
 

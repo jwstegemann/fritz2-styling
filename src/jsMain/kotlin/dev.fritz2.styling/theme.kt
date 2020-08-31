@@ -117,7 +117,7 @@ object Default : Theme {
 
 
 @HtmlTagMarker
-class ThemedContext<T : Theme>(val renderContext: HtmlElements, val theme: T)
+class ThemedContext<T : Theme>(val renderContext: HtmlElements, val theme: T) : HtmlElements by renderContext
 
 
 fun <T : Theme, X : HTMLElement, R : HtmlElements> R.themeProvider(
