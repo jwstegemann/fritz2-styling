@@ -1,20 +1,19 @@
 import dev.fritz2.binding.const
-import dev.fritz2.dom.html.render
 import dev.fritz2.dom.mount
 import dev.fritz2.styling.Default
 import dev.fritz2.styling.components.box
 import dev.fritz2.styling.components.image
 import dev.fritz2.styling.components.link
 import dev.fritz2.styling.components.text
-
+import dev.fritz2.styling.render
 
 fun main() {
-    render {
-
+    render(Default) {
         box({
-            margin(Default.space[8])
-            padding(Default.space[4])
+            margin(it.space[8])
+            padding(it.space[4])
             border("1px solid lightgrey")
+            // backgroundSize(it.test.a) // access custom value added by specific theme, for colors, etc.
             display(md = " flex")
         }) {
             box({ flexShrink("0") }) {
@@ -49,7 +48,6 @@ fun main() {
                 }
             }
         }
-
     }.mount("target")
 }
 

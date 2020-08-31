@@ -25,7 +25,8 @@ inline fun <T> StyleParams.property(
 }
 
 
-class StyleParamsImpl(val theme: Theme) : Background, Border, Color, Flexbox, GridLayout, Layout, Position, Shadow,
+class StyleParamsImpl<X : Theme>(val theme: X) : Background, Border, Color, Flexbox, GridLayout, Layout, Position,
+    Shadow,
     Space, Typo {
     private val sm = StringBuilder()
     private val md = StringBuilder()
@@ -46,7 +47,7 @@ class StyleParamsImpl(val theme: Theme) : Background, Border, Color, Flexbox, Gr
     }
 }
 
-typealias Style<T> = T.() -> Unit
+typealias Style<T, X> = T.(X) -> Unit
 
 interface BasicStyleParams : Space, Color, Border, Typo, Background, Position, Shadow, Layout
 
@@ -54,9 +55,9 @@ interface FlexStyleParams : BasicStyleParams, Flexbox
 
 interface GridStyleParams : BasicStyleParams, GridLayout
 
-inline fun <T : StyleParams> Theme.use(styling: Style<T>, prefix: String = "s"): StyleClass {
+inline fun <X : Theme, T : StyleParams> X.use(styling: Style<T, X>, prefix: String = "s"): StyleClass {
     val base = StyleParamsImpl(this)
-    (base.unsafeCast<T>()).styling()
+    (base.unsafeCast<T>()).styling(this)
     return base.toCss().let {
         if (it.isNotEmpty()) style(it, prefix)
         else it

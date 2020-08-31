@@ -1,8 +1,8 @@
 package dev.fritz2.styling.components
 
 import dev.fritz2.dom.html.A
-import dev.fritz2.dom.html.HtmlElements
-import dev.fritz2.styling.Default
+import dev.fritz2.styling.Theme
+import dev.fritz2.styling.ThemedContext
 import dev.fritz2.styling.params.BasicStyleParams
 import dev.fritz2.styling.params.Style
 import dev.fritz2.styling.params.use
@@ -33,9 +33,12 @@ val link = staticStyle(
 """
 )
 
-inline fun HtmlElements.link(styles: Style<BasicStyleParams> = {}, crossinline init: A.() -> Any): A {
+inline fun <T : Theme> ThemedContext<T>.link(
+    styles: Style<BasicStyleParams, T> = {},
+    crossinline init: A.() -> Any
+): A {
 
-    return a("$link ${Default.use(styles, "link")}") {
+    return a("$link ${theme().use(styles, "link")}") {
         init()
     }
 

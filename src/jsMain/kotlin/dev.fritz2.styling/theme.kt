@@ -1,5 +1,10 @@
 package dev.fritz2.styling
 
+import dev.fritz2.dom.Tag
+import dev.fritz2.dom.html.HtmlElements
+import dev.fritz2.dom.html.MultipleRootElementsException
+import org.w3c.dom.Element
+
 typealias Property = String
 
 class ResponsiveValue<T>(val sm: T, val md: T = sm, val lg: T = md, val xl: T = lg)
@@ -96,6 +101,44 @@ object Default : Theme {
         "9999px"
     )
 
+    interface MyProp {
+        val a: Property
+        val b: Property
+    }
+
+    val test = object : MyProp {
+        override val a: Property = "a"
+        override val b: Property = "b"
+    }
+
     override val shadows: List<Property> = listOf()
     override val zIndices: List<Property> = listOf()
+}
+
+
+interface ThemedContext<T : Theme> : HtmlElements {
+    fun theme(): T
+}
+
+
+fun <E : Element, T : Theme> render(currentTheme: T, content: ThemedContext<T>.() -> Tag<E>): Tag<E> {
+    val themeProvider = object : ThemedContext<T> {
+        override fun theme(): T = currentTheme
+
+        var alreadyRegistered: Boolean = false
+
+        override fun <X : Element, T : Tag<X>> register(element: T, content: (T) -> Unit): T {
+            if (alreadyRegistered) {
+                throw MultipleRootElementsException(
+                    "You can have only one root-tag per html-context!"
+                )
+            } else {
+                content(element)
+                alreadyRegistered = true
+                return element
+            }
+        }
+    }
+
+    return content(themeProvider)
 }

@@ -38,7 +38,10 @@ val btn = staticStyle(
 )
 
 //inline fun HtmlElements.myButton(styling: StyleClass? = null, crossinline init: HtmlElements.(Flow<String>) -> Any): A {
-inline fun HtmlElements.myButton(styling: Style<Color> = {}, crossinline init: HtmlElements.(Flow<String>) -> Any): A {
+inline fun HtmlElements.myButton(
+    styling: Style<Color, Default> = {},
+    crossinline init: HtmlElements.(Flow<String>) -> Any
+): A {
 
     val context = storeOf(1).watch()
 
