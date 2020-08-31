@@ -13,7 +13,7 @@ inline fun <T : Theme> ThemedContext<T>.text(
     crossinline init: P.() -> Any = {}
 ): P {
 
-    return p(theme().use(styles, "text")) {
+    return renderContext.p(theme.use(styles, "text")) {
         init()
     }
 

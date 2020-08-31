@@ -14,7 +14,7 @@ inline fun <T : Theme> ThemedContext<T>.image(
 ): Img {
 
     //FIXME: how to deal with attributes we want to add things to from component and init?
-    return img(theme().use(styles, "img")) {
+    return renderContext.img(theme.use(styles, "img")) {
         init()
     }
 

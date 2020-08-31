@@ -38,7 +38,7 @@ inline fun <T : Theme> ThemedContext<T>.link(
     crossinline init: A.() -> Any
 ): A {
 
-    return a("$link ${theme().use(styles, "link")}") {
+    return renderContext.a("$link ${theme.use(styles, "link")}") {
         init()
     }
 

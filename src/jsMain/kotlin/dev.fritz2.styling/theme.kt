@@ -1,9 +1,9 @@
 package dev.fritz2.styling
 
+import dev.fritz2.dom.HtmlTagMarker
 import dev.fritz2.dom.Tag
 import dev.fritz2.dom.html.HtmlElements
-import dev.fritz2.dom.html.MultipleRootElementsException
-import org.w3c.dom.Element
+import org.w3c.dom.HTMLElement
 
 typealias Property = String
 
@@ -116,29 +116,13 @@ object Default : Theme {
 }
 
 
-interface ThemedContext<T : Theme> : HtmlElements {
-    fun theme(): T
-}
+@HtmlTagMarker
+class ThemedContext<T : Theme>(val renderContext: HtmlElements, val theme: T)
 
 
-fun <E : Element, T : Theme> render(currentTheme: T, content: ThemedContext<T>.() -> Tag<E>): Tag<E> {
-    val themeProvider = object : ThemedContext<T> {
-        override fun theme(): T = currentTheme
-
-        var alreadyRegistered: Boolean = false
-
-        override fun <X : Element, T : Tag<X>> register(element: T, content: (T) -> Unit): T {
-            if (alreadyRegistered) {
-                throw MultipleRootElementsException(
-                    "You can have only one root-tag per html-context!"
-                )
-            } else {
-                content(element)
-                alreadyRegistered = true
-                return element
-            }
-        }
-    }
-
-    return content(themeProvider)
+fun <T : Theme, X : HTMLElement, R : HtmlElements> R.themeProvider(
+    activeTheme: T,
+    init: ThemedContext<T>.() -> Tag<X>
+): Tag<X> {
+    return ThemedContext(this, activeTheme).init()
 }

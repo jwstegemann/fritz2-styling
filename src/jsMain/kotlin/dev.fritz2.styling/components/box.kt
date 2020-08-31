@@ -10,11 +10,11 @@ import dev.fritz2.styling.params.use
 
 inline fun <T : Theme> ThemedContext<T>.box(
     styles: Style<FlexStyleParams, T> = {},
-    crossinline init: Div.() -> Any
+    crossinline init: ThemedContext<T>.() -> Any
 ): Div {
 
-    return div(theme().use(styles, "box")) {
-        init()
+    return renderContext.div(theme.use(styles, "box")) {
+        ThemedContext(this, this@box.theme).init()
     }
 
 }
