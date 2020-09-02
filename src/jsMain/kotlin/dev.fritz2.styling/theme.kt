@@ -4,7 +4,7 @@ import dev.fritz2.dom.Tag
 import dev.fritz2.dom.html.HtmlElements
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import org.w3c.dom.HTMLElement
+import org.w3c.dom.Element
 
 typealias Property = String
 
@@ -137,22 +137,16 @@ class Default2 : DefaultTheme() {
 }
 
 
+val currentTheme = MutableStateFlow<Theme>(DefaultTheme())
+
 @ExperimentalCoroutinesApi
-class ThemedContext<T : Theme>(val theme: T, private val renderContext: HtmlElements) : HtmlElements by renderContext {
-    companion object {
-        //FIXME: use Store when reworked to MSF
-        var current = MutableStateFlow<Theme>(DefaultTheme())
+fun theme(): Theme = currentTheme.value
+
+@ExperimentalCoroutinesApi
+fun <T : Theme> theme(): Theme = currentTheme.value.unsafeCast<T>()
+
+@ExperimentalCoroutinesApi
+inline fun <E : Element, T : Theme> render(crossinline content: HtmlElements.(T) -> Tag<E>): Tag<E> =
+    dev.fritz2.dom.html.render {
+        content(currentTheme.value.unsafeCast<T>())
     }
-}
-
-@ExperimentalCoroutinesApi
-fun theme(): Theme = ThemedContext.current.value
-
-@ExperimentalCoroutinesApi
-fun <T : Theme> theme(): Theme = ThemedContext.current.value.unsafeCast<T>()
-
-@ExperimentalCoroutinesApi
-fun <T : Theme> HtmlElements.theme(
-    activeTheme: T = ThemedContext.current.value.unsafeCast<T>(),
-    init: ThemedContext<T>.() -> Tag<HTMLElement>
-): Tag<HTMLElement> = ThemedContext<T>(activeTheme, this).init()

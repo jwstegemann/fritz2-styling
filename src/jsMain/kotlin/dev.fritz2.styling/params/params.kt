@@ -2,8 +2,8 @@ package dev.fritz2.styling.params
 
 import dev.fritz2.styling.StyleClass
 import dev.fritz2.styling.Theme
-import dev.fritz2.styling.ThemedContext
 import dev.fritz2.styling.style
+import dev.fritz2.styling.theme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 interface StyleParams {
@@ -59,8 +59,7 @@ interface GridStyleParams : BasicStyleParams, GridLayout
 
 @ExperimentalCoroutinesApi
 inline fun <T : StyleParams> use(styling: Style<T>, prefix: String = "s"): StyleClass {
-    val theme: Theme = ThemedContext.current.value
-    val base = StyleParamsImpl(theme)
+    val base = StyleParamsImpl(theme())
     (base.unsafeCast<T>()).styling()
     return base.toCss().let {
         if (it.isNotEmpty()) style(it, prefix)
@@ -74,8 +73,7 @@ inline fun <T : StyleParams, U : StyleParams> use(
     moreStyling: Style<U>,
     prefix: String = "s"
 ): StyleClass {
-    val theme: Theme = ThemedContext.current.value
-    val base = StyleParamsImpl(theme)
+    val base = StyleParamsImpl(theme())
     (base.unsafeCast<T>()).styling()
     (base.unsafeCast<U>()).moreStyling()
     return base.toCss().let {
@@ -91,8 +89,7 @@ inline fun <T : StyleParams, U : StyleParams, V : StyleParams> use(
     evenMoreStyling: Style<V>,
     prefix: String = "s"
 ): StyleClass {
-    val theme: Theme = ThemedContext.current.value
-    val base = StyleParamsImpl(theme)
+    val base = StyleParamsImpl(theme())
     (base.unsafeCast<T>()).styling()
     (base.unsafeCast<U>()).moreStyling()
     (base.unsafeCast<V>()).evenMoreStyling()
