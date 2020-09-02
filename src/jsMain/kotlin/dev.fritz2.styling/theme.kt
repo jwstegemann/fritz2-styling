@@ -1,8 +1,9 @@
 package dev.fritz2.styling
 
-import dev.fritz2.dom.HtmlTagMarker
 import dev.fritz2.dom.Tag
 import dev.fritz2.dom.html.HtmlElements
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.w3c.dom.HTMLElement
 
 typealias Property = String
@@ -35,7 +36,17 @@ interface Theme {
 
 }
 
-object Default : Theme {
+interface ExtendedTheme : Theme {
+    interface MyProp {
+        val a: Property
+        val b: Property
+    }
+
+    val test: MyProp
+}
+
+
+open class DefaultTheme : ExtendedTheme {
     override val breakPoints = ResponsiveValue("30em", "48em", "62em", "80em")
 
     override val mediaQueryMd: String = "@media screen and (min-width: ${breakPoints.md})"
@@ -101,13 +112,8 @@ object Default : Theme {
         "9999px"
     )
 
-    interface MyProp {
-        val a: Property
-        val b: Property
-    }
-
-    val test = object : MyProp {
-        override val a: Property = "a"
+    override val test = object : ExtendedTheme.MyProp {
+        override val a: Property = space[5]
         override val b: Property = "b"
     }
 
@@ -115,14 +121,38 @@ object Default : Theme {
     override val zIndices: List<Property> = listOf()
 }
 
-
-@HtmlTagMarker
-class ThemedContext<T : Theme>(val renderContext: HtmlElements, val theme: T) : HtmlElements by renderContext
-
-
-fun <T : Theme, X : HTMLElement, R : HtmlElements> R.themeProvider(
-    activeTheme: T,
-    init: ThemedContext<T>.() -> Tag<X>
-): Tag<X> {
-    return ThemedContext(this, activeTheme).init()
+class Default2 : DefaultTheme() {
+    override val fontSizes: List<Property> = listOf(
+        "1.125rem",
+        "1.25rem",
+        "1.5rem",
+        "1.875rem",
+        "2.25rem",
+        "3rem",
+        "4rem",
+        "5rem",
+        "6rem",
+        "7rem"
+    )
 }
+
+
+@ExperimentalCoroutinesApi
+class ThemedContext<T : Theme>(val theme: T, private val renderContext: HtmlElements) : HtmlElements by renderContext {
+    companion object {
+        //FIXME: use Store when reworked to MSF
+        var current = MutableStateFlow<Theme>(DefaultTheme())
+    }
+}
+
+@ExperimentalCoroutinesApi
+fun theme(): Theme = ThemedContext.current.value
+
+@ExperimentalCoroutinesApi
+fun <T : Theme> theme(): Theme = ThemedContext.current.value.unsafeCast<T>()
+
+@ExperimentalCoroutinesApi
+fun <T : Theme> HtmlElements.theme(
+    activeTheme: T = ThemedContext.current.value.unsafeCast<T>(),
+    init: ThemedContext<T>.() -> Tag<HTMLElement>
+): Tag<HTMLElement> = ThemedContext<T>(activeTheme, this).init()
