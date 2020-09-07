@@ -7,10 +7,10 @@ import dev.fritz2.styling.theme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 interface StyleParams {
-    val addSm: (String) -> StringBuilder
-    val addMd: (String) -> StringBuilder
-    val addLg: (String) -> StringBuilder
-    val addXl: (String) -> StringBuilder
+    val smProperties: StringBuilder
+    val mdProperties: StringBuilder
+    val lgProperties: StringBuilder
+    val xlProperties: StringBuilder
 }
 
 inline fun <T> StyleParams.property(
@@ -20,32 +20,27 @@ inline fun <T> StyleParams.property(
     xl: T? = null,
     crossinline entry: (T) -> String
 ) {
-    if (sm != null) addSm(entry(sm))
-    if (md != null) addMd(entry(md))
-    if (lg != null) addLg(entry(lg))
-    if (xl != null) addXl(entry(xl))
+    if (sm != null) smProperties.append(entry(sm))
+    if (md != null) mdProperties.append(entry(md))
+    if (lg != null) lgProperties.append(entry(lg))
+    if (xl != null) xlProperties.append(entry(xl))
 }
 
-
-class StyleParamsImpl<X : Theme>(val theme: X) : Background, Border, Color, Flexbox, GridLayout, Layout, Position,
+class StyleParamsImpl<X : Theme>(private val theme: X) : Background, Border, Color, Flexbox, GridLayout, Layout,
+    Position,
     Shadow,
     Space, Typo {
-    private val sm = StringBuilder()
-    private val md = StringBuilder()
-    private val lg = StringBuilder()
-    private val xl = StringBuilder()
-
-    override val addSm: (String) -> StringBuilder = sm::append
-    override val addMd: (String) -> StringBuilder = md::append
-    override val addLg: (String) -> StringBuilder = lg::append
-    override val addXl: (String) -> StringBuilder = xl::append
+    override val smProperties = StringBuilder()
+    override val mdProperties = StringBuilder()
+    override val lgProperties = StringBuilder()
+    override val xlProperties = StringBuilder()
 
     fun toCss(): String {
-        if (md.isNotEmpty()) sm.append(theme.mediaQueryMd, "{", md, "}")
-        if (lg.isNotEmpty()) sm.append(theme.mediaQueryLg, "{", lg, "}")
-        if (xl.isNotEmpty()) sm.append(theme.mediaQueryXl, "{", xl, "}")
+        if (mdProperties.isNotEmpty()) smProperties.append(theme.mediaQueryMd, "{", mdProperties, "}")
+        if (lgProperties.isNotEmpty()) smProperties.append(theme.mediaQueryLg, "{", lgProperties, "}")
+        if (xlProperties.isNotEmpty()) smProperties.append(theme.mediaQueryXl, "{", xlProperties, "}")
 
-        return sm.toString()
+        return smProperties.toString()
     }
 }
 
@@ -58,29 +53,30 @@ interface FlexStyleParams : BasicStyleParams, Flexbox
 interface GridStyleParams : BasicStyleParams, GridLayout
 
 @ExperimentalCoroutinesApi
-inline fun <T : StyleParams> use(styling: Style<T>, prefix: String = "s"): StyleClass {
-    val base = StyleParamsImpl(theme())
-    (base.unsafeCast<T>()).styling()
-    return base.toCss().let {
-        if (it.isNotEmpty()) style(it, prefix)
-        else it
+inline fun <T : StyleParams> use(styling: Style<T>, prefix: String = "s"): StyleClass =
+    StyleParamsImpl(theme()).let { base ->
+        (base.unsafeCast<T>()).styling()
+        base.toCss().let {
+            if (it.isNotEmpty()) style(it, prefix)
+            else it
+        }
     }
-}
 
 @ExperimentalCoroutinesApi
 inline fun <T : StyleParams, U : StyleParams> use(
     styling: Style<T>,
     moreStyling: Style<U>,
     prefix: String = "s"
-): StyleClass {
-    val base = StyleParamsImpl(theme())
-    (base.unsafeCast<T>()).styling()
-    (base.unsafeCast<U>()).moreStyling()
-    return base.toCss().let {
-        if (it.isNotEmpty()) style(it, prefix)
-        else it
+): StyleClass =
+    StyleParamsImpl(theme()).let { base ->
+        (base.unsafeCast<T>()).styling()
+        (base.unsafeCast<U>()).moreStyling()
+        base.toCss().let {
+            if (it.isNotEmpty()) style(it, prefix)
+            else it
+        }
     }
-}
+
 
 @ExperimentalCoroutinesApi
 inline fun <T : StyleParams, U : StyleParams, V : StyleParams> use(
@@ -88,13 +84,13 @@ inline fun <T : StyleParams, U : StyleParams, V : StyleParams> use(
     moreStyling: Style<U>,
     evenMoreStyling: Style<V>,
     prefix: String = "s"
-): StyleClass {
-    val base = StyleParamsImpl(theme())
-    (base.unsafeCast<T>()).styling()
-    (base.unsafeCast<U>()).moreStyling()
-    (base.unsafeCast<V>()).evenMoreStyling()
-    return base.toCss().let {
-        if (it.isNotEmpty()) style(it, prefix)
-        else it
+): StyleClass =
+    StyleParamsImpl(theme()).let { base ->
+        (base.unsafeCast<T>()).styling()
+        (base.unsafeCast<U>()).moreStyling()
+        (base.unsafeCast<V>()).evenMoreStyling()
+        base.toCss().let {
+            if (it.isNotEmpty()) style(it, prefix)
+            else it
+        }
     }
-}

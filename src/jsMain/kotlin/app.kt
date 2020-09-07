@@ -39,8 +39,8 @@ fun main() {
                     margin(theme().space[8])
                     padding(theme.space[4])
                     border("1px solid lightgrey")
-                    backgroundSize(theme.test.a) // access custom value added by specific theme, for colors, etc.
-                    display(md = " flex")
+                    //backgroundSize(theme.test.a) // access custom value added by specific theme, for colors, etc.
+                    display(md = "flex")
                 }) {
                     box({ flexShrink("0") }) {
                         image({
@@ -54,17 +54,17 @@ fun main() {
                     box({ marginTop(theme.space[4], md = "0"); marginLeft(md = theme.space[6]) }) {
                         text({
                             fontWeight("bold")
-                            textTransform("uppercase")
-                            fontSize(theme.fontSizes[0])
+                            textTransform { uppercase }
+                            fontSize { smaller }
                             letterSpacing("0.025em")
                             color("#2C7A7B")
                         }) { +"Marketing" }
                         link({
                             marginTop(theme.space[1])
                             display("block")
-                            fontSize(theme.fontSizes[2])
+                            fontSize { normal }
                             lineHeight("normal")
-                            fontWeight("semibold")
+                            fontWeight("bold")
                         }) {
                             href = const("#")
                             +"Finding customers for your new business"

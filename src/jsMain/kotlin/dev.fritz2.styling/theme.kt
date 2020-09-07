@@ -10,6 +10,16 @@ typealias Property = String
 
 class ResponsiveValue<T>(val sm: T, val md: T = sm, val lg: T = md, val xl: T = lg)
 
+class ScaledValue<T>(
+    val normal: T,
+    val small: T = normal,
+    val smaller: T = small,
+    val tiny: T = smaller,
+    val large: T = normal,
+    val larger: T = large,
+    val huge: T = larger
+)
+
 interface Theme {
     val breakPoints: ResponsiveValue<Property>
 
@@ -17,10 +27,8 @@ interface Theme {
     val mediaQueryLg: String
     val mediaQueryXl: String
 
-
-    //TODO: use symbols to access entries, make it expandable
     val space: List<Property>
-    val fontSizes: List<Property>
+    val fontSizes: ScaledValue<Property>
     val colors: List<Property>
     val fonts: List<Property>
     val fontWeights: List<Property>
@@ -47,7 +55,7 @@ interface ExtendedTheme : Theme {
 
 
 open class DefaultTheme : ExtendedTheme {
-    override val breakPoints = ResponsiveValue("30em", "48em", "62em", "80em")
+    final override val breakPoints = ResponsiveValue("30em", "48em", "62em", "80em")
 
     override val mediaQueryMd: String = "@media screen and (min-width: ${breakPoints.md})"
     override val mediaQueryLg: String = "@media screen and (min-width: ${breakPoints.lg})"
@@ -74,17 +82,13 @@ open class DefaultTheme : ExtendedTheme {
         "16rem"
     )
 
-    override val fontSizes: List<Property> = listOf(
-        "0.75rem",
-        "0.875rem",
-        "1rem",
-        "1.125rem",
-        "1.25rem",
-        "1.5rem",
-        "1.875rem",
-        "2.25rem",
-        "3rem",
-        "4rem"
+    override val fontSizes = ScaledValue<Property>(
+        smaller = "0.75rem",
+        small = "0.875rem",
+        normal = "1rem",
+        large = "1.125rem",
+        larger = "1.5rem",
+        huge = "2.25rem"
     )
 
     override val colors: List<Property> = listOf()
@@ -122,17 +126,13 @@ open class DefaultTheme : ExtendedTheme {
 }
 
 class Default2 : DefaultTheme() {
-    override val fontSizes: List<Property> = listOf(
-        "1.125rem",
-        "1.25rem",
-        "1.5rem",
-        "1.875rem",
-        "2.25rem",
-        "3rem",
-        "4rem",
-        "5rem",
-        "6rem",
-        "7rem"
+    override val fontSizes = ScaledValue<Property>(
+        smaller = "1.125rem",
+        small = "1.25rem",
+        normal = "1.5rem",
+        large = "1.875rem",
+        larger = "2.25rem",
+        huge = "3rem"
     )
 }
 
