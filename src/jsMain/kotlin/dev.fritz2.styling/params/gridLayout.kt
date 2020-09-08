@@ -1,8 +1,7 @@
 package dev.fritz2.styling.params
 
-import dev.fritz2.styling.Property
-
 interface GridLayout : StyleParams {
+    /*
     fun gridGap(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
         property(sm, md, lg, xl) { "grid-gap: $it;" }
 
@@ -38,5 +37,5 @@ interface GridLayout : StyleParams {
 
     fun gridTemplateAreas(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
         property(sm, md, lg, xl) { "grid-template-areas: $it;" }
-
+*/
 }

@@ -1,8 +1,7 @@
 package dev.fritz2.styling.params
 
-import dev.fritz2.styling.Property
-
 interface Border : StyleParams {
+    /*
     fun border(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
         property(sm, md, lg, xl) { "border: $it;" }
 
@@ -87,5 +86,7 @@ interface Border : StyleParams {
 
     fun borderHorizontal(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
         property(sm, md, lg, xl) { "border-top: $it; border-bottom: $it;" }
+
+     */
 
 }

@@ -1,8 +1,7 @@
 package dev.fritz2.styling.params
 
-import dev.fritz2.styling.Property
-
 interface Flexbox : StyleParams {
+    /*
     fun alignItems(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
         property(sm, md, lg, xl) { "align-items: $it;" }
 
@@ -41,5 +40,5 @@ interface Flexbox : StyleParams {
 
     fun order(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
         property(sm, md, lg, xl) { "order: $it;" }
-
+     */
 }

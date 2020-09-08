@@ -1,49 +1,221 @@
 package dev.fritz2.styling.params
 
-import dev.fritz2.styling.Property
+import dev.fritz2.styling.theme
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+internal const val marginKey = "margin: "
+internal const val marginTopKey = "margin-top: "
+internal const val marginRightKey = "margin-right: "
+internal const val marginBottomKey = "margin-bottom: "
+internal const val marginLeftKey = "margin-left: "
+
+internal const val paddingKey = "padding: "
+internal const val paddingTopKey = "padding-top: "
+internal const val paddingRightKey = "padding-right: "
+internal const val paddingBottomKey = "padding-bottom: "
+internal const val paddingLeftKey = "padding-left: "
+
+@ExperimentalCoroutinesApi
 interface Space : StyleParams {
-    fun margin(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "margin: $it;" }
+    /*
+     * margin
+     */
+    fun margin(value: ScaledValueProperty) = property(marginKey, theme().space, value)
 
-    fun marginTop(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "margin-top: $it;" }
+    fun margin(
+        sm: ScaledValueProperty? = null,
+        md: ScaledValueProperty? = null,
+        lg: ScaledValueProperty? = null,
+        xl: ScaledValueProperty? = null
+    ) =
+        property(marginKey, theme().space, sm, md, lg, xl)
 
-    fun marginRight(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "margin-right: $it;" }
+    /*
+     * marginTop
+     */
+    fun marginTop(value: ScaledValueProperty) = property(marginTopKey, theme().space, value)
 
-    fun marginBottom(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "margin-bottom: $it;" }
+    fun marginTop(
+        sm: ScaledValueProperty? = null,
+        md: ScaledValueProperty? = null,
+        lg: ScaledValueProperty? = null,
+        xl: ScaledValueProperty? = null
+    ) =
+        property(marginTopKey, theme().space, sm, md, lg, xl)
 
-    fun marginLeft(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "margin-left: $it;" }
+    /*
+     * marginRight
+     */
+    fun marginRight(value: ScaledValueProperty) = property(marginRightKey, theme().space, value)
 
-    fun marginHorizontal(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "margin-left: $it; margin-right: $it;" }
+    fun marginRight(
+        sm: ScaledValueProperty? = null,
+        md: ScaledValueProperty? = null,
+        lg: ScaledValueProperty? = null,
+        xl: ScaledValueProperty? = null
+    ) =
+        property(marginRightKey, theme().space, sm, md, lg, xl)
 
-    fun marginVertical(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "margin-top: $it; margin-bottom: $it;" }
+    /*
+     * marginBottom
+     */
+    fun marginBottom(value: ScaledValueProperty) = property(marginBottomKey, theme().space, value)
 
-    fun padding(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "padding: $it;" }
+    fun marginBottom(
+        sm: ScaledValueProperty? = null,
+        md: ScaledValueProperty? = null,
+        lg: ScaledValueProperty? = null,
+        xl: ScaledValueProperty? = null
+    ) =
+        property(marginBottomKey, theme().space, sm, md, lg, xl)
 
-    fun paddingTop(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "padding-top: $it;" }
+    /*
+     * marginLeft
+     */
+    fun marginLeft(value: ScaledValueProperty) = property(marginLeftKey, theme().space, value)
 
-    fun paddingRight(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "padding-right: $it;" }
+    fun marginLeft(
+        sm: ScaledValueProperty? = null,
+        md: ScaledValueProperty? = null,
+        lg: ScaledValueProperty? = null,
+        xl: ScaledValueProperty? = null
+    ) =
+        property(marginLeftKey, theme().space, sm, md, lg, xl)
 
-    fun paddingBottom(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "padding-bottom: $it;" }
+    /*
+     * marginHorizontal
+     */
+    fun marginHorizontal(value: ScaledValueProperty) {
+        property(marginLeftKey, theme().space, value)
+        property(marginRightKey, theme().space, value)
+    }
 
-    fun paddingLeft(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "padding-left: $it;" }
+    fun marginHorizontal(
+        sm: ScaledValueProperty? = null,
+        md: ScaledValueProperty? = null,
+        lg: ScaledValueProperty? = null,
+        xl: ScaledValueProperty? = null
+    ) {
+        property(marginLeftKey, theme().space, sm, md, lg, xl)
+        property(marginRightKey, theme().space, sm, md, lg, xl)
+    }
 
-    fun paddingHorizontal(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "padding-left: $it; padding-right: $it;" }
+    /*
+     * marginVertical
+     */
+    fun marginVertical(value: ScaledValueProperty) {
+        property(marginTopKey, theme().space, value)
+        property(marginBottomKey, theme().space, value)
+    }
 
-    fun paddingVertical(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "padding-top: $it; padding-bottom: $it;" }
+    fun marginVertical(
+        sm: ScaledValueProperty? = null,
+        md: ScaledValueProperty? = null,
+        lg: ScaledValueProperty? = null,
+        xl: ScaledValueProperty? = null
+    ) {
+        property(marginTopKey, theme().space, sm, md, lg, xl)
+        property(marginBottomKey, theme().space, sm, md, lg, xl)
+    }
 
+    /*
+     * padding
+     */
+    fun padding(value: ScaledValueProperty) = property(paddingKey, theme().space, value)
 
+    fun padding(
+        sm: ScaledValueProperty? = null,
+        md: ScaledValueProperty? = null,
+        lg: ScaledValueProperty? = null,
+        xl: ScaledValueProperty? = null
+    ) =
+        property(paddingKey, theme().space, sm, md, lg, xl)
+
+    /*
+     * paddingTop
+     */
+    fun paddingTop(value: ScaledValueProperty) = property(paddingTopKey, theme().space, value)
+
+    fun paddingTop(
+        sm: ScaledValueProperty? = null,
+        md: ScaledValueProperty? = null,
+        lg: ScaledValueProperty? = null,
+        xl: ScaledValueProperty? = null
+    ) =
+        property(paddingTopKey, theme().space, sm, md, lg, xl)
+
+    /*
+     * paddingRight
+     */
+    fun paddingRight(value: ScaledValueProperty) = property(paddingRightKey, theme().space, value)
+
+    fun paddingRight(
+        sm: ScaledValueProperty? = null,
+        md: ScaledValueProperty? = null,
+        lg: ScaledValueProperty? = null,
+        xl: ScaledValueProperty? = null
+    ) =
+        property(paddingRightKey, theme().space, sm, md, lg, xl)
+
+    /*
+     * paddingBottom
+     */
+    fun paddingBottom(value: ScaledValueProperty) = property(paddingBottomKey, theme().space, value)
+
+    fun paddingBottom(
+        sm: ScaledValueProperty? = null,
+        md: ScaledValueProperty? = null,
+        lg: ScaledValueProperty? = null,
+        xl: ScaledValueProperty? = null
+    ) =
+        property(paddingBottomKey, theme().space, sm, md, lg, xl)
+
+    /*
+     * paddingLeft
+     */
+    fun paddingLeft(value: ScaledValueProperty) = property(paddingLeftKey, theme().space, value)
+
+    fun paddingLeft(
+        sm: ScaledValueProperty? = null,
+        md: ScaledValueProperty? = null,
+        lg: ScaledValueProperty? = null,
+        xl: ScaledValueProperty? = null
+    ) =
+        property(paddingLeftKey, theme().space, sm, md, lg, xl)
+
+    /*
+     * paddingHorizontal
+     */
+    fun paddingHorizontal(value: ScaledValueProperty) {
+        property(paddingLeftKey, theme().space, value)
+        property(paddingRightKey, theme().space, value)
+    }
+
+    fun paddingHorizontal(
+        sm: ScaledValueProperty? = null,
+        md: ScaledValueProperty? = null,
+        lg: ScaledValueProperty? = null,
+        xl: ScaledValueProperty? = null
+    ) {
+        property(paddingLeftKey, theme().space, sm, md, lg, xl)
+        property(paddingRightKey, theme().space, sm, md, lg, xl)
+    }
+
+    /*
+     * paddingVertical
+     */
+    fun paddingVertical(value: ScaledValueProperty) {
+        property(paddingTopKey, theme().space, value)
+        property(paddingBottomKey, theme().space, value)
+    }
+
+    fun paddingVertical(
+        sm: ScaledValueProperty? = null,
+        md: ScaledValueProperty? = null,
+        lg: ScaledValueProperty? = null,
+        xl: ScaledValueProperty? = null
+    ) {
+        property(paddingTopKey, theme().space, sm, md, lg, xl)
+        property(paddingBottomKey, theme().space, sm, md, lg, xl)
+    }
 }

@@ -1,7 +1,5 @@
 package dev.fritz2.styling.params
 
-import dev.fritz2.styling.Property
-
 class TextAlign() {
 /*    val top: Align
     val left: Align
@@ -14,6 +12,7 @@ class TextAlign() {
 
 interface Position : StyleParams {
 
+    /*
     fun position(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
         property(sm, md, lg, xl) { "position: $it;" }
 
@@ -31,5 +30,7 @@ interface Position : StyleParams {
 
     fun left(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
         property(sm, md, lg, xl) { "left: $it;" }
+
+     */
 
 }

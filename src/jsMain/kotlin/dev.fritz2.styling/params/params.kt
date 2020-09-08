@@ -1,9 +1,6 @@
 package dev.fritz2.styling.params
 
-import dev.fritz2.styling.StyleClass
-import dev.fritz2.styling.Theme
-import dev.fritz2.styling.style
-import dev.fritz2.styling.theme
+import dev.fritz2.styling.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 interface StyleParams {
@@ -13,18 +10,77 @@ interface StyleParams {
     val xlProperties: StringBuilder
 }
 
-inline fun <T> StyleParams.property(
+const val cssDelimiter = ";"
+
+fun <T> StyleParams.property(
+    key: String,
+    sm: T
+) {
+    smProperties.append(key, sm, cssDelimiter)
+}
+
+fun <T> StyleParams.property(
+    key: String,
     sm: T? = null,
     md: T? = null,
     lg: T? = null,
-    xl: T? = null,
-    crossinline entry: (T) -> String
+    xl: T? = null
 ) {
-    if (sm != null) smProperties.append(entry(sm))
-    if (md != null) mdProperties.append(entry(md))
-    if (lg != null) lgProperties.append(entry(lg))
-    if (xl != null) xlProperties.append(entry(xl))
+    if (sm != null) smProperties.append(key, sm, cssDelimiter)
+    if (md != null) mdProperties.append(key, md, cssDelimiter)
+    if (lg != null) lgProperties.append(key, lg, cssDelimiter)
+    if (xl != null) xlProperties.append(key, xl, cssDelimiter)
 }
+
+/*
+ * scaled properties
+ */
+typealias ScaledValueProperty = ScaledValue<Property>.() -> Property
+
+inline fun <T> StyleParams.property(key: String, base: T, sm: T.() -> Property) =
+    property(key, base.sm())
+
+fun <T> StyleParams.property(
+    key: String,
+    base: T,
+    sm: (T.() -> Property)? = null,
+    md: (T.() -> Property)? = null,
+    lg: (T.() -> Property)? = null,
+    xl: (T.() -> Property)? = null
+) =
+    property(key,
+        sm?.let { it(base) },
+        md?.let { it(base) },
+        lg?.let { it(base) },
+        xl?.let { it(base) }
+    )
+
+/*
+ * enum based properties
+ */
+interface PropertyValues {
+    val key: String
+}
+
+inline fun <T : PropertyValues> StyleParams.property(
+    base: T, sm: T.() -> Property
+) = property(base.key, sm(base))
+
+fun <T : PropertyValues> StyleParams.property(
+    base: T,
+    sm: (T.() -> Property)? = null,
+    md: (T.() -> Property)? = null,
+    lg: (T.() -> Property)? = null,
+    xl: (T.() -> Property)? = null
+) =
+    property(
+        base.key,
+        sm?.let { sm(base) },
+        md?.let { md(base) },
+        lg?.let { lg(base) },
+        xl?.let { xl(base) },
+    )
+
 
 class StyleParamsImpl<X : Theme>(private val theme: X) : Background, Border, Color, Flexbox, GridLayout, Layout,
     Position,

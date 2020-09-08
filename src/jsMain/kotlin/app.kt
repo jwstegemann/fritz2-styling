@@ -36,40 +36,40 @@ fun main() {
                     changes.selectedIndex() handledBy themeStore.selectTheme
                 }
                 box({
-                    margin(theme().space[8])
-                    padding(theme.space[4])
-                    border("1px solid lightgrey")
+                    margin { large }
+                    padding { small }
+//                    border("1px solid lightgrey")
                     //backgroundSize(theme.test.a) // access custom value added by specific theme, for colors, etc.
-                    display(md = "flex")
+//                    display(md = "flex")
                 }) {
-                    box({ flexShrink("0") }) {
+                    box({ /* flexShrink("0") */ }) {
                         image({
-                            borderRadius(theme.radii[1])
-                            width(md = "10rem")
+//                            borderRadius(theme.radii[1])
+//                            width(md = "10rem")
                         }) {
                             src = const("https://bit.ly/2jYM25F")
                             alt = const("Woman paying for a purchase")
                         }
                     }
-                    box({ marginTop(theme.space[4], md = "0"); marginLeft(md = theme.space[6]) }) {
+                    box({ /*marginTop(theme.space[4], md = "0"); marginLeft(md = theme.space[6]) */ }) {
                         text({
-                            fontWeight("bold")
+                            fontWeight { semiBold }
                             textTransform { uppercase }
                             fontSize { smaller }
-                            letterSpacing("0.025em")
-                            color("#2C7A7B")
+                            letterSpacing { large }
+//                            color("#2C7A7B")
                         }) { +"Marketing" }
                         link({
-                            marginTop(theme.space[1])
-                            display("block")
+                            marginTop { tiny }
+//                            display("block")
                             fontSize { normal }
-                            lineHeight("normal")
-                            fontWeight("bold")
+                            lineHeight { normal }
+                            fontWeight { bold }
                         }) {
                             href = const("#")
                             +"Finding customers for your new business"
                         }
-                        text({ marginTop(theme.space[2]); color("#718096") }) {
+                        text({ /* marginTop(theme.space[2]); color("#718096") */ }) {
                             +"Getting a new business off the ground is a lot of hard work. Here are five ideas you can use to find your first customers."
                         }
                     }

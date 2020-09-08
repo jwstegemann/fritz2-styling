@@ -1,8 +1,7 @@
 package dev.fritz2.styling.params
 
-import dev.fritz2.styling.Property
-
 interface Layout : StyleParams {
+    /*
     fun size(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
         property(sm, md, lg, xl) { "width: $it; height: $it;" }
 
@@ -38,5 +37,7 @@ interface Layout : StyleParams {
 
     fun overflowY(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
         property(sm, md, lg, xl) { "overflowY: $it;" }
+
+     */
 
 }

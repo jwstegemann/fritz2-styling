@@ -14,7 +14,7 @@ class BackgroundRepeats {
 }
 
 interface Background : StyleParams {
-
+/*
     fun background(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
         property(sm, md, lg, xl) { "background: $it;" }
 
@@ -29,5 +29,5 @@ interface Background : StyleParams {
 
     fun backgroundRepeat(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
         property(sm, md, lg, xl) { "background-repeat: $it;" }
-
+*/
 }
