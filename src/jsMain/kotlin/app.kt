@@ -51,7 +51,7 @@ fun main() {
                             alt = const("Woman paying for a purchase")
                         }
                     }
-                    box({ marginTop { }; marginLeft(md = theme.space[6]) * / }) {
+                    box({ marginTop { small }; marginLeft(md = { normal }) }) {
                         text({
                             fontWeight { semiBold }
                             textTransform { uppercase }
@@ -69,7 +69,7 @@ fun main() {
                             href = const("#")
                             +"Finding customers for your new business"
                         }
-                        text({ /* marginTop(theme.space[2]); color("#718096") */ }) {
+                        text({ marginTop { smaller }; /*color("#718096") */ }) {
                             +"Getting a new business off the ground is a lot of hard work. Here are five ideas you can use to find your first customers."
                         }
                     }
