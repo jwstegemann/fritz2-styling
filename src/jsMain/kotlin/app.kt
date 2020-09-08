@@ -51,7 +51,7 @@ fun main() {
                             alt = const("Woman paying for a purchase")
                         }
                     }
-                    box({ /*marginTop(theme.space[4], md = "0"); marginLeft(md = theme.space[6]) */ }) {
+                    box({ marginTop { }; marginLeft(md = theme.space[6]) * / }) {
                         text({
                             fontWeight { semiBold }
                             textTransform { uppercase }
