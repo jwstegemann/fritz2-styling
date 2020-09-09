@@ -15,12 +15,28 @@ internal const val paddingRightKey = "padding-right: "
 internal const val paddingBottomKey = "padding-bottom: "
 internal const val paddingLeftKey = "padding-left: "
 
+@ExperimentalCoroutinesApi
+class SpacesContext(
+    private val topKey: String,
+    private val leftKey: String,
+    private val bottomKey: String,
+    private val rightKey: String,
+    val styleParams: StyleParams,
+    private val target: StringBuilder
+) : StyleParams by styleParams {
+    fun top(value: ScaledValueProperty) = property(topKey, theme().space, value, target)
+    fun left(value: ScaledValueProperty) = property(leftKey, theme().space, value, target)
+    fun bottom(value: ScaledValueProperty) = property(bottomKey, theme().space, value, target)
+    fun right(value: ScaledValueProperty) = property(rightKey, theme().space, value, target)
+    fun vertical(value: ScaledValueProperty) {
+        property(topKey, theme().space, value, target)
+        property(bottomKey, theme().space, value, target)
+    }
 
-class Margins(val styleParams: StyleParams, private val target: StringBuilder) : StyleParams by styleParams {
-    fun top(value: ScaledValueProperty) = property(marginTopKey, theme().space, value, target)
-    fun left(value: ScaledValueProperty) = property(marginLeftKey, theme().space, value, target)
-    fun bottom(value: ScaledValueProperty) = property(marginBottomKey, theme().space, value, target)
-    fun right(value: ScaledValueProperty) = property(marginRightKey, theme().space, value, target)
+    fun horizontal(value: ScaledValueProperty) {
+        property(leftKey, theme().space, value, target)
+        property(rightKey, theme().space, value, target)
+    }
 }
 
 @ExperimentalCoroutinesApi
@@ -41,108 +57,48 @@ interface Space : StyleParams {
     /*
      * margins
      */
-    fun margins(value: Margins.() -> Unit) {
-        Margins(this, smProperties).value()
+    fun margins(value: SpacesContext.() -> Unit) {
+        SpacesContext(marginTopKey, marginLeftKey, marginBottomKey, marginRightKey, this, smProperties).value()
     }
 
     fun margins(
-        sm: (Margins.() -> Unit)? = null,
-        md: (Margins.() -> Unit)? = null,
-        lg: (Margins.() -> Unit)? = null,
-        xl: (Margins.() -> Unit)? = null
+        sm: (SpacesContext.() -> Unit)? = null,
+        md: (SpacesContext.() -> Unit)? = null,
+        lg: (SpacesContext.() -> Unit)? = null,
+        xl: (SpacesContext.() -> Unit)? = null
     ) {
-        if (sm != null) Margins(this, smProperties).sm()
-        if (md != null) Margins(this, mdProperties).md()
-        if (lg != null) Margins(this, lgProperties).lg()
-        if (xl != null) Margins(this, xlProperties).xl()
-    }
-
-    /*
-     * marginTop
-     */
-    fun marginTop(value: ScaledValueProperty) = property(marginTopKey, theme().space, value)
-
-    fun marginTop(
-        sm: ScaledValueProperty? = null,
-        md: ScaledValueProperty? = null,
-        lg: ScaledValueProperty? = null,
-        xl: ScaledValueProperty? = null
-    ) =
-        property(marginTopKey, theme().space, sm, md, lg, xl)
-
-    /*
-     * marginRight
-     */
-    fun marginRight(value: ScaledValueProperty) = property(marginRightKey, theme().space, value)
-
-    fun marginRight(
-        sm: ScaledValueProperty? = null,
-        md: ScaledValueProperty? = null,
-        lg: ScaledValueProperty? = null,
-        xl: ScaledValueProperty? = null
-    ) =
-        property(marginRightKey, theme().space, sm, md, lg, xl)
-
-    /*
-     * marginBottom
-     */
-    fun marginBottom(value: ScaledValueProperty) = property(marginBottomKey, theme().space, value)
-
-    fun marginBottom(
-        sm: ScaledValueProperty? = null,
-        md: ScaledValueProperty? = null,
-        lg: ScaledValueProperty? = null,
-        xl: ScaledValueProperty? = null
-    ) =
-        property(marginBottomKey, theme().space, sm, md, lg, xl)
-
-    /*
-     * marginLeft
-     */
-    fun marginLeft(value: ScaledValueProperty) = property(marginLeftKey, theme().space, value)
-
-    fun marginLeft(
-        sm: ScaledValueProperty? = null,
-        md: ScaledValueProperty? = null,
-        lg: ScaledValueProperty? = null,
-        xl: ScaledValueProperty? = null
-    ) =
-        property(marginLeftKey, theme().space, sm, md, lg, xl)
-
-    /*
-     * marginHorizontal
-     */
-    fun marginHorizontal(value: ScaledValueProperty) {
-        property(marginLeftKey, theme().space, value)
-        property(marginRightKey, theme().space, value)
-    }
-
-    fun marginHorizontal(
-        sm: ScaledValueProperty? = null,
-        md: ScaledValueProperty? = null,
-        lg: ScaledValueProperty? = null,
-        xl: ScaledValueProperty? = null
-    ) {
-        property(marginLeftKey, theme().space, sm, md, lg, xl)
-        property(marginRightKey, theme().space, sm, md, lg, xl)
-    }
-
-    /*
-     * marginVertical
-     */
-    fun marginVertical(value: ScaledValueProperty) {
-        property(marginTopKey, theme().space, value)
-        property(marginBottomKey, theme().space, value)
-    }
-
-    fun marginVertical(
-        sm: ScaledValueProperty? = null,
-        md: ScaledValueProperty? = null,
-        lg: ScaledValueProperty? = null,
-        xl: ScaledValueProperty? = null
-    ) {
-        property(marginTopKey, theme().space, sm, md, lg, xl)
-        property(marginBottomKey, theme().space, sm, md, lg, xl)
+        if (sm != null) SpacesContext(
+            marginTopKey,
+            marginLeftKey,
+            marginBottomKey,
+            marginRightKey,
+            this,
+            smProperties
+        ).sm()
+        if (md != null) SpacesContext(
+            marginTopKey,
+            marginLeftKey,
+            marginBottomKey,
+            marginRightKey,
+            this,
+            mdProperties
+        ).md()
+        if (lg != null) SpacesContext(
+            marginTopKey,
+            marginLeftKey,
+            marginBottomKey,
+            marginRightKey,
+            this,
+            lgProperties
+        ).lg()
+        if (xl != null) SpacesContext(
+            marginTopKey,
+            marginLeftKey,
+            marginBottomKey,
+            marginRightKey,
+            this,
+            xlProperties
+        ).xl()
     }
 
     /*
@@ -159,90 +115,49 @@ interface Space : StyleParams {
         property(paddingKey, theme().space, sm, md, lg, xl)
 
     /*
-     * paddingTop
+     * paddings
      */
-    fun paddingTop(value: ScaledValueProperty) = property(paddingTopKey, theme().space, value)
-
-    fun paddingTop(
-        sm: ScaledValueProperty? = null,
-        md: ScaledValueProperty? = null,
-        lg: ScaledValueProperty? = null,
-        xl: ScaledValueProperty? = null
-    ) =
-        property(paddingTopKey, theme().space, sm, md, lg, xl)
-
-    /*
-     * paddingRight
-     */
-    fun paddingRight(value: ScaledValueProperty) = property(paddingRightKey, theme().space, value)
-
-    fun paddingRight(
-        sm: ScaledValueProperty? = null,
-        md: ScaledValueProperty? = null,
-        lg: ScaledValueProperty? = null,
-        xl: ScaledValueProperty? = null
-    ) =
-        property(paddingRightKey, theme().space, sm, md, lg, xl)
-
-    /*
-     * paddingBottom
-     */
-    fun paddingBottom(value: ScaledValueProperty) = property(paddingBottomKey, theme().space, value)
-
-    fun paddingBottom(
-        sm: ScaledValueProperty? = null,
-        md: ScaledValueProperty? = null,
-        lg: ScaledValueProperty? = null,
-        xl: ScaledValueProperty? = null
-    ) =
-        property(paddingBottomKey, theme().space, sm, md, lg, xl)
-
-    /*
-     * paddingLeft
-     */
-    fun paddingLeft(value: ScaledValueProperty) = property(paddingLeftKey, theme().space, value)
-
-    fun paddingLeft(
-        sm: ScaledValueProperty? = null,
-        md: ScaledValueProperty? = null,
-        lg: ScaledValueProperty? = null,
-        xl: ScaledValueProperty? = null
-    ) =
-        property(paddingLeftKey, theme().space, sm, md, lg, xl)
-
-    /*
-     * paddingHorizontal
-     */
-    fun paddingHorizontal(value: ScaledValueProperty) {
-        property(paddingLeftKey, theme().space, value)
-        property(paddingRightKey, theme().space, value)
+    fun paddings(value: SpacesContext.() -> Unit) {
+        SpacesContext(paddingTopKey, paddingLeftKey, paddingBottomKey, paddingRightKey, this, smProperties).value()
     }
 
-    fun paddingHorizontal(
-        sm: ScaledValueProperty? = null,
-        md: ScaledValueProperty? = null,
-        lg: ScaledValueProperty? = null,
-        xl: ScaledValueProperty? = null
+    fun paddings(
+        sm: (SpacesContext.() -> Unit)? = null,
+        md: (SpacesContext.() -> Unit)? = null,
+        lg: (SpacesContext.() -> Unit)? = null,
+        xl: (SpacesContext.() -> Unit)? = null
     ) {
-        property(paddingLeftKey, theme().space, sm, md, lg, xl)
-        property(paddingRightKey, theme().space, sm, md, lg, xl)
-    }
-
-    /*
-     * paddingVertical
-     */
-    fun paddingVertical(value: ScaledValueProperty) {
-        property(paddingTopKey, theme().space, value)
-        property(paddingBottomKey, theme().space, value)
-    }
-
-    fun paddingVertical(
-        sm: ScaledValueProperty? = null,
-        md: ScaledValueProperty? = null,
-        lg: ScaledValueProperty? = null,
-        xl: ScaledValueProperty? = null
-    ) {
-        property(paddingTopKey, theme().space, sm, md, lg, xl)
-        property(paddingBottomKey, theme().space, sm, md, lg, xl)
+        if (sm != null) SpacesContext(
+            paddingTopKey,
+            paddingLeftKey,
+            paddingBottomKey,
+            paddingRightKey,
+            this,
+            smProperties
+        ).sm()
+        if (md != null) SpacesContext(
+            paddingTopKey,
+            paddingLeftKey,
+            paddingBottomKey,
+            paddingRightKey,
+            this,
+            mdProperties
+        ).md()
+        if (lg != null) SpacesContext(
+            paddingTopKey,
+            paddingLeftKey,
+            paddingBottomKey,
+            paddingRightKey,
+            this,
+            lgProperties
+        ).lg()
+        if (xl != null) SpacesContext(
+            paddingTopKey,
+            paddingLeftKey,
+            paddingBottomKey,
+            paddingRightKey,
+            this,
+            xlProperties
+        ).xl()
     }
 }

@@ -54,7 +54,12 @@ fun main() {
                             alt = const("Woman paying for a purchase")
                         }
                     }
-                    box({ marginTop { small }; marginLeft(md = { normal }) }) {
+                    box({
+                        margins(
+                            { top { small } },
+                            md = { left { normal } }
+                        )
+                    }) {
                         text({
                             fontWeight { semiBold }
                             textTransform { uppercase }
@@ -64,7 +69,7 @@ fun main() {
                             color { info }
                         }) { +"Marketing" }
                         link({
-                            marginTop { tiny }
+                            margins { top { tiny } }
 //                            display("block")
                             fontSize { normal }
                             lineHeight { normal }
@@ -73,7 +78,10 @@ fun main() {
                             href = const("#")
                             +"Finding customers for your new business"
                         }
-                        text({ marginTop { smaller }; color { dark } }) {
+                        text({
+                            margins { top { smaller } }
+                            color { dark }
+                        }) {
                             +"Getting a new business off the ground is a lot of hard work. Here are five ideas you can use to find your first customers."
                         }
                     }
