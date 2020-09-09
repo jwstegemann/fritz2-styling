@@ -36,10 +36,10 @@ fun main() {
                     changes.selectedIndex() handledBy themeStore.selectTheme
                 }
                 box({
-                    boxShadow { tiny }
+//                    boxShadow { tiny }
                     margins(md = { top { large } })
 //                    margin { large }
-                    padding { small }
+//                    padding { small }
 //                    border("1px solid lightgrey")
                     //backgroundSize(theme.test.a) // access custom value added by specific theme, for colors, etc.
 //                    display(md = "flex")

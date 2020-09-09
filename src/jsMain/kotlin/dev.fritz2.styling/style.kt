@@ -1,5 +1,6 @@
 package dev.fritz2.styling
 
+import kotlinx.browser.document
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.w3c.dom.HTMLStyleElement
@@ -8,7 +9,6 @@ import stylis.compile
 import stylis.middleware
 import stylis.serialize
 import stylis.stringify
-import kotlin.browser.document
 
 internal object Styling {
     private var counter = 0
@@ -24,10 +24,15 @@ internal object Styling {
     }
 
     private val addRuleMiddleware: (dynamic) -> dynamic = { value ->
-        if (value.root == null)
-            with(value["return"]) {
-                if (this != null) sheet.insertRule(this as String, counter++)
-            }
+        try {
+            if (value.root == null)
+                with(value["return"] as String?) {
+                    if (this != null && this.isNotBlank()) sheet.insertRule(this as String, counter++)
+                }
+        } catch (e: Throwable) {
+            console.error("unable to insert rule in stylesheet: ${e.message}", e)
+            counter--
+        }
         undefined
     }
 
