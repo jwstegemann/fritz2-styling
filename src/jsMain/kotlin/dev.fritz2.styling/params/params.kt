@@ -40,7 +40,7 @@ typealias ScaledValueProperty = ScaledValue<Property>.() -> Property
 typealias WeightedValueProperty = WeightedValue<Property>.() -> Property
 
 inline fun <T> StyleParams.property(key: String, base: T, sm: T.() -> Property, target: StringBuilder = smProperties) =
-    property(key, base.sm())
+    property(key, base.sm(), target)
 
 fun <T> StyleParams.property(
     key: String,
