@@ -136,7 +136,6 @@ interface Typo : StyleParams {
     ) =
         property(TextAligns, sm, md, lg, xl)
 
-
     /*
      * text-transform
      */

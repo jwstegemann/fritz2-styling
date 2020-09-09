@@ -15,6 +15,14 @@ internal const val paddingRightKey = "padding-right: "
 internal const val paddingBottomKey = "padding-bottom: "
 internal const val paddingLeftKey = "padding-left: "
 
+
+class Margins(val styleParams: StyleParams, private val target: StringBuilder) : StyleParams by styleParams {
+    fun top(value: ScaledValueProperty) = property(marginTopKey, theme().space, value, target)
+    fun left(value: ScaledValueProperty) = property(marginLeftKey, theme().space, value, target)
+    fun bottom(value: ScaledValueProperty) = property(marginBottomKey, theme().space, value, target)
+    fun right(value: ScaledValueProperty) = property(marginRightKey, theme().space, value, target)
+}
+
 @ExperimentalCoroutinesApi
 interface Space : StyleParams {
     /*
@@ -29,6 +37,25 @@ interface Space : StyleParams {
         xl: ScaledValueProperty? = null
     ) =
         property(marginKey, theme().space, sm, md, lg, xl)
+
+    /*
+     * margins
+     */
+    fun margins(value: Margins.() -> Unit) {
+        Margins(this, smProperties).value()
+    }
+
+    fun margins(
+        sm: (Margins.() -> Unit)? = null,
+        md: (Margins.() -> Unit)? = null,
+        lg: (Margins.() -> Unit)? = null,
+        xl: (Margins.() -> Unit)? = null
+    ) {
+        if (sm != null) Margins(this, smProperties).sm()
+        if (md != null) Margins(this, mdProperties).md()
+        if (lg != null) Margins(this, lgProperties).lg()
+        if (xl != null) Margins(this, xlProperties).xl()
+    }
 
     /*
      * marginTop

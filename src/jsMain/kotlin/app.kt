@@ -36,7 +36,9 @@ fun main() {
                     changes.selectedIndex() handledBy themeStore.selectTheme
                 }
                 box({
-                    margin { large }
+                    boxShadow { tiny }
+                    margins(md = { top { large } })
+//                    margin { large }
                     padding { small }
 //                    border("1px solid lightgrey")
                     //backgroundSize(theme.test.a) // access custom value added by specific theme, for colors, etc.
@@ -44,6 +46,7 @@ fun main() {
                 }) {
                     box({ /* flexShrink("0") */ }) {
                         image({
+                            boxShadow { larger }
 //                            borderRadius(theme.radii[1])
 //                            width(md = "10rem")
                         }) {
@@ -57,7 +60,8 @@ fun main() {
                             textTransform { uppercase }
                             fontSize { smaller }
                             letterSpacing { large }
-//                            color("#2C7A7B")
+                            textShadow { small }
+                            color { info }
                         }) { +"Marketing" }
                         link({
                             marginTop { tiny }
@@ -69,7 +73,7 @@ fun main() {
                             href = const("#")
                             +"Finding customers for your new business"
                         }
-                        text({ marginTop { smaller }; /*color("#718096") */ }) {
+                        text({ marginTop { smaller }; color { dark } }) {
                             +"Getting a new business off the ground is a lot of hard work. Here are five ideas you can use to find your first customers."
                         }
                     }

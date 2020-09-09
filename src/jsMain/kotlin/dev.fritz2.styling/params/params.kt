@@ -14,9 +14,10 @@ const val cssDelimiter = ";"
 
 fun <T> StyleParams.property(
     key: String,
-    sm: T
+    sm: T,
+    target: StringBuilder = smProperties
 ) {
-    smProperties.append(key, sm, cssDelimiter)
+    target.append(key, sm, cssDelimiter)
 }
 
 fun <T> StyleParams.property(
@@ -26,18 +27,19 @@ fun <T> StyleParams.property(
     lg: T? = null,
     xl: T? = null
 ) {
-    if (sm != null) smProperties.append(key, sm, cssDelimiter)
-    if (md != null) mdProperties.append(key, md, cssDelimiter)
-    if (lg != null) lgProperties.append(key, lg, cssDelimiter)
-    if (xl != null) xlProperties.append(key, xl, cssDelimiter)
+    if (sm != null) property(key, sm, smProperties)
+    if (md != null) property(key, sm, mdProperties)
+    if (lg != null) property(key, sm, lgProperties)
+    if (xl != null) property(key, sm, xlProperties)
 }
 
 /*
  * scaled properties
  */
 typealias ScaledValueProperty = ScaledValue<Property>.() -> Property
+typealias WeightedValueProperty = WeightedValue<Property>.() -> Property
 
-inline fun <T> StyleParams.property(key: String, base: T, sm: T.() -> Property) =
+inline fun <T> StyleParams.property(key: String, base: T, sm: T.() -> Property, target: StringBuilder = smProperties) =
     property(key, base.sm())
 
 fun <T> StyleParams.property(
@@ -97,6 +99,11 @@ class StyleParamsImpl<X : Theme>(private val theme: X) : Background, Border, Col
         if (xlProperties.isNotEmpty()) smProperties.append(theme.mediaQueryXl, "{", xlProperties, "}")
 
         return smProperties.toString()
+        /*.also {
+        println("******")
+        println(it)
+        println("*******")
+    }*/
     }
 }
 
