@@ -59,7 +59,7 @@ class Sizes(
     fun fitContent(value: Property): Property = "fit-content($value)"
 }
 
-class ZIndices<T>(
+class ZIndices(
     private val baseValue: Int, private val layer: Int, private val layerStep: Int, private val overlayValue: Int,
     private val toast: Int, private val toastStep: Int, private val modal: Int, private val modalStep: Int
 ) {
@@ -147,7 +147,7 @@ interface Theme {
     val borderStyles: List<Property>
     val radii: List<Property>
     val shadows: Shadows
-    val zIndices: ZIndices<Property>
+    val zIndices: ZIndices
     val opacities: WeightedValue<Property>
 }
 
@@ -292,7 +292,7 @@ open class DefaultTheme : ExtendedTheme {
         full = shadow("0", "2px", "4px", color = "rgba(0,0,0,0.06)", inset = true)
     )
 
-    override val zIndices = ZIndices<Property>(1, 100, 2, 200, 300, 2, 400, 2)
+    override val zIndices = ZIndices(1, 100, 2, 200, 300, 2, 400, 2)
 
     override val opacities = WeightedValue(
         normal = "0.5"

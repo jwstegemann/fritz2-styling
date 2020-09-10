@@ -67,7 +67,7 @@ typealias SizesProperty = Sizes.() -> Property
  * z-index based properties
  */
 
-typealias  ZIndicesProperty = ZIndices<Property>.() -> Property
+typealias  ZIndicesProperty = ZIndices.() -> Property
 
 /*
  * enum based properties
