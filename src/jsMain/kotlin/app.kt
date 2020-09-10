@@ -42,13 +42,17 @@ fun main() {
 //                    padding { small }
 //                    border("1px solid lightgrey")
                     //backgroundSize(theme.test.a) // access custom value added by specific theme, for colors, etc.
-//                    display(md = "flex")
+                    display(md = { flex })
                 }) {
-                    box({ /* flexShrink("0") */ }) {
+                    box({ /* flexShrink("0") */
+                        margins(
+                            { left { small } }
+                        )
+                    }) {
                         image({
                             boxShadow { larger }
 //                            borderRadius(theme.radii[1])
-//                            width(md = "10rem")
+                            width { small }
                         }) {
                             src = const("https://bit.ly/2jYM25F")
                             alt = const("Woman paying for a purchase")

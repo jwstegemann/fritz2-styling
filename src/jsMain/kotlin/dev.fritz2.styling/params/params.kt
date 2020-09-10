@@ -58,6 +58,18 @@ fun <T> StyleParams.property(
     )
 
 /*
+ * size based properties
+ */
+
+typealias SizesProperty = Sizes.() -> Property
+
+/*
+ * z-index based properties
+ */
+
+typealias  ZIndicesProperty = ZIndices<Property>.() -> Property
+
+/*
  * enum based properties
  */
 interface PropertyValues {
@@ -84,6 +96,7 @@ fun <T : PropertyValues> StyleParams.property(
     )
 
 
+@ExperimentalCoroutinesApi
 class StyleParamsImpl<X : Theme>(private val theme: X) : Background, Border, Color, Flexbox, GridLayout, Layout,
     Position,
     Shadow,
@@ -109,10 +122,13 @@ class StyleParamsImpl<X : Theme>(private val theme: X) : Background, Border, Col
 
 typealias Style<T> = T.() -> Unit
 
+@ExperimentalCoroutinesApi
 interface BasicStyleParams : Space, Color, Border, Typo, Background, Position, Shadow, Layout
 
+@ExperimentalCoroutinesApi
 interface FlexStyleParams : BasicStyleParams, Flexbox
 
+@ExperimentalCoroutinesApi
 interface GridStyleParams : BasicStyleParams, GridLayout
 
 @ExperimentalCoroutinesApi

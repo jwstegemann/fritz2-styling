@@ -39,6 +39,44 @@ class WeightedValue<T : Property>(
     val inherit: T = "inherit".unsafeCast<T>()
 }
 
+class Sizes(
+    normal: Property,
+    small: Property = normal,
+    smaller: Property = small,
+    tiny: Property = smaller,
+    large: Property = normal,
+    larger: Property = large,
+    huge: Property = larger,
+    full: Property = large
+) : ScaledValue<Property>(normal, small, smaller, tiny, large, larger, huge, full = full) {
+    val borderBox: Property = "border-box"
+    val contentBox: Property = "content-box"
+    val maxContent: Property = "max-content"
+    val minContent: Property = "min-content"
+    val available: Property = "available"
+    val unset: Property = "unset"
+
+    fun fitContent(value: Property): Property = "fit-content($value)"
+}
+
+class ZIndices<T>(
+    private val baseValue: Int, private val layer: Int, private val layerStep: Int, private val overlayValue: Int,
+    private val toast: Int, private val toastStep: Int, private val modal: Int, private val modalStep: Int
+) {
+
+    companion object {
+        const val key: Property = "z-index: "
+    }
+
+    val base: Property = "$baseValue"
+    val overlay: Property = "$overlayValue"
+    fun layer(value: Int): Property = zIndexFrom(layer, layerStep, value)
+    fun toast(value: Int): Property = zIndexFrom(toast, toastStep, value)
+    fun modal(value: Int): Property = zIndexFrom(modal, modalStep, value)
+
+    private fun zIndexFrom(level: Int, step: Int, value: Int) = "${level + step * (value - 1)}"
+}
+
 interface Fonts {
     val body: Property
     val heading: Property
@@ -103,15 +141,14 @@ interface Theme {
     val fonts: Fonts
     val lineHeights: ScaledValue<Property>
     val letterSpacings: ScaledValue<Property>
-    val sizes: List<Property>
+    val sizes: Sizes
     val borders: List<Property>
     val borderWidths: List<Property>
     val borderStyles: List<Property>
     val radii: List<Property>
     val shadows: Shadows
-    val zIndices: List<Property>
+    val zIndices: ZIndices<Property>
     val opacities: WeightedValue<Property>
-
 }
 
 interface ExtendedTheme : Theme {
@@ -192,7 +229,16 @@ open class DefaultTheme : ExtendedTheme {
         huge = "0.1em"
     )
 
-    override val sizes: List<Property> = listOf()
+    override val sizes = Sizes(
+        normal = "auto",
+        small = "25rem",
+        smaller = "15rem",
+        tiny = "10rem",
+        large = "50rem",
+        larger = "75rem",
+        huge = "100rem",
+        full = "100%"
+    )
 
     override val borders: List<Property> = listOf("0", "1px solid", "2px solid", "4px solid")
 
@@ -246,7 +292,7 @@ open class DefaultTheme : ExtendedTheme {
         full = shadow("0", "2px", "4px", color = "rgba(0,0,0,0.06)", inset = true)
     )
 
-    override val zIndices: List<Property> = listOf()
+    override val zIndices = ZIndices<Property>(1, 100, 2, 200, 300, 2, 400, 2)
 
     override val opacities = WeightedValue(
         normal = "0.5"
@@ -265,6 +311,7 @@ class Default2 : DefaultTheme() {
 }
 
 
+@ExperimentalCoroutinesApi
 val currentTheme = MutableStateFlow<Theme>(DefaultTheme())
 
 @ExperimentalCoroutinesApi
