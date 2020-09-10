@@ -48,6 +48,8 @@ fun main() {
                         margins(
                             { left { small } }
                         )
+                        //position { relative }
+                        //zIndex {  layer(1) }
                     }) {
                         image({
                             boxShadow { larger }
@@ -59,10 +61,22 @@ fun main() {
                         }
                     }
                     box({
+                        /* Idee:
+                        position { absolute }
+                        positions (
+                            { absolute },
+                            { bottom { small }}
+                        )
+                         */
+
+                        //zIndex { base }
+                        //position { absolute }
+                        //bottom("3em")
                         margins(
                             { top { small } },
                             md = { left { normal } }
                         )
+                        //top("-3em")
                     }) {
                         text({
                             fontWeight { semiBold }
