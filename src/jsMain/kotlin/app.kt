@@ -49,7 +49,7 @@ fun main() {
                             { left { small } }
                         )
                         //position { relative }
-                        //zIndex {  layer(1) }
+                        zIndex { layer(1) }
                     }) {
                         image({
                             boxShadow { larger }
@@ -61,19 +61,20 @@ fun main() {
                         }
                     }
                     box({
-                        /* Idee:
-                        position { absolute }
-                        positions (
-                            { absolute },
-                            { bottom { small }}
-                        )
-                         */
+                        position {
+                            bottom { small }
+                            top { large }
+                            relative
+                        }
 
-                        //zIndex { base }
+                        zIndex { base }
                         //position { absolute }
                         //bottom("3em")
                         margins(
-                            { top { small } },
+                            {
+                                top { small }
+                                bottom { large }
+                            },
                             md = { left { normal } }
                         )
                         //top("-3em")

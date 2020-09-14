@@ -5,18 +5,33 @@ import dev.fritz2.styling.ZIndices
 import dev.fritz2.styling.theme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+internal const val positionKey = "position: "
 
-internal const val topKey = "top: "
-internal const val rightKey = "right: "
-internal const val bottomKey = "bottom: "
-internal const val leftKey = "left: "
+@ExperimentalCoroutinesApi
+class PositionContext(
+    val styleParams: StyleParams,
+    private val target: StringBuilder
+) : StyleParams by styleParams {
+    fun top(value: ScaledValueProperty) = property("top: ", theme().space, value, target)
+    fun left(value: ScaledValueProperty) = property("left: ", theme().space, value, target)
+    fun bottom(value: ScaledValueProperty) = property("bottom: ", theme().space, value, target)
+    fun right(value: ScaledValueProperty) = property("right", theme().space, value, target)
 
-object PositionStyles : OverflowBaseStyles("position: ") {
-    const val static: Property = "static"
-    const val relative: Property = "relative"
-    const val absolute: Property = "absolute"
-    const val sticky: Property = "sticky "
-    const val fixed: Property = "fixed"
+    fun vertical(value: ScaledValueProperty) {
+        property("top: ", theme().space, value, target)
+        property("bottom: ", theme().space, value, target)
+    }
+
+    fun horizontal(value: ScaledValueProperty) {
+        property("left: ", theme().space, value, target)
+        property("right: ", theme().space, value, target)
+    }
+
+    val static: Property = "static"
+    val relative: Property = "relative"
+    val absolute: Property = "absolute"
+    val sticky: Property = "sticky "
+    val fixed: Property = "fixed"
 }
 
 @ExperimentalCoroutinesApi
@@ -38,66 +53,17 @@ interface Position : StyleParams {
     /*
      * position
      */
-    fun position(value: PositionStyles.() -> Property) = property(PositionStyles, value)
 
     fun position(
-        sm: (PositionStyles.() -> Property)? = null,
-        md: (PositionStyles.() -> Property)? = null,
-        lg: (PositionStyles.() -> Property)? = null,
-        xl: (PositionStyles.() -> Property)? = null
-    ) =
-        property(PositionStyles, sm, md, lg, xl)
-
-    /*
-     * top
-     */
-    fun top(value: Property) = property(topKey, value)
-
-    fun top(
-        sm: Property? = null,
-        md: Property? = null,
-        lg: Property? = null,
-        xl: Property? = null
-    ) =
-        property(topKey, sm, md, lg, xl)
-
-    /*
-     * right
-     */
-    fun right(value: Property) = property("right: ", value)
-
-    fun right(
-        sm: Property? = null,
-        md: Property? = null,
-        lg: Property? = null,
-        xl: Property? = null
-    ) =
-        property(rightKey, sm, md, lg, xl)
-
-    /*
-     * bottom
-     */
-    fun bottom(value: Property) = property("bottom: ", value)
-
-    fun bottom(
-        sm: Property? = null,
-        md: Property? = null,
-        lg: Property? = null,
-        xl: Property? = null
-    ) =
-        property(bottomKey, sm, md, lg, xl)
-
-    /*
-     * left
-     */
-    fun left(value: Property) = property("left: ", value)
-
-    fun left(
-        sm: Property? = null,
-        md: Property? = null,
-        lg: Property? = null,
-        xl: Property? = null
-    ) =
-        property(leftKey, sm, md, lg, xl)
+        sm: (PositionContext.() -> Property)? = null,
+        md: (PositionContext.() -> Property)? = null,
+        lg: (PositionContext.() -> Property)? = null,
+        xl: (PositionContext.() -> Property)? = null
+    ) {
+        if (sm != null) property(positionKey, PositionContext(this, smProperties).sm())
+        if (md != null) property(positionKey, PositionContext(this, mdProperties).md())
+        if (lg != null) property(positionKey, PositionContext(this, lgProperties).lg())
+        if (xl != null) property(positionKey, PositionContext(this, xlProperties).xl())
+    }
 
 }

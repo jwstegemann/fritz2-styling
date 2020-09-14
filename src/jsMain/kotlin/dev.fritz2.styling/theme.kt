@@ -136,6 +136,7 @@ interface Theme {
     val mediaQueryXl: String
 
     val space: ScaledValue<Property>
+    val position: ScaledValue<Property>
     val fontSizes: ScaledValue<Property>
     val colors: Colors
     val fonts: Fonts
@@ -179,6 +180,8 @@ open class DefaultTheme : ExtendedTheme {
         huge = "2rem",
         full = "2.5rem"
     )
+
+    override val position = space
 
     override val fontSizes = ScaledValue(
         smaller = "0.75rem",
