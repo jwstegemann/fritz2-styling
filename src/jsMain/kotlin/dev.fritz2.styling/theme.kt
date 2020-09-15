@@ -150,6 +150,7 @@ interface Theme {
     val shadows: Shadows
     val zIndices: ZIndices
     val opacities: WeightedValue<Property>
+    val gridGap: ScaledValue<Property>
 }
 
 interface ExtendedTheme : Theme {
@@ -182,6 +183,8 @@ open class DefaultTheme : ExtendedTheme {
     )
 
     override val position = space
+
+    override val gridGap = space
 
     override val fontSizes = ScaledValue(
         smaller = "0.75rem",

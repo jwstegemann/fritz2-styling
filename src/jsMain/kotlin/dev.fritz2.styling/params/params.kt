@@ -132,6 +132,9 @@ interface FlexStyleParams : BasicStyleParams, Flexbox
 interface GridStyleParams : BasicStyleParams, GridLayout
 
 @ExperimentalCoroutinesApi
+interface BoxStyleParams : BasicStyleParams, Flexbox, GridLayout
+
+@ExperimentalCoroutinesApi
 inline fun <T : StyleParams> use(styling: Style<T>, prefix: String = "s"): StyleClass =
     StyleParamsImpl(theme()).let { base ->
         (base.unsafeCast<T>()).styling()

@@ -2,17 +2,49 @@ package dev.fritz2.styling.components
 
 import dev.fritz2.dom.html.Div
 import dev.fritz2.dom.html.HtmlElements
-import dev.fritz2.styling.params.FlexStyleParams
-import dev.fritz2.styling.params.Style
-import dev.fritz2.styling.params.use
+import dev.fritz2.styling.params.*
+import dev.fritz2.styling.staticStyle
 
 
 inline fun HtmlElements.box(
-    styles: Style<FlexStyleParams> = {},
+    styles: Style<BoxStyleParams> = {},
     crossinline init: HtmlElements.() -> Any
 ): Div {
 
     return div(use(styles, "box")) {
+        init()
+    }
+
+}
+
+val flex = staticStyle(
+    "flex",
+    "display: grid;"
+)
+
+
+inline fun HtmlElements.flex(
+    styles: Style<FlexStyleParams> = {},
+    crossinline init: HtmlElements.() -> Any
+): Div {
+
+    return div("$flex ${use(styles, "flex")}") {
+        init()
+    }
+
+}
+
+val grid = staticStyle(
+    "grid",
+    "display: grid;"
+)
+
+inline fun HtmlElements.grid(
+    styles: Style<GridStyleParams> = {},
+    crossinline init: HtmlElements.() -> Any
+): Div {
+
+    return div("$grid ${use(styles, "grid")}") {
         init()
     }
 

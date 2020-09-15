@@ -84,6 +84,37 @@ object VerticalAlignStyles : PropertyValues {
 }
 
 @ExperimentalCoroutinesApi
+class GridContext(
+    styleParams: StyleParams,
+    private val target: StringBuilder
+) : StyleParams by styleParams {
+    fun area(value: () -> Property) = property("grid-area: ", value(), target)
+
+    fun column(value: GridRowColumnContext.() -> Unit) {
+        GridRowColumnContext("column", this, target).value()
+    }
+
+    fun row(value: GridRowColumnContext.() -> Unit) {
+        GridRowColumnContext("row", this, target).value()
+    }
+}
+
+
+@ExperimentalCoroutinesApi
+class GridRowColumnContext(
+    private val keyFragment: String,
+    styleParams: StyleParams,
+    private val target: StringBuilder
+) : StyleParams by styleParams {
+    fun start(value: () -> Property) = property("grid-$keyFragment-start: ", value(), target)
+    fun end(value: () -> Property) = property("grid-$keyFragment-end: ", value(), target)
+
+    fun span(value: Int) = "span $value"
+    fun span(value: String) = "span $value"
+}
+
+
+@ExperimentalCoroutinesApi
 interface Layout : StyleParams {
 
     /*
@@ -246,4 +277,20 @@ interface Layout : StyleParams {
         xl: (OverflowYStyles.() -> Property)? = null
     ) =
         property(OverflowYStyles, sm, md, lg, xl)
+
+    /*
+     * grid-area, grid-column, grid-row
+     */
+    fun grid(
+        sm: (GridContext.() -> Unit)? = null,
+        md: (GridContext.() -> Unit)? = null,
+        lg: (GridContext.() -> Unit)? = null,
+        xl: (GridContext.() -> Unit)? = null
+    ) {
+        if (sm != null) GridContext(this, smProperties).sm()
+        if (md != null) GridContext(this, mdProperties).md()
+        if (lg != null) GridContext(this, lgProperties).lg()
+        if (xl != null) GridContext(this, xlProperties).xl()
+    }
+
 }
