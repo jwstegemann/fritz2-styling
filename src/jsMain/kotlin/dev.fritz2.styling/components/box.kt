@@ -4,8 +4,9 @@ import dev.fritz2.dom.html.Div
 import dev.fritz2.dom.html.HtmlElements
 import dev.fritz2.styling.params.*
 import dev.fritz2.styling.staticStyle
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-
+@ExperimentalCoroutinesApi
 inline fun HtmlElements.box(
     styles: Style<BoxStyleParams> = {},
     crossinline init: HtmlElements.() -> Any
@@ -19,10 +20,10 @@ inline fun HtmlElements.box(
 
 val flex = staticStyle(
     "flex",
-    "display: grid;"
+    "display: flex;"
 )
 
-
+@ExperimentalCoroutinesApi
 inline fun HtmlElements.flex(
     styles: Style<FlexStyleParams> = {},
     crossinline init: HtmlElements.() -> Any
@@ -39,6 +40,7 @@ val grid = staticStyle(
     "display: grid;"
 )
 
+@ExperimentalCoroutinesApi
 inline fun HtmlElements.grid(
     styles: Style<GridStyleParams> = {},
     crossinline init: HtmlElements.() -> Any

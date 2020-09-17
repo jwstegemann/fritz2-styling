@@ -8,6 +8,9 @@ import org.w3c.dom.Element
 
 typealias Property = String
 
+val Property.asKey : String
+    get() = "$this: "
+
 class ResponsiveValue<T : Property>(val sm: T, val md: T = sm, val lg: T = md, val xl: T = lg)
 
 open class ScaledValue<T : Property>(

@@ -20,8 +20,9 @@ object AutoFlowStyles : PropertyValues {
 @ExperimentalCoroutinesApi
 class GridTemplateContext(
     styleParams: StyleParams,
+    alignment: Alignment,
     private val target: StringBuilder
-) : StyleParams by styleParams {
+) : StyleParams by styleParams, Alignment by alignment {
     fun columns(value: GridTemplateContext.() -> Property) = property("grid-template-columns: ", value(), target)
     fun rows(value: StyleParams.() -> Property) = property("grid-template-rows: ", value(), target)
     fun autoRows(value: () -> Property) = property("grid-auto-rows: ", value(), target)
@@ -60,6 +61,7 @@ val AreaName.start: String
 val AreaName.end: String
     get() = "$this-end"
 
+@ExperimentalCoroutinesApi
 interface GridLayout : StyleParams {
 
     fun template(
@@ -68,10 +70,10 @@ interface GridLayout : StyleParams {
         lg: (GridTemplateContext.() -> Unit)? = null,
         xl: (GridTemplateContext.() -> Unit)? = null
     ) {
-        if (sm != null) GridTemplateContext(this, smProperties).sm()
-        if (md != null) GridTemplateContext(this, mdProperties).md()
-        if (lg != null) GridTemplateContext(this, lgProperties).lg()
-        if (xl != null) GridTemplateContext(this, xlProperties).xl()
+        if (sm != null) GridTemplateContext(this, AlignmentImpl(this, smProperties), smProperties).sm()
+        if (md != null) GridTemplateContext(this, AlignmentImpl(this, mdProperties), mdProperties).md()
+        if (lg != null) GridTemplateContext(this, AlignmentImpl(this, lgProperties), lgProperties).lg()
+        if (xl != null) GridTemplateContext(this, AlignmentImpl(this, xlProperties), xlProperties).xl()
     }
 
 }

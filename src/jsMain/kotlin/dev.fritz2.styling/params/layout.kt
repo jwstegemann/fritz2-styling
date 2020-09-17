@@ -1,6 +1,7 @@
 package dev.fritz2.styling.params
 
 import dev.fritz2.styling.Property
+import dev.fritz2.styling.asKey
 import dev.fritz2.styling.theme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -86,8 +87,9 @@ object VerticalAlignStyles : PropertyValues {
 @ExperimentalCoroutinesApi
 class GridContext(
     styleParams: StyleParams,
+    selfAlignment: SelfAlignment,
     private val target: StringBuilder
-) : StyleParams by styleParams {
+) : StyleParams by styleParams, SelfAlignment by selfAlignment {
     fun area(value: () -> Property) = property("grid-area: ", value(), target)
 
     fun column(value: GridRowColumnContext.() -> Unit) {
@@ -113,9 +115,55 @@ class GridRowColumnContext(
     fun span(value: String) = "span $value"
 }
 
+object FlexBasisValues : PropertyValues {
+    override val key = "flex-basis".asKey
+
+    const val auto: Property = "auto"
+    const val fill: Property = "fill"
+    const val maxContent: Property = "max-content"
+    const val minContent: Property = "min-content"
+    const val fitContent: Property = "fit-content"
+    const val content: Property = "content"
+    const val inherit: Property = "inherit"
+    const val initial: Property = "initial"
+    const val unset: Property = "unset"
+}
+
+@ExperimentalCoroutinesApi
+class FlexItemContext(
+    styleParams: StyleParams,
+    selfAlignment: SelfAlignment,
+    private val target: StringBuilder
+) : StyleParams by styleParams, SelfAlignment by selfAlignment {
+    fun order(value: () -> Property) = property("order".asKey, value(), target)
+    fun grow(value: () -> Property) = property("flex-grow".asKey, value(), target)
+    fun shrink(value: () -> Property) = property("flex-shrink".asKey, value(), target)
+    fun basis(value: FlexBasisValues.() -> Property) = property(FlexBasisValues.key, FlexBasisValues.value(), target)
+    fun basis(value: () -> Property) = property(FlexBasisValues.key, value(), target)
+}
 
 @ExperimentalCoroutinesApi
 interface Layout : StyleParams {
+
+    /*
+     * This function passes raw CSS code into the underlying model without modification.
+     * This could be useful for corner cases where our abstractions fail, new CSS features
+     * we have not yet implemented or simply for toying around with CSS code from external sources.
+     */
+    fun raw(value: Property) = smProperties.append(value)
+
+    fun raw(
+        sm: Property? = null,
+        md: Property? = null,
+        lg: Property? = null,
+        xl: Property? = null
+    ) {
+        if (sm != null) smProperties.append(sm)
+        if (md != null) mdProperties.append(sm)
+        if (lg != null) lgProperties.append(sm)
+        if (xl != null) xlProperties.append(sm)
+    }
+
 
     /*
      * size: convenient combination of width and height
@@ -287,10 +335,24 @@ interface Layout : StyleParams {
         lg: (GridContext.() -> Unit)? = null,
         xl: (GridContext.() -> Unit)? = null
     ) {
-        if (sm != null) GridContext(this, smProperties).sm()
-        if (md != null) GridContext(this, mdProperties).md()
-        if (lg != null) GridContext(this, lgProperties).lg()
-        if (xl != null) GridContext(this, xlProperties).xl()
+        if (sm != null) GridContext(this, SelfAlignmentImpl(this, smProperties), smProperties).sm()
+        if (md != null) GridContext(this, SelfAlignmentImpl(this, mdProperties), mdProperties).md()
+        if (lg != null) GridContext(this, SelfAlignmentImpl(this, lgProperties), lgProperties).lg()
+        if (xl != null) GridContext(this, SelfAlignmentImpl(this, xlProperties), xlProperties).xl()
     }
 
+    /*
+     * flex Item properties: order, basis, grow, shrink, align-self
+     */
+    fun flex(
+        sm: (FlexItemContext.() -> Unit)? = null,
+        md: (FlexItemContext.() -> Unit)? = null,
+        lg: (FlexItemContext.() -> Unit)? = null,
+        xl: (FlexItemContext.() -> Unit)? = null
+    ) {
+        if (sm != null) FlexItemContext(this, SelfAlignmentImpl(this, smProperties), smProperties).sm()
+        if (md != null) FlexItemContext(this, SelfAlignmentImpl(this, mdProperties), mdProperties).md()
+        if (lg != null) FlexItemContext(this, SelfAlignmentImpl(this, lgProperties), lgProperties).lg()
+        if (xl != null) FlexItemContext(this, SelfAlignmentImpl(this, xlProperties), xlProperties).xl()
+    }
 }

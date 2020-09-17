@@ -1,44 +1,50 @@
 package dev.fritz2.styling.params
 
+import dev.fritz2.styling.Property
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+
+object DirectionValues : PropertyValues {
+    override val key = "flex-direction: "
+
+    const val row: Property = "row"
+    const val column: Property = "column"
+    const val rowReverse: Property = "row-reverse"
+    const val columnReverse: Property = "column-reverse"
+}
+
+object WrapValues : PropertyValues {
+    override val key = "flex-wrap: "
+
+    const val wrap: Property = "wrap"
+    const val nowrap: Property = "nowrap"
+    const val wrapReverse: Property = "wrap-reverse"
+}
+
+@ExperimentalCoroutinesApi
+class FlexContainerContext(
+    styleParams: StyleParams,
+    alignment: Alignment,
+    private val target: StringBuilder
+) : StyleParams by styleParams, Alignment by alignment {
+    fun direction(value: DirectionValues.() -> Property): Unit =
+        property(DirectionValues.key, DirectionValues.value(), target)
+
+    fun wrap(value: WrapValues.() -> Property): Unit = property(WrapValues.key, WrapValues.value(), target)
+}
+
+@ExperimentalCoroutinesApi
 interface Flexbox : StyleParams {
-    /*
-    fun alignItems(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "align-items: $it;" }
 
-    fun alignContent(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "align-content: $it;" }
+    fun flexContainer(
+        sm: (FlexContainerContext.() -> Unit)? = null,
+        md: (FlexContainerContext.() -> Unit)? = null,
+        lg: (FlexContainerContext.() -> Unit)? = null,
+        xl: (FlexContainerContext.() -> Unit)? = null
+    ) {
+        if (sm != null) FlexContainerContext(this, AlignmentImpl(this, smProperties), smProperties).sm()
+        if (md != null) FlexContainerContext(this, AlignmentImpl(this, mdProperties), mdProperties).md()
+        if (lg != null) FlexContainerContext(this, AlignmentImpl(this, lgProperties), lgProperties).lg()
+        if (xl != null) FlexContainerContext(this, AlignmentImpl(this, xlProperties), xlProperties).xl()
+    }
 
-    fun justifyItems(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "justify-items: $it;" }
-
-    fun justifyContent(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "justify-content: $it;" }
-
-    fun flexWrap(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "flex-wrap: $it;" }
-
-    fun flexDirection(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "flex-direction: $it;" }
-
-    fun flex(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "flex: $it;" }
-
-    fun flexGrow(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "flex-grow: $it;" }
-
-    fun flexShrink(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "flex-shrink: $it;" }
-
-    fun flexBasis(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "flex-basis: $it;" }
-
-    fun justifySelf(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "justify-self: $it;" }
-
-    fun alignSelf(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "align-self: $it;" }
-
-    fun order(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "order: $it;" }
-     */
 }

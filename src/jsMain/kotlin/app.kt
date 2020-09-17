@@ -26,12 +26,25 @@ fun main() {
 
     render { theme: ExtendedTheme ->
         section {
-            div {
-                link {
+            flex({
+                flexContainer {
+                    height { "60px" }
+                    wrap { nowrap }
+                    direction { row }
+                    justifyContent { spaceEvenly }
+                    alignItems { center }
+                }
+            }) {
+                link({
+                    flex {
+                        //grow { "2" }
+                        order { "1" }
+                        alignSelf { flexStart }
+                    }
+                }) {
                     href = const("#")
                     +"flex"
                 }
-                span { text(" | ") }
                 link {
                     href = const("#grid")
                     +"grid"
@@ -79,6 +92,12 @@ fun HtmlElements.flexDemo(): Div {
 //                    border("1px solid lightgrey")
                 //backgroundSize(theme.test.a) // access custom value added by specific theme, for colors, etc.
                 display(md = { flex })
+                //display { flex }
+                /*
+                raw("direction: ltr;")
+                raw("justify-content: center;")
+                raw("flex-wrap: wrap;")
+                 */
             }) {
                 box({ /* flexShrink("0") */
                     margins(
@@ -105,6 +124,7 @@ fun HtmlElements.flexDemo(): Div {
                     zIndex { base }
                     //position { absolute }
                     //bottom("3em")
+                    width { "300px" }
                     margins(
                         {
                             top { small }
@@ -173,34 +193,37 @@ fun HtmlElements.gridDemo(): Div {
                     "${grid.FOOTER} ${grid.FOOTER} ${grid.FOOTER} ${grid.FOOTER} ${grid.FOOTER} ${grid.FOOTER} ${grid.FOOTER} ${grid.FOOTER} ${grid.FOOTER}"
                 )
                 gap { large }
-                autoFlow { dense }
+                //autoFlow { dense }
+                //raw("place-items: stretch flex-end;")
+                //justifyContent { spaceEvenly }
+                alignItems { stretch }
             }
         }) {
-            flex({
+            box({
                 grid { area { grid.HEADER } }
                 bgColor { "green" }
             }) {
                 text { +"Header" }
             }
-            flex({
+            box({
                 grid { area { grid.SIDEBAR } }
                 bgColor { "yellow" }
             }) {
                 text { +"Sidebar" }
             }
-            flex({
+            box({
                 grid { area { grid.CONTENT } }
                 bgColor { "grey" }
             }) {
                 text { +"Content" }
             }
-            flex({
+            box({
                 grid { area { grid.FOOTER } }
                 bgColor { "green" }
             }) {
                 text { +"Footer" }
             }
-            flex({
+            box({
                 margin { normal }
                 grid {
                     row {
