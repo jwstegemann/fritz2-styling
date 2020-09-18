@@ -329,6 +329,9 @@ interface Layout : StyleParams {
     /*
      * grid-area, grid-column, grid-row
      */
+    fun grid(value: GridContext.() -> Unit) =
+        GridContext(this, SelfAlignmentImpl(this, smProperties), smProperties).value()
+
     fun grid(
         sm: (GridContext.() -> Unit)? = null,
         md: (GridContext.() -> Unit)? = null,
@@ -344,6 +347,9 @@ interface Layout : StyleParams {
     /*
      * flex Item properties: order, basis, grow, shrink, align-self
      */
+    fun flex(value: FlexItemContext.() -> Unit) =
+        FlexItemContext(this, SelfAlignmentImpl(this, smProperties), smProperties).value()
+
     fun flex(
         sm: (FlexItemContext.() -> Unit)? = null,
         md: (FlexItemContext.() -> Unit)? = null,

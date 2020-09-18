@@ -21,30 +21,36 @@ object WrapValues : PropertyValues {
 }
 
 @ExperimentalCoroutinesApi
-class FlexContainerContext(
-    styleParams: StyleParams,
-    alignment: Alignment,
-    private val target: StringBuilder
-) : StyleParams by styleParams, Alignment by alignment {
-    fun direction(value: DirectionValues.() -> Property): Unit =
-        property(DirectionValues.key, DirectionValues.value(), target)
+interface Flexbox : StyleParams, Alignment {
 
-    fun wrap(value: WrapValues.() -> Property): Unit = property(WrapValues.key, WrapValues.value(), target)
-}
+    fun direction(value: DirectionValues.() -> Property) =
+        property(DirectionValues.key, DirectionValues.value(), smProperties)
 
-@ExperimentalCoroutinesApi
-interface Flexbox : StyleParams {
-
-    fun flexContainer(
-        sm: (FlexContainerContext.() -> Unit)? = null,
-        md: (FlexContainerContext.() -> Unit)? = null,
-        lg: (FlexContainerContext.() -> Unit)? = null,
-        xl: (FlexContainerContext.() -> Unit)? = null
+    fun direction(
+        sm: (DirectionValues.() -> Property)? = null,
+        md: (DirectionValues.() -> Property)? = null,
+        lg: (DirectionValues.() -> Property)? = null,
+        xl: (DirectionValues.() -> Property)? = null
     ) {
-        if (sm != null) FlexContainerContext(this, AlignmentImpl(this, smProperties), smProperties).sm()
-        if (md != null) FlexContainerContext(this, AlignmentImpl(this, mdProperties), mdProperties).md()
-        if (lg != null) FlexContainerContext(this, AlignmentImpl(this, lgProperties), lgProperties).lg()
-        if (xl != null) FlexContainerContext(this, AlignmentImpl(this, xlProperties), xlProperties).xl()
+        if (sm != null) property(DirectionValues.key, DirectionValues.sm(), smProperties)
+        if (md != null) property(DirectionValues.key, DirectionValues.md(), mdProperties)
+        if (lg != null) property(DirectionValues.key, DirectionValues.lg(), lgProperties)
+        if (xl != null) property(DirectionValues.key, DirectionValues.xl(), xlProperties)
+    }
+
+    fun wrap(value: WrapValues.() -> Property) =
+        property(WrapValues.key, WrapValues.value(), smProperties)
+
+    fun wrap(
+        sm: (WrapValues.() -> Property)? = null,
+        md: (WrapValues.() -> Property)? = null,
+        lg: (WrapValues.() -> Property)? = null,
+        xl: (WrapValues.() -> Property)? = null
+    ) {
+        if (sm != null) property(WrapValues.key, WrapValues.sm(), smProperties)
+        if (md != null) property(WrapValues.key, WrapValues.md(), mdProperties)
+        if (lg != null) property(WrapValues.key, WrapValues.lg(), lgProperties)
+        if (xl != null) property(WrapValues.key, WrapValues.xl(), xlProperties)
     }
 
 }

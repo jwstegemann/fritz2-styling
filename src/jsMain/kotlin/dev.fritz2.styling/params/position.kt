@@ -53,6 +53,8 @@ interface Position : StyleParams {
     /*
      * position
      */
+    fun position(value: PositionContext.() -> Property) =
+        property(positionKey, PositionContext(this, smProperties).value())
 
     fun position(
         sm: (PositionContext.() -> Property)? = null,

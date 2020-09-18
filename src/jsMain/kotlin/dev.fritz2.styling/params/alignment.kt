@@ -47,24 +47,63 @@ object AlignContentValues : PropertyValues {
     const val spaceEvenly: Property = "space-evenly"
 }
 
-interface Alignment {
-    fun justifyContent(value: JustifyContentValues.() -> Property)
-    fun alignItems(value: AlignItemsValues.() -> Property)
-    fun alignContent(value: AlignContentValues.() -> Property)
-}
+interface Alignment : StyleParams {
+    /*
+     * justifyContent
+     */
 
-class AlignmentImpl(
-    styleParam: StyleParams,
-    private val target: StringBuilder
-) : Alignment, StyleParams by styleParam {
-    override fun justifyContent(value: JustifyContentValues.() -> Property) =
-        property(JustifyContentValues.key, JustifyContentValues.value(), target)
+    fun justifyContent(value: JustifyContentValues.() -> Property) =
+        property(JustifyContentValues.key, JustifyContentValues.value(), smProperties)
 
-    override fun alignItems(value: AlignItemsValues.() -> Property) =
-        property(AlignItemsValues.key, AlignItemsValues.value(), target)
+    fun justifyContent(
+        sm: (JustifyContentValues.() -> Property)? = null,
+        md: (JustifyContentValues.() -> Property)? = null,
+        lg: (JustifyContentValues.() -> Property)? = null,
+        xl: (JustifyContentValues.() -> Property)? = null
+    ) {
+        if (sm != null) property(JustifyContentValues.key, JustifyContentValues.sm(), smProperties)
+        if (md != null) property(JustifyContentValues.key, JustifyContentValues.md(), mdProperties)
+        if (lg != null) property(JustifyContentValues.key, JustifyContentValues.lg(), lgProperties)
+        if (xl != null) property(JustifyContentValues.key, JustifyContentValues.xl(), xlProperties)
+    }
 
-    override fun alignContent(value: AlignContentValues.() -> Property) =
-        property(AlignContentValues.key, AlignContentValues.value(), target)
+    /*
+     * alignItems
+     */
+
+    fun alignItems(value: AlignItemsValues.() -> Property) =
+        property(AlignItemsValues.key, AlignItemsValues.value(), smProperties)
+
+    fun alignItems(
+        sm: (AlignItemsValues.() -> Property)? = null,
+        md: (AlignItemsValues.() -> Property)? = null,
+        lg: (AlignItemsValues.() -> Property)? = null,
+        xl: (AlignItemsValues.() -> Property)? = null
+    ) {
+        if (sm != null) property(AlignItemsValues.key, AlignItemsValues.sm(), smProperties)
+        if (md != null) property(AlignItemsValues.key, AlignItemsValues.md(), mdProperties)
+        if (lg != null) property(AlignItemsValues.key, AlignItemsValues.lg(), lgProperties)
+        if (xl != null) property(AlignItemsValues.key, AlignItemsValues.xl(), xlProperties)
+    }
+
+    /*
+     * alignContent
+     */
+
+    fun alignContent(value: AlignContentValues.() -> Property) =
+        property(AlignContentValues.key, AlignContentValues.value(), smProperties)
+
+    fun alignContent(
+        sm: (AlignContentValues.() -> Property)? = null,
+        md: (AlignContentValues.() -> Property)? = null,
+        lg: (AlignContentValues.() -> Property)? = null,
+        xl: (AlignContentValues.() -> Property)? = null
+    ) {
+        if (sm != null) property(AlignContentValues.key, AlignContentValues.sm(), smProperties)
+        if (md != null) property(AlignContentValues.key, AlignContentValues.md(), mdProperties)
+        if (lg != null) property(AlignContentValues.key, AlignContentValues.lg(), lgProperties)
+        if (xl != null) property(AlignContentValues.key, AlignContentValues.xl(), xlProperties)
+    }
 }
 
 object SelfAlignItemsValues : PropertyValues {

@@ -1,10 +1,7 @@
 import dev.fritz2.dom.html.render
 import dev.fritz2.styling.*
 import dev.fritz2.styling.components.*
-import dev.fritz2.styling.params.AreaName
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import dev.fritz2.styling.params.start
-import dev.fritz2.styling.params.end
 import dev.fritz2.routing.router
 import dev.fritz2.binding.RootStore
 import dev.fritz2.binding.const
@@ -12,6 +9,7 @@ import dev.fritz2.binding.handledBy
 import dev.fritz2.dom.mount
 import dev.fritz2.dom.selectedIndex
 import dev.fritz2.dom.html.*
+import dev.fritz2.styling.params.*
 import kotlinx.coroutines.flow.*
 
 val themes = listOf(
@@ -27,13 +25,11 @@ fun main() {
     render { theme: ExtendedTheme ->
         section {
             flex({
-                flexContainer {
-                    height { "60px" }
-                    wrap { nowrap }
-                    direction { row }
-                    justifyContent { spaceEvenly }
-                    alignItems { center }
-                }
+                height { "60px" }
+                wrap { nowrap }
+                direction { row }
+                justifyContent { spaceEvenly }
+                alignItems { center }
             }) {
                 link({
                     flex {
@@ -84,25 +80,18 @@ fun HtmlElements.flexDemo(): Div {
         themeStore.data.map {
             console.log("rendering with $it")
             // TODO: Hier ``Sel {}``-Komponenten einbauen und ein paar mal auswählen -> Effekt wie oben beschrieben
-            box({
+            flex({
 //                    boxShadow { tiny }
                 margins(md = { top { large } })
 //                    margin { large }
 //                    padding { small }
 //                    border("1px solid lightgrey")
                 //backgroundSize(theme.test.a) // access custom value added by specific theme, for colors, etc.
-                display(md = { flex })
-                //display { flex }
-                /*
-                raw("direction: ltr;")
-                raw("justify-content: center;")
-                raw("flex-wrap: wrap;")
-                 */
+                direction(sm = { column }, md = { row })
             }) {
                 box({ /* flexShrink("0") */
-                    margins(
-                        { left { small } }
-                    )
+                    margins { left { small } }
+
                     //position { relative }
                     zIndex { layer(1) }
                 }) {
@@ -177,27 +166,39 @@ fun HtmlElements.gridDemo(): Div {
         }
         grid({
             fontSize { normal }
-            template {
-                columns {
-                    //repeat(9) { "9fr" }
-                    repeat(autoFill) { "9fr" }
-                }
-                autoRows {
-                    minmax("100px", auto)
-                    //minmax(minContent, auto)
-                    //minmax("100px", auto)
-                }
-                areas(
-                    "${grid.HEADER} ${grid.HEADER} ${grid.HEADER} ${grid.HEADER} ${grid.HEADER} ${grid.HEADER} ${grid.HEADER} ${grid.HEADER} ${grid.HEADER}",
-                    "${grid.SIDEBAR} ${grid.SIDEBAR} ${grid.SIDEBAR} ${grid.CONTENT} ${grid.CONTENT} ${grid.CONTENT} ${grid.CONTENT} ${grid.CONTENT} ${grid.CONTENT}",
-                    "${grid.FOOTER} ${grid.FOOTER} ${grid.FOOTER} ${grid.FOOTER} ${grid.FOOTER} ${grid.FOOTER} ${grid.FOOTER} ${grid.FOOTER} ${grid.FOOTER}"
-                )
-                gap { large }
-                //autoFlow { dense }
-                //raw("place-items: stretch flex-end;")
-                //justifyContent { spaceEvenly }
-                alignItems { stretch }
+            columns {
+                repeat(9) { "9fr" }
+                //repeat(autoFill) { "9fr" }
             }
+
+            autoRows {
+                minmax("100px", auto)
+                //minmax(minContent, auto)
+                //minmax("100px", auto)
+            }
+
+            areas(
+                sm = {
+                    with(grid) {
+                        row(HEADER, HEADER, HEADER, HEADER, HEADER, HEADER, HEADER, HEADER, HEADER)
+                        row(SIDEBAR, SIDEBAR, SIDEBAR, SIDEBAR, SIDEBAR, SIDEBAR, SIDEBAR, SIDEBAR, SIDEBAR)
+                        row(CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT)
+                        row(FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER)
+                    }
+                },
+                md = {
+                    with(grid) {
+                        row(HEADER, HEADER, HEADER, HEADER, HEADER, HEADER, HEADER, HEADER, HEADER)
+                        row(SIDEBAR, SIDEBAR, SIDEBAR, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT)
+                        row(FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER)
+                    }
+                }
+            )
+            gap { large }
+            //autoFlow { dense }
+            //raw("place-items: stretch flex-end;")
+            //justifyContent { spaceEvenly }
+            //alignItems { start }
         }) {
             box({
                 grid { area { grid.HEADER } }
@@ -212,7 +213,7 @@ fun HtmlElements.gridDemo(): Div {
                 text { +"Sidebar" }
             }
             box({
-                grid { area { grid.CONTENT } }
+                grid(sm = { area { grid.CONTENT } })
                 bgColor { "grey" }
             }) {
                 text { +"Content" }
@@ -225,18 +226,30 @@ fun HtmlElements.gridDemo(): Div {
             }
             box({
                 margin { normal }
-                grid {
-                    row {
-                        start { grid.HEADER.start }
-                        //end { grid.FOOTER.end }
-                        //end { span(grid.SIDEBAR) }
-                        end { span(2) }
+                grid(
+                    sm = {
+                        row {
+                            start { grid.HEADER.start }
+                            //end { grid.FOOTER.end }
+                            //end { span(grid.SIDEBAR) }
+                            end { grid.CONTENT.end }
+                        }
+                        column {
+                            start { grid.CONTENT.start }
+                            end { grid.CONTENT.end }
+                        }
+                    },
+                    md = {
+                        row {
+                            start { grid.HEADER.start }
+                            end { span(2) }
+                        }
+                        column {
+                            start { grid.CONTENT.start }
+                            end { grid.CONTENT.end }
+                        }
                     }
-                    column {
-                        start { grid.CONTENT.start }
-                        end { grid.CONTENT.end }
-                    }
-                }
+                )
                 bgColor { "rgba(255, 0, 0, 0.5)" }
             }) {
                 text { +"Overlay" }
