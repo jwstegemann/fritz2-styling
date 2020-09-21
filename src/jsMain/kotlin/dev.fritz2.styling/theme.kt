@@ -2,13 +2,22 @@ package dev.fritz2.styling
 
 import dev.fritz2.dom.Tag
 import dev.fritz2.dom.html.HtmlElements
+import dev.fritz2.styling.params.BasicStyleParams
+import dev.fritz2.styling.params.BoxStyleParams
+import dev.fritz2.styling.params.FlexStyleParams
+import dev.fritz2.styling.params.GridStyleParams
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.w3c.dom.Element
 
+typealias PredefinedBasicStyle = BasicStyleParams.() -> Unit
+typealias PredefinedFlexStyle = FlexStyleParams.() -> Unit
+typealias PredefinedGridStyle = GridStyleParams.() -> Unit
+typealias PredefinedBoxStyle = BoxStyleParams.() -> Unit
+
 typealias Property = String
 
-val Property.asKey : String
+val Property.asKey: String
     get() = "$this: "
 
 class ResponsiveValue<T : Property>(val sm: T, val md: T = sm, val lg: T = md, val xl: T = lg)
@@ -42,6 +51,16 @@ class WeightedValue<T : Property>(
     val strong: T = stronger,
     val none: T = light,
     val full: T = strong
+) {
+    val initial: T = "initial".unsafeCast<T>()
+    val inherit: T = "inherit".unsafeCast<T>()
+}
+
+class Thickness<T : Property>(
+    val normal: T,
+    val thin: T = normal,
+    val fat: T = normal,
+    val hair: T = thin,
 ) {
     val initial: T = "initial".unsafeCast<T>()
     val inherit: T = "inherit".unsafeCast<T>()
@@ -151,10 +170,8 @@ interface Theme {
     val lineHeights: ScaledValue<Property>
     val letterSpacings: ScaledValue<Property>
     val sizes: Sizes
-    val borders: List<Property>
-    val borderWidths: List<Property>
-    val borderStyles: List<Property>
-    val radii: List<Property>
+    val borderWidths: Thickness<Property>
+    val radii: ScaledValue<Property>
     val shadows: Shadows
     val zIndices: ZIndices
     val opacities: WeightedValue<Property>
@@ -168,6 +185,8 @@ interface ExtendedTheme : Theme {
     }
 
     val test: MyProp
+
+    val teaserText: PredefinedBasicStyle
 }
 
 
@@ -254,16 +273,18 @@ open class DefaultTheme : ExtendedTheme {
         full = "100%"
     )
 
-    override val borders: List<Property> = listOf("0", "1px solid", "2px solid", "4px solid")
+    override val borderWidths = Thickness<Property>(
+        normal = "2px",
+        thin = "1px",
+        fat = "4px",
+        hair = "0.1px"
+    )
 
-    override val borderWidths: List<Property> = listOf()
-    override val borderStyles: List<Property> = listOf()
-
-    override val radii: List<Property> = listOf(
-        "0.125rem",
-        "0.25rem",
-        "0.5rem",
-        "9999px"
+    override val radii = ScaledValue(
+        small = "0.125rem",
+        normal = "0.25rem",
+        large = "0.5rem",
+        full = "9999px"
     )
 
     override val test = object : ExtendedTheme.MyProp {
@@ -311,6 +332,17 @@ open class DefaultTheme : ExtendedTheme {
     override val opacities = WeightedValue(
         normal = "0.5"
     )
+
+    override val teaserText: PredefinedBasicStyle = {
+        fontWeight { semiBold }
+        textTransform { uppercase }
+        fontSize { smaller }
+        letterSpacing { large }
+        textShadow { small }
+        color { info }
+    }
+
+
 }
 
 class Default2 : DefaultTheme() {

@@ -1,16 +1,19 @@
-import dev.fritz2.dom.html.render
-import dev.fritz2.styling.*
-import dev.fritz2.styling.components.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import dev.fritz2.routing.router
 import dev.fritz2.binding.RootStore
 import dev.fritz2.binding.const
 import dev.fritz2.binding.handledBy
+import dev.fritz2.dom.html.Div
+import dev.fritz2.dom.html.HtmlElements
+import dev.fritz2.dom.html.render
 import dev.fritz2.dom.mount
 import dev.fritz2.dom.selectedIndex
-import dev.fritz2.dom.html.*
-import dev.fritz2.styling.params.*
-import kotlinx.coroutines.flow.*
+import dev.fritz2.routing.router
+import dev.fritz2.styling.*
+import dev.fritz2.styling.components.*
+import dev.fritz2.styling.params.AreaName
+import dev.fritz2.styling.params.end
+import dev.fritz2.styling.params.start
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.map
 
 val themes = listOf(
     ("small Fonts") to DefaultTheme(),
@@ -49,7 +52,7 @@ fun main() {
             router.render { site ->
                 when (site) {
                     "grid" -> gridDemo()
-                    else -> flexDemo()
+                    else -> flexDemo(theme)
                 }
             }.bind()
         }
@@ -57,7 +60,7 @@ fun main() {
 }
 
 @ExperimentalCoroutinesApi
-fun HtmlElements.flexDemo(): Div {
+fun HtmlElements.flexDemo(theme: ExtendedTheme): Div {
 
     val themeStore = object : RootStore<Int>(0) {
         val selectTheme = handle<Int> { _, index ->
@@ -82,10 +85,17 @@ fun HtmlElements.flexDemo(): Div {
             // TODO: Hier ``Sel {}``-Komponenten einbauen und ein paar mal auswählen -> Effekt wie oben beschrieben
             flex({
 //                    boxShadow { tiny }
+                //TODO: add all()?
                 margins(md = { top { large } })
-//                    margin { large }
-//                    padding { small }
-//                    border("1px solid lightgrey")
+                margin { small }
+                padding { small }
+                border {
+                    style { solid }
+                    width { thin }
+                    color { dark }
+                }
+                radius { small }
+                //theme.teaserText()
                 //backgroundSize(theme.test.a) // access custom value added by specific theme, for colors, etc.
                 direction(sm = { column }, md = { row })
             }) {
@@ -123,15 +133,7 @@ fun HtmlElements.flexDemo(): Div {
                     )
                     //top("-3em")
                 }) {
-                    text({
-                        //gridArea {  header }
-                        fontWeight { semiBold }
-                        textTransform { uppercase }
-                        fontSize { smaller }
-                        letterSpacing { large }
-                        textShadow { small }
-                        color { info }
-                    }) { +"Marketing" }
+                    text(theme.teaserText) { +"Marketing" }
                     link({
                         margins { top { tiny } }
 //                            display("block")

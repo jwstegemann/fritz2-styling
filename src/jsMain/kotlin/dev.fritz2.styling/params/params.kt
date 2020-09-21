@@ -115,16 +115,24 @@ class StyleParamsImpl<X : Theme>(private val theme: X) : BasicStyleParams, Flexb
 typealias Style<T> = T.() -> Unit
 
 @ExperimentalCoroutinesApi
-interface BasicStyleParams : Space, Color, Border, Typo, Background, Position, Shadow, Layout
+interface BasicStyleParams : Space, Color, Border, Typo, Background, Position, Shadow, Layout {
+    operator fun PredefinedBasicStyle.invoke() = this(this@BasicStyleParams)
+}
 
 @ExperimentalCoroutinesApi
-interface FlexStyleParams : BasicStyleParams, Flexbox
+interface FlexStyleParams : BasicStyleParams, Flexbox {
+    override operator fun PredefinedBasicStyle.invoke() = this(this@FlexStyleParams)
+}
 
 @ExperimentalCoroutinesApi
-interface GridStyleParams : BasicStyleParams, GridLayout
+interface GridStyleParams : BasicStyleParams, GridLayout {
+    override operator fun PredefinedBasicStyle.invoke() = this(this@GridStyleParams)
+}
 
 @ExperimentalCoroutinesApi
-interface BoxStyleParams : BasicStyleParams, Flexbox, GridLayout
+interface BoxStyleParams : BasicStyleParams, Flexbox, GridLayout {
+    override operator fun PredefinedBasicStyle.invoke() = this(this@BoxStyleParams)
+}
 
 @ExperimentalCoroutinesApi
 inline fun <T : StyleParams> use(styling: Style<T>, prefix: String = "s"): StyleClass =
