@@ -150,9 +150,9 @@ interface Layout : StyleParams {
      * This could be useful for corner cases where our abstractions fail, new CSS features
      * we have not yet implemented or simply for toying around with CSS code from external sources.
      */
-    fun raw(value: Property) = smProperties.append(value)
+    fun css(value: Property) = smProperties.append(value)
 
-    fun raw(
+    fun css(
         sm: Property? = null,
         md: Property? = null,
         lg: Property? = null,

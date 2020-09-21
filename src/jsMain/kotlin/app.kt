@@ -16,8 +16,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.map
 
 val themes = listOf(
-    ("small Fonts") to DefaultTheme(),
-    ("large Fonts") to Default2()
+        ("small Fonts") to DefaultTheme(),
+        ("large Fonts") to Default2()
 )
 
 @ExperimentalCoroutinesApi
@@ -70,22 +70,19 @@ fun HtmlElements.flexDemo(theme: ExtendedTheme): Div {
     }
 
     return div {
-        // TODO: Klären, wieso das ``Select`` *innerhalb* von ``themeStore.data.map`` nach jeder Auswahl an das
-        // Dokument hinten angefügt wird!
-        sel {
-            value = themeStore.data.map { i -> themes[i].first }
-            themes.forEach {
-                option { +it.first }
-            }
-
-            changes.selectedIndex() handledBy themeStore.selectTheme
-        }
         themeStore.data.map {
-            console.log("rendering with $it")
-            // TODO: Hier ``Sel {}``-Komponenten einbauen und ein paar mal auswählen -> Effekt wie oben beschrieben
-            flex({
+            div {
+                sel {
+                    value = themeStore.data.map { i -> themes[i].first }
+                    themes.forEach {
+                        option { +it.first }
+                    }
+
+                    changes.selectedIndex() handledBy themeStore.selectTheme
+                }
+                flex({
 //                    boxShadow { tiny }
-                //TODO: add all()?
+                    //TODO: add all()?
                 margins(md = { top { large } })
                 margin { small }
                 padding { small }
@@ -96,59 +93,60 @@ fun HtmlElements.flexDemo(theme: ExtendedTheme): Div {
                 }
                 radius { small }
                 //theme.teaserText()
-                //backgroundSize(theme.test.a) // access custom value added by specific theme, for colors, etc.
-                direction(sm = { column }, md = { row })
-            }) {
-                box({ /* flexShrink("0") */
-                    margins { left { small } }
+                    //backgroundSize(theme.test.a) // access custom value added by specific theme, for colors, etc.
+                    direction(sm = { column }, md = { row })
+                }) {
+                    box({ /* flexShrink("0") */
+                        margins { left { small } }
 
-                    //position { relative }
-                    zIndex { layer(1) }
-                }) {
-                    image({
-                        boxShadow { larger }
+                        //position { relative }
+                        zIndex { layer(1) }
+                    }) {
+                        image({
+                            boxShadow { larger }
 //                            borderRadius(theme.radii[1])
-                        width { small }
-                    }) {
-                        src = const("https://bit.ly/2jYM25F")
-                        alt = const("Woman paying for a purchase")
+                            width { small }
+                        }) {
+                            src = const("https://bit.ly/2jYM25F")
+                            alt = const("Woman paying for a purchase")
+                        }
                     }
-                }
-                //val header = gridTemplate()
-                box({
-                    position {
-                        top { small }
-                        relative
-                    }
-                    zIndex { base }
-                    //position { absolute }
-                    //bottom("3em")
-                    width { "300px" }
-                    margins(
-                        {
+                    //val header = gridTemplate()
+                    box({
+                        position {
                             top { small }
-                            bottom { large }
-                        },
-                        md = { left { normal } }
-                    )
-                    //top("-3em")
-                }) {
-                    text(theme.teaserText) { +"Marketing" }
-                    link({
-                        margins { top { tiny } }
+                            relative
+                        }
+                        zIndex { base }
+                        //position { absolute }
+                        //bottom("3em")
+                        width { "300px" }
+                        margins(
+                                {
+                                    top { small }
+                                    bottom { large }
+                                },
+                                md = { left { normal } }
+                        )
+                        //top("-3em")
+                    }) {
+                        text(theme.teaserText) { +"Marketing" }
+                        link({
+                            margins { top { tiny } }
 //                            display("block")
-                        fontSize { normal }
-                        lineHeight { normal }
-                        fontWeight { bold }
-                    }) {
-                        href = const("#")
-                        +"Finding customers for your new business"
-                    }
-                    text({
-                        margins { top { smaller } }
-                        color { dark }
-                    }) {
-                        +"Getting a new business off the ground is a lot of hard work. Here are five ideas you can use to find your first customers."
+                            fontSize { normal }
+                            lineHeight { normal }
+                            fontWeight { bold }
+                        }) {
+                            href = const("#")
+                            +"Finding customers for your new business"
+                        }
+                        text({
+                            margins { top { smaller } }
+                            color { dark }
+                        }) {
+                            +"Getting a new business off the ground is a lot of hard work. Here are five ideas you can use to find your first customers."
+                        }
                     }
                 }
             }
@@ -180,21 +178,21 @@ fun HtmlElements.gridDemo(): Div {
             }
 
             areas(
-                sm = {
-                    with(grid) {
-                        row(HEADER, HEADER, HEADER, HEADER, HEADER, HEADER, HEADER, HEADER, HEADER)
-                        row(SIDEBAR, SIDEBAR, SIDEBAR, SIDEBAR, SIDEBAR, SIDEBAR, SIDEBAR, SIDEBAR, SIDEBAR)
-                        row(CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT)
-                        row(FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER)
+                    sm = {
+                        with(grid) {
+                            row(HEADER, HEADER, HEADER, HEADER, HEADER, HEADER, HEADER, HEADER, HEADER)
+                            row(SIDEBAR, SIDEBAR, SIDEBAR, SIDEBAR, SIDEBAR, SIDEBAR, SIDEBAR, SIDEBAR, SIDEBAR)
+                            row(CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT)
+                            row(FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER)
+                        }
+                    },
+                    md = {
+                        with(grid) {
+                            row(HEADER, HEADER, HEADER, HEADER, HEADER, HEADER, HEADER, HEADER, HEADER)
+                            row(SIDEBAR, SIDEBAR, SIDEBAR, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT)
+                            row(FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER)
+                        }
                     }
-                },
-                md = {
-                    with(grid) {
-                        row(HEADER, HEADER, HEADER, HEADER, HEADER, HEADER, HEADER, HEADER, HEADER)
-                        row(SIDEBAR, SIDEBAR, SIDEBAR, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT, CONTENT)
-                        row(FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER, FOOTER)
-                    }
-                }
             )
             gap { large }
             //autoFlow { dense }
@@ -204,7 +202,10 @@ fun HtmlElements.gridDemo(): Div {
         }) {
             box({
                 grid { area { grid.HEADER } }
-                bgColor { "green" }
+                //bgColor { "green" }
+                background {
+                    color { "lime" }
+                }
             }) {
                 text { +"Header" }
             }
@@ -216,43 +217,70 @@ fun HtmlElements.gridDemo(): Div {
             }
             box({
                 grid(sm = { area { grid.CONTENT } })
-                bgColor { "grey" }
+                background(
+                        sm = {
+                            image { "https://via.placeholder.com/150/?text=Klein" }
+                            repeat { repeat }
+                            positions {
+                                horizontal { center }
+                                vertical { center }
+                            }
+                            /*
+                            sizes {
+                                horizontal { "100%" }
+                                vertical { "80%" }
+                            }
+                             */
+                        },
+                        md = {
+                            image { "https://via.placeholder.com/300/A9A9A9?text=Gross" }
+                            repeat { repeat }
+                            positions {
+                                horizontal { center }
+                                vertical { center }
+                            }
+                        }
+                )
             }) {
                 text { +"Content" }
             }
             box({
                 grid { area { grid.FOOTER } }
-                bgColor { "green" }
+                bgColor { "lime" }
             }) {
                 text { +"Footer" }
             }
             box({
                 margin { normal }
                 grid(
-                    sm = {
-                        row {
-                            start { grid.HEADER.start }
-                            //end { grid.FOOTER.end }
-                            //end { span(grid.SIDEBAR) }
-                            end { grid.CONTENT.end }
+                        sm = {
+                            row {
+                                start { grid.HEADER.start }
+                                //end { grid.FOOTER.end }
+                                //end { span(grid.SIDEBAR) }
+                                end { grid.CONTENT.end }
+                            }
+                            column {
+                                start { grid.CONTENT.start }
+                                end { grid.CONTENT.end }
+                            }
+                        },
+                        md = {
+                            row {
+                                start { grid.HEADER.start }
+                                end { span(2) }
+                            }
+                            column {
+                                start { grid.CONTENT.start }
+                                end { grid.CONTENT.end }
+                            }
                         }
-                        column {
-                            start { grid.CONTENT.start }
-                            end { grid.CONTENT.end }
-                        }
-                    },
-                    md = {
-                        row {
-                            start { grid.HEADER.start }
-                            end { span(2) }
-                        }
-                        column {
-                            start { grid.CONTENT.start }
-                            end { grid.CONTENT.end }
-                        }
-                    }
                 )
-                bgColor { "rgba(255, 0, 0, 0.5)" }
+                //bgColor { "rgba(255, 0, 0, 0.5)" }
+                background {
+                    //blendMode { darken }
+                    color { rgba(255, 0, 0, 0.5) }
+                }
             }) {
                 text { +"Overlay" }
             }

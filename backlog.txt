@@ -1,10 +1,11 @@
 - pre-styled functions (rework shadow) -> jens
 - border -> jens
-- background -> christian
+- background -> christian ✓
 - property typealiases -> christian
 
 
 - function to add css classes to property
 - const vals in companion objects
+- remove ``asKey`` extension property (easy after previous items done!)
 - cleanup code (file-structure)
 - api-docs
