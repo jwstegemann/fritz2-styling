@@ -1,8 +1,15 @@
 package dev.fritz2.styling.params
 
+import dev.fritz2.dom.HtmlTagMarker
 import dev.fritz2.styling.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@DslMarker
+annotation class StyleParamsMarker
+
+
+@StyleParamsMarker
+@HtmlTagMarker
 interface StyleParams {
     val smProperties: StringBuilder
     val mdProperties: StringBuilder
