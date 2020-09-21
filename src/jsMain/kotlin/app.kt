@@ -83,16 +83,16 @@ fun HtmlElements.flexDemo(theme: ExtendedTheme): Div {
                 flex({
 //                    boxShadow { tiny }
                     //TODO: add all()?
-                margins(md = { top { large } })
-                margin { small }
-                padding { small }
-                border {
-                    style { solid }
-                    width { thin }
-                    color { dark }
-                }
-                radius { small }
-                //theme.teaserText()
+                    margins(md = { top { large } })
+                    margin { small }
+                    padding { small }
+                    border {
+                        style { solid }
+                        width { thin }
+                        color { dark }
+                    }
+                    radius { large }
+                    //theme.teaserText()
                     //backgroundSize(theme.test.a) // access custom value added by specific theme, for colors, etc.
                     direction(sm = { column }, md = { row })
                 }) {
