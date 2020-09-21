@@ -1,44 +1,56 @@
 package dev.fritz2.styling.params
 
-interface Flexbox : StyleParams {
-    /*
-    fun alignItems(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "align-items: $it;" }
+import dev.fritz2.styling.Property
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-    fun alignContent(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "align-content: $it;" }
+object DirectionValues : PropertyValues {
+    override val key = "flex-direction: "
 
-    fun justifyItems(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "justify-items: $it;" }
+    const val row: Property = "row"
+    const val column: Property = "column"
+    const val rowReverse: Property = "row-reverse"
+    const val columnReverse: Property = "column-reverse"
+}
 
-    fun justifyContent(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "justify-content: $it;" }
+object WrapValues : PropertyValues {
+    override val key = "flex-wrap: "
 
-    fun flexWrap(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "flex-wrap: $it;" }
+    const val wrap: Property = "wrap"
+    const val nowrap: Property = "nowrap"
+    const val wrapReverse: Property = "wrap-reverse"
+}
 
-    fun flexDirection(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "flex-direction: $it;" }
+@ExperimentalCoroutinesApi
+interface Flexbox : StyleParams, Alignment {
 
-    fun flex(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "flex: $it;" }
+    fun direction(value: DirectionValues.() -> Property) =
+        property(DirectionValues.key, DirectionValues.value(), smProperties)
 
-    fun flexGrow(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "flex-grow: $it;" }
+    fun direction(
+        sm: (DirectionValues.() -> Property)? = null,
+        md: (DirectionValues.() -> Property)? = null,
+        lg: (DirectionValues.() -> Property)? = null,
+        xl: (DirectionValues.() -> Property)? = null
+    ) {
+        if (sm != null) property(DirectionValues.key, DirectionValues.sm(), smProperties)
+        if (md != null) property(DirectionValues.key, DirectionValues.md(), mdProperties)
+        if (lg != null) property(DirectionValues.key, DirectionValues.lg(), lgProperties)
+        if (xl != null) property(DirectionValues.key, DirectionValues.xl(), xlProperties)
+    }
 
-    fun flexShrink(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "flex-shrink: $it;" }
+    fun wrap(value: WrapValues.() -> Property) =
+        property(WrapValues.key, WrapValues.value(), smProperties)
 
-    fun flexBasis(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "flex-basis: $it;" }
+    fun wrap(
+        sm: (WrapValues.() -> Property)? = null,
+        md: (WrapValues.() -> Property)? = null,
+        lg: (WrapValues.() -> Property)? = null,
+        xl: (WrapValues.() -> Property)? = null
+    ) {
+        if (sm != null) property(WrapValues.key, WrapValues.sm(), smProperties)
+        if (md != null) property(WrapValues.key, WrapValues.md(), mdProperties)
+        if (lg != null) property(WrapValues.key, WrapValues.lg(), lgProperties)
+        if (xl != null) property(WrapValues.key, WrapValues.xl(), xlProperties)
+    }
 
-    fun justifySelf(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "justify-self: $it;" }
-
-    fun alignSelf(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "align-self: $it;" }
-
-    fun order(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "order: $it;" }
-     */
 }

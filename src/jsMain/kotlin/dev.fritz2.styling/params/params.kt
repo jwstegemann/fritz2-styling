@@ -58,6 +58,18 @@ fun <T> StyleParams.property(
     )
 
 /*
+ * size based properties
+ */
+
+typealias SizesProperty = Sizes.() -> Property
+
+/*
+ * z-index based properties
+ */
+
+typealias  ZIndicesProperty = ZIndices.() -> Property
+
+/*
  * enum based properties
  */
 interface PropertyValues {
@@ -84,10 +96,8 @@ fun <T : PropertyValues> StyleParams.property(
     )
 
 
-class StyleParamsImpl<X : Theme>(private val theme: X) : Background, Border, Color, Flexbox, GridLayout, Layout,
-    Position,
-    Shadow,
-    Space, Typo {
+@ExperimentalCoroutinesApi
+class StyleParamsImpl<X : Theme>(private val theme: X) : BasicStyleParams, Flexbox, GridLayout {
     override val smProperties = StringBuilder()
     override val mdProperties = StringBuilder()
     override val lgProperties = StringBuilder()
@@ -99,21 +109,22 @@ class StyleParamsImpl<X : Theme>(private val theme: X) : Background, Border, Col
         if (xlProperties.isNotEmpty()) smProperties.append(theme.mediaQueryXl, "{", xlProperties, "}")
 
         return smProperties.toString()
-        /*.also {
-        println("******")
-        println(it)
-        println("*******")
-    }*/
     }
 }
 
 typealias Style<T> = T.() -> Unit
 
+@ExperimentalCoroutinesApi
 interface BasicStyleParams : Space, Color, Border, Typo, Background, Position, Shadow, Layout
 
+@ExperimentalCoroutinesApi
 interface FlexStyleParams : BasicStyleParams, Flexbox
 
+@ExperimentalCoroutinesApi
 interface GridStyleParams : BasicStyleParams, GridLayout
+
+@ExperimentalCoroutinesApi
+interface BoxStyleParams : BasicStyleParams, Flexbox, GridLayout
 
 @ExperimentalCoroutinesApi
 inline fun <T : StyleParams> use(styling: Style<T>, prefix: String = "s"): StyleClass =

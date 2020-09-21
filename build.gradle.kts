@@ -6,14 +6,14 @@ buildscript {
 
     dependencies {
         classpath(kotlin("gradle-plugin"))
-        classpath("dev.fritz2:fritz2-gradle-plugin:0.8-SNAPSHOT")
+        //classpath("dev.fritz2:fritz2-gradle-plugin:0.8-SNAPSHOT")
     }
 }
 
 plugins {
     kotlin("multiplatform") version ("1.4.0")
     kotlin("kapt") version ("1.4.0")
-//    id("dev.fritz2.fritz2-gradle") version "0.8"
+    id("dev.fritz2.fritz2-gradle") version "0.7.1"
 }
 
 apply(plugin = "dev.fritz2.fritz2-gradle")
