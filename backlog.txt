@@ -1,0 +1,8 @@
+- pre-styled functions (rework shadow)
+- border
+- background
+- property typealiases
+- function to add css classes to property
+- const vals in companion objects
+- cleanup code (file-structure)
+- api-docs
