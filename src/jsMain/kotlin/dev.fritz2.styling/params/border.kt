@@ -1,5 +1,17 @@
 package dev.fritz2.styling.params
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+
+
+@ExperimentalCoroutinesApi
+class BorderContext(
+    val which: String,
+    val styleParams: StyleParams,
+    private val target: StringBuilder
+) : StyleParams by styleParams {
+//    fun width(value: ScaledValueProperty) = property(topKey, theme().space, value, target)
+}
+
 interface Border : StyleParams {
     /*
     fun border(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =

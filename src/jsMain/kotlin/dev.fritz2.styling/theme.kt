@@ -10,6 +10,11 @@ typealias Property = String
 
 class ResponsiveValue<T : Property>(val sm: T, val md: T = sm, val lg: T = md, val xl: T = lg)
 
+fun rgb(r: Int, g: Int, b: Int) = "rgb($r,$g,$b)"
+fun rgba(r: Int, g: Int, b: Int, a: Double) = "rgb($r,$g,$b,$a)"
+fun hsl(h: Int, s: Int, l: Int) = "hsl($h,$s%,$l%)"
+fun hsla(h: Int, s: Int, l: Int, a: Double) = "hsl($h,$s%,$l%,$a)"
+
 open class ScaledValue<T : Property>(
     val normal: T,
     val small: T = normal,
