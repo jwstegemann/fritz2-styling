@@ -10,6 +10,7 @@ import dev.fritz2.routing.router
 import dev.fritz2.styling.*
 import dev.fritz2.styling.components.*
 import dev.fritz2.styling.params.AreaName
+import dev.fritz2.styling.params.GridTemplateContext
 import dev.fritz2.styling.params.end
 import dev.fritz2.styling.params.start
 import kotlinx.coroutines.ExperimentalCoroutinesApi

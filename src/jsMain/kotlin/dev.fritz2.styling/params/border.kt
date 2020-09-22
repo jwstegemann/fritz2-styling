@@ -96,7 +96,7 @@ class RadiiContext(
     fun bottomLeft(value: ScaledValueProperty) = property(borderBottomLeftRadiusKey, theme().radii, value, target)
 }
 
-
+@ExperimentalCoroutinesApi
 interface Border : StyleParams {
     /*
      * border
@@ -167,29 +167,5 @@ interface Border : StyleParams {
         if (lg != null) RadiiContext(this, lgProperties).lg()
         if (xl != null) RadiiContext(this, xlProperties).xl()
     }
-
-
-/*
-    fun borderRadius(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "border-radius: $it;" }
-
-    fun borderTopLeftRadius(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "border-top-left-radius: $it;" }
-
-    fun borderTopRightRadius(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "border-top-right-radius: $it;" }
-
-
-    fun borderBottomLeftRadius(sm: Property? = null, md: Property? = null, lg: Property? = null, xl: Property? = null) =
-        property(sm, md, lg, xl) { "border-bottom-left-radius: $it;" }
-
-    fun borderBottomRightRadius(
-        sm: Property? = null,
-        md: Property? = null,
-        lg: Property? = null,
-        xl: Property? = null
-    ) = property(sm, md, lg, xl) { "border-bottom-right-radius: $it;" }
-
-     */
 
 }
