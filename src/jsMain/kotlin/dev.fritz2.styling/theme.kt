@@ -17,9 +17,6 @@ typealias PredefinedBoxStyle = BoxStyleParams.() -> Unit
 
 typealias Property = String
 
-val Property.asKey: String
-    get() = "$this: "
-
 class ResponsiveValue<T : Property>(val sm: T, val md: T = sm, val lg: T = md, val xl: T = lg)
 
 fun rgb(r: Int, g: Int, b: Int) = "rgb($r,$g,$b)"

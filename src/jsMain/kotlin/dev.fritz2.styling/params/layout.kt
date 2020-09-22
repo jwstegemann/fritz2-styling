@@ -1,7 +1,6 @@
 package dev.fritz2.styling.params
 
 import dev.fritz2.styling.Property
-import dev.fritz2.styling.asKey
 import dev.fritz2.styling.theme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -12,76 +11,82 @@ internal const val maxWidthKey = "max-width: "
 internal const val minHeightKey = "min-height: "
 internal const val maxHeightKey = "max-height: "
 
-object DisplayStyles : PropertyValues {
+typealias DisplayProperty = Property
+
+object DisplayValues : PropertyValues {
     override val key = "display: "
 
-    const val none: Property = "none"
-    const val inline: Property = "inline"
-    const val block: Property = "block"
-    const val contents: Property = "contents"
-    const val listItem: Property = "list-item"
-    const val inlineBlock: Property = "inline-block"
-    const val inlineTable: Property = "inline-table"
-    const val table: Property = "table"
-    const val tableCell: Property = "table-cell"
-    const val tableColumn: Property = "table-column"
-    const val tableColumnGroup: Property = "table-column-group"
-    const val tableFooterGroup: Property = "table-footer-group"
-    const val tableHeaderGroup: Property = "table-header-group"
-    const val tableRow: Property = "table-row"
-    const val tableRowGroup: Property = "table-row-group"
-    const val flex: Property = "flex"
-    const val inlineFlex: Property = "inline-flex"
-    const val grid: Property = "grid"
-    const val inlineGrid: Property = "inline-grid"
-    const val ruby: Property = "ruby"
-    const val rubyBase: Property = "ruby-base"
-    const val rubyText: Property = "ruby-text"
-    const val rubyBaseContainer: Property = "ruby-base-container"
-    const val rubyTextContainer: Property = "ruby-text-container"
-    const val runIn: Property = "run-in"
-    const val inherit: Property = "inherit"
-    const val initial: Property = "initial"
-    const val unset: Property = "unset"
+    const val none: DisplayProperty = "none"
+    const val inline: DisplayProperty = "inline"
+    const val block: DisplayProperty = "block"
+    const val contents: DisplayProperty = "contents"
+    const val listItem: DisplayProperty = "list-item"
+    const val inlineBlock: DisplayProperty = "inline-block"
+    const val inlineTable: DisplayProperty = "inline-table"
+    const val table: DisplayProperty = "table"
+    const val tableCell: DisplayProperty = "table-cell"
+    const val tableColumn: DisplayProperty = "table-column"
+    const val tableColumnGroup: DisplayProperty = "table-column-group"
+    const val tableFooterGroup: DisplayProperty = "table-footer-group"
+    const val tableHeaderGroup: DisplayProperty = "table-header-group"
+    const val tableRow: DisplayProperty = "table-row"
+    const val tableRowGroup: DisplayProperty = "table-row-group"
+    const val flex: DisplayProperty = "flex"
+    const val inlineFlex: DisplayProperty = "inline-flex"
+    const val grid: DisplayProperty = "grid"
+    const val inlineGrid: DisplayProperty = "inline-grid"
+    const val ruby: DisplayProperty = "ruby"
+    const val rubyBase: DisplayProperty = "ruby-base"
+    const val rubyText: DisplayProperty = "ruby-text"
+    const val rubyBaseContainer: DisplayProperty = "ruby-base-container"
+    const val rubyTextContainer: DisplayProperty = "ruby-text-container"
+    const val runIn: DisplayProperty = "run-in"
+    const val inherit: DisplayProperty = "inherit"
+    const val initial: DisplayProperty = "initial"
+    const val unset: DisplayProperty = "unset"
 }
 
-open class OverflowBaseStyles(override val key: String) : PropertyValues {
+typealias OverflowProperty = Property
 
-    val visible: Property = "visible"
-    val hidden: Property = "hidden"
-    val scroll: Property = "scroll"
-    val auto: Property = "auto"
-    val inherit: Property = "inherit"
+open class OverflowBaseValues(override val key: String) : PropertyValues {
+
+    val visible: OverflowProperty = "visible"
+    val hidden: OverflowProperty = "hidden"
+    val scroll: OverflowProperty = "scroll"
+    val auto: OverflowProperty = "auto"
+    val inherit: OverflowProperty = "inherit"
 }
 
-object OverflowStyles : OverflowBaseStyles("overflow: ")
+object OverflowValues : OverflowBaseValues("overflow: ")
 
-object OverflowXStyles : OverflowBaseStyles("overflow-x: ") {
-    const val clip: Property = "clip"
-    const val initial: Property = "initial"
-    const val unset: Property = "unset"
+object OverflowXValues : OverflowBaseValues("overflow-x: ") {
+    const val clip: OverflowProperty = "clip"
+    const val initial: OverflowProperty = "initial"
+    const val unset: OverflowProperty = "unset"
 }
 
-object OverflowYStyles : OverflowBaseStyles("overflow-y: ") {
-    const val clip: Property = "clip"
-    const val initial: Property = "initial"
-    const val unset: Property = "unset"
+object OverflowYValues : OverflowBaseValues("overflow-y: ") {
+    const val clip: OverflowProperty = "clip"
+    const val initial: OverflowProperty = "initial"
+    const val unset: OverflowProperty = "unset"
 }
 
-object VerticalAlignStyles : PropertyValues {
+typealias VerticalAlignProperty = Property
+
+object VerticalAlignValues : PropertyValues {
     override val key = "vertical-align: "
 
-    const val baseline: Property = "baseline"
-    const val sub: Property = "sub"
-    const val `super`: Property = "super"
-    const val textTop: Property = "textTop"
-    const val textBottom: Property = "textBottom"
-    const val middle: Property = "middle"
-    const val top: Property = "top"
-    const val bottom: Property = "bottom"
-    const val inherit: Property = "inherit"
-    const val initial: Property = "initial"
-    const val unset: Property = "unset"
+    const val baseline: VerticalAlignProperty = "baseline"
+    const val sub: VerticalAlignProperty = "sub"
+    const val `super`: VerticalAlignProperty = "super"
+    const val textTop: VerticalAlignProperty = "textTop"
+    const val textBottom: VerticalAlignProperty = "textBottom"
+    const val middle: VerticalAlignProperty = "middle"
+    const val top: VerticalAlignProperty = "top"
+    const val bottom: VerticalAlignProperty = "bottom"
+    const val inherit: VerticalAlignProperty = "inherit"
+    const val initial: VerticalAlignProperty = "initial"
+    const val unset: VerticalAlignProperty = "unset"
 }
 
 @ExperimentalCoroutinesApi
@@ -115,18 +120,20 @@ class GridRowColumnContext(
     fun span(value: String) = "span $value"
 }
 
-object FlexBasisValues : PropertyValues {
-    override val key = "flex-basis".asKey
+typealias FlexBasisProperty = Property
 
-    const val auto: Property = "auto"
-    const val fill: Property = "fill"
-    const val maxContent: Property = "max-content"
-    const val minContent: Property = "min-content"
-    const val fitContent: Property = "fit-content"
-    const val content: Property = "content"
-    const val inherit: Property = "inherit"
-    const val initial: Property = "initial"
-    const val unset: Property = "unset"
+object FlexBasisValues : PropertyValues {
+    override val key = "flex-basis: "
+
+    const val auto: FlexBasisProperty = "auto"
+    const val fill: FlexBasisProperty = "fill"
+    const val maxContent: FlexBasisProperty = "max-content"
+    const val minContent: FlexBasisProperty = "min-content"
+    const val fitContent: FlexBasisProperty = "fit-content"
+    const val content: FlexBasisProperty = "content"
+    const val inherit: FlexBasisProperty = "inherit"
+    const val initial: FlexBasisProperty = "initial"
+    const val unset: FlexBasisProperty = "unset"
 }
 
 @ExperimentalCoroutinesApi
@@ -135,10 +142,11 @@ class FlexItemContext(
     selfAlignment: SelfAlignment,
     private val target: StringBuilder
 ) : StyleParams by styleParams, SelfAlignment by selfAlignment {
-    fun order(value: () -> Property) = property("order".asKey, value(), target)
-    fun grow(value: () -> Property) = property("flex-grow".asKey, value(), target)
-    fun shrink(value: () -> Property) = property("flex-shrink".asKey, value(), target)
-    fun basis(value: FlexBasisValues.() -> Property) = property(FlexBasisValues.key, FlexBasisValues.value(), target)
+    fun order(value: () -> Property) = property("order: ", value(), target)
+    fun grow(value: () -> Property) = property("flex-grow: ", value(), target)
+    fun shrink(value: () -> Property) = property("flex-shrink: ", value(), target)
+    fun basis(value: FlexBasisValues.() -> FlexBasisProperty) =
+            property(FlexBasisValues.key, FlexBasisValues.value(), target)
     fun basis(value: () -> Property) = property(FlexBasisValues.key, value(), target)
 }
 
@@ -264,67 +272,68 @@ interface Layout : StyleParams {
     /*
      * display
      */
-    fun display(value: DisplayStyles.() -> Property) = property(DisplayStyles, value)
+    fun display(value: DisplayValues.() -> DisplayProperty) = property(DisplayValues, value)
 
     fun display(
-        sm: (DisplayStyles.() -> Property)? = null,
-        md: (DisplayStyles.() -> Property)? = null,
-        lg: (DisplayStyles.() -> Property)? = null,
-        xl: (DisplayStyles.() -> Property)? = null
+            sm: (DisplayValues.() -> DisplayProperty)? = null,
+            md: (DisplayValues.() -> DisplayProperty)? = null,
+            lg: (DisplayValues.() -> DisplayProperty)? = null,
+            xl: (DisplayValues.() -> DisplayProperty)? = null
     ) =
-        property(DisplayStyles, sm, md, lg, xl)
+        property(DisplayValues, sm, md, lg, xl)
 
     /*
      * vertical-align
      */
-    fun verticalAlign(value: VerticalAlignStyles.() -> Property) = property(VerticalAlignStyles, value)
+    fun verticalAlign(value: VerticalAlignValues.() -> VerticalAlignProperty) =
+            property(VerticalAlignValues, value)
 
     fun verticalAlign(
-        sm: (VerticalAlignStyles.() -> Property)? = null,
-        md: (VerticalAlignStyles.() -> Property)? = null,
-        lg: (VerticalAlignStyles.() -> Property)? = null,
-        xl: (VerticalAlignStyles.() -> Property)? = null
+            sm: (VerticalAlignValues.() -> VerticalAlignProperty)? = null,
+            md: (VerticalAlignValues.() -> VerticalAlignProperty)? = null,
+            lg: (VerticalAlignValues.() -> VerticalAlignProperty)? = null,
+            xl: (VerticalAlignValues.() -> VerticalAlignProperty)? = null
     ) =
-        property(VerticalAlignStyles, sm, md, lg, xl)
+        property(VerticalAlignValues, sm, md, lg, xl)
 
     /*
      * overflow
      */
-    fun overflow(value: OverflowStyles.() -> Property) = property(OverflowStyles, value)
+    fun overflow(value: OverflowValues.() -> OverflowProperty) = property(OverflowValues, value)
 
     fun overflow(
-        sm: (OverflowStyles.() -> Property)? = null,
-        md: (OverflowStyles.() -> Property)? = null,
-        lg: (OverflowStyles.() -> Property)? = null,
-        xl: (OverflowStyles.() -> Property)? = null
+            sm: (OverflowValues.() -> OverflowProperty)? = null,
+            md: (OverflowValues.() -> OverflowProperty)? = null,
+            lg: (OverflowValues.() -> OverflowProperty)? = null,
+            xl: (OverflowValues.() -> OverflowProperty)? = null
     ) =
-        property(OverflowStyles, sm, md, lg, xl)
+        property(OverflowValues, sm, md, lg, xl)
 
     /*
      * overflow-x
      */
-    fun overflowX(value: OverflowXStyles.() -> Property) = property(OverflowXStyles, value)
+    fun overflowX(value: OverflowXValues.() -> OverflowProperty) = property(OverflowXValues, value)
 
     fun overflowX(
-        sm: (OverflowXStyles.() -> Property)? = null,
-        md: (OverflowXStyles.() -> Property)? = null,
-        lg: (OverflowXStyles.() -> Property)? = null,
-        xl: (OverflowXStyles.() -> Property)? = null
+            sm: (OverflowXValues.() -> OverflowProperty)? = null,
+            md: (OverflowXValues.() -> OverflowProperty)? = null,
+            lg: (OverflowXValues.() -> OverflowProperty)? = null,
+            xl: (OverflowXValues.() -> OverflowProperty)? = null
     ) =
-        property(OverflowXStyles, sm, md, lg, xl)
+        property(OverflowXValues, sm, md, lg, xl)
 
     /*
      * overflow-y
      */
-    fun overflowY(value: OverflowYStyles.() -> Property) = property(OverflowYStyles, value)
+    fun overflowY(value: OverflowYValues.() -> OverflowProperty) = property(OverflowYValues, value)
 
     fun overflowY(
-        sm: (OverflowYStyles.() -> Property)? = null,
-        md: (OverflowYStyles.() -> Property)? = null,
-        lg: (OverflowYStyles.() -> Property)? = null,
-        xl: (OverflowYStyles.() -> Property)? = null
+            sm: (OverflowYValues.() -> OverflowProperty)? = null,
+            md: (OverflowYValues.() -> OverflowProperty)? = null,
+            lg: (OverflowYValues.() -> OverflowProperty)? = null,
+            xl: (OverflowYValues.() -> OverflowProperty)? = null
     ) =
-        property(OverflowYStyles, sm, md, lg, xl)
+        property(OverflowYValues, sm, md, lg, xl)
 
     /*
      * grid-area, grid-column, grid-row

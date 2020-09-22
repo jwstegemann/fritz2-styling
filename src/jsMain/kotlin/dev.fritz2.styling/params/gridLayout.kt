@@ -4,23 +4,25 @@ import dev.fritz2.styling.Property
 import dev.fritz2.styling.theme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-object AutoFlowStyles : PropertyValues {
+typealias AutoFlowProperty = Property
+
+object AutoFlowValues : PropertyValues {
     override val key = "grid-auto-flow: "
 
-    const val column: Property = "column"
-    const val row: Property = "row"
-    const val dense: Property = "dense"
-    const val columnDense: Property = "column dense"
-    const val rowDense: Property = "row dense"
-    const val inherit: Property = "inherit"
-    const val initial: Property = "initial"
-    const val unset: Property = "unset"
+    const val column: AutoFlowProperty = "column"
+    const val row: AutoFlowProperty = "row"
+    const val dense: AutoFlowProperty = "dense"
+    const val columnDense: AutoFlowProperty = "column dense"
+    const val rowDense: AutoFlowProperty = "row dense"
+    const val inherit: AutoFlowProperty = "inherit"
+    const val initial: AutoFlowProperty = "initial"
+    const val unset: AutoFlowProperty = "unset"
 }
 
 @ExperimentalCoroutinesApi
 class GridTemplateContext(
-    styleParams: StyleParams,
-    private val target: StringBuilder
+        styleParams: StyleParams,
+        private val target: StringBuilder
 ) : StyleParams by styleParams {
 
     val autoFit: Property = "auto-fit"
@@ -30,10 +32,10 @@ class GridTemplateContext(
     val auto: Property = "auto"
 
     fun repeat(count: Int, value: GridTemplateContext.() -> Property) =
-        "repeat($count, ${value()})"
+            "repeat($count, ${value()})"
 
     fun repeat(count: Property, value: GridTemplateContext.() -> Property) =
-        "repeat($count, ${value()})"
+            "repeat($count, ${value()})"
 
     fun minmax(min: Property, max: Property) = "minmax($min, $max)"
 }
@@ -69,13 +71,13 @@ interface GridLayout : StyleParams, Alignment {
      * columns
      */
     fun columns(value: GridTemplateContext.() -> Property) =
-        property(gridTemplateColumnsKey, GridTemplateContext(this, smProperties).value(), smProperties)
+            property(gridTemplateColumnsKey, GridTemplateContext(this, smProperties).value(), smProperties)
 
     fun columns(
-        sm: (GridTemplateContext.() -> Property)? = null,
-        md: (GridTemplateContext.() -> Property)? = null,
-        lg: (GridTemplateContext.() -> Property)? = null,
-        xl: (GridTemplateContext.() -> Property)? = null
+            sm: (GridTemplateContext.() -> Property)? = null,
+            md: (GridTemplateContext.() -> Property)? = null,
+            lg: (GridTemplateContext.() -> Property)? = null,
+            xl: (GridTemplateContext.() -> Property)? = null
     ) {
         if (sm != null) property(gridTemplateColumnsKey, GridTemplateContext(this, smProperties).sm(), smProperties)
         if (md != null) property(gridTemplateColumnsKey, GridTemplateContext(this, mdProperties).md(), mdProperties)
@@ -87,13 +89,13 @@ interface GridLayout : StyleParams, Alignment {
      * rows
     */
     fun rows(value: GridTemplateContext.() -> Property) =
-        property(gridTemplateRowsKey, GridTemplateContext(this, smProperties).value(), smProperties)
+            property(gridTemplateRowsKey, GridTemplateContext(this, smProperties).value(), smProperties)
 
     fun rows(
-        sm: (GridTemplateContext.() -> Property)? = null,
-        md: (GridTemplateContext.() -> Property)? = null,
-        lg: (GridTemplateContext.() -> Property)? = null,
-        xl: (GridTemplateContext.() -> Property)? = null
+            sm: (GridTemplateContext.() -> Property)? = null,
+            md: (GridTemplateContext.() -> Property)? = null,
+            lg: (GridTemplateContext.() -> Property)? = null,
+            xl: (GridTemplateContext.() -> Property)? = null
     ) {
         if (sm != null) property(gridTemplateRowsKey, GridTemplateContext(this, smProperties).sm(), smProperties)
         if (md != null) property(gridTemplateRowsKey, GridTemplateContext(this, mdProperties).md(), mdProperties)
@@ -105,13 +107,13 @@ interface GridLayout : StyleParams, Alignment {
      * autoRows
     */
     fun autoRows(value: GridTemplateContext.() -> Property) =
-        property(gridTemplateAutoRowsKey, GridTemplateContext(this, smProperties).value(), smProperties)
+            property(gridTemplateAutoRowsKey, GridTemplateContext(this, smProperties).value(), smProperties)
 
     fun autoRows(
-        sm: (GridTemplateContext.() -> Property)? = null,
-        md: (GridTemplateContext.() -> Property)? = null,
-        lg: (GridTemplateContext.() -> Property)? = null,
-        xl: (GridTemplateContext.() -> Property)? = null
+            sm: (GridTemplateContext.() -> Property)? = null,
+            md: (GridTemplateContext.() -> Property)? = null,
+            lg: (GridTemplateContext.() -> Property)? = null,
+            xl: (GridTemplateContext.() -> Property)? = null
     ) {
         if (sm != null) property(gridTemplateAutoRowsKey, GridTemplateContext(this, smProperties).sm(), smProperties)
         if (md != null) property(gridTemplateAutoRowsKey, GridTemplateContext(this, mdProperties).md(), mdProperties)
@@ -123,13 +125,13 @@ interface GridLayout : StyleParams, Alignment {
      * autoColumns
     */
     fun autoColumns(value: GridTemplateContext.() -> Property) =
-        property(gridTemplateAutoColumnsKey, GridTemplateContext(this, smProperties).value(), smProperties)
+            property(gridTemplateAutoColumnsKey, GridTemplateContext(this, smProperties).value(), smProperties)
 
     fun autoColumns(
-        sm: (GridTemplateContext.() -> Property)? = null,
-        md: (GridTemplateContext.() -> Property)? = null,
-        lg: (GridTemplateContext.() -> Property)? = null,
-        xl: (GridTemplateContext.() -> Property)? = null
+            sm: (GridTemplateContext.() -> Property)? = null,
+            md: (GridTemplateContext.() -> Property)? = null,
+            lg: (GridTemplateContext.() -> Property)? = null,
+            xl: (GridTemplateContext.() -> Property)? = null
     ) {
         if (sm != null) property(gridTemplateAutoColumnsKey, GridTemplateContext(this, smProperties).sm(), smProperties)
         if (md != null) property(gridTemplateAutoColumnsKey, GridTemplateContext(this, mdProperties).md(), mdProperties)
@@ -140,19 +142,19 @@ interface GridLayout : StyleParams, Alignment {
     /*
      * autoFlow
     */
-    fun autoFlow(value: AutoFlowStyles.() -> Property) =
-        property(AutoFlowStyles.key, AutoFlowStyles.value(), smProperties)
+    fun autoFlow(value: AutoFlowValues.() -> AutoFlowProperty) =
+            property(AutoFlowValues.key, AutoFlowValues.value(), smProperties)
 
     fun autoFlow(
-        sm: (AutoFlowStyles.() -> Property)? = null,
-        md: (AutoFlowStyles.() -> Property)? = null,
-        lg: (AutoFlowStyles.() -> Property)? = null,
-        xl: (AutoFlowStyles.() -> Property)? = null
+            sm: (AutoFlowValues.() -> AutoFlowProperty)? = null,
+            md: (AutoFlowValues.() -> AutoFlowProperty)? = null,
+            lg: (AutoFlowValues.() -> AutoFlowProperty)? = null,
+            xl: (AutoFlowValues.() -> AutoFlowProperty)? = null
     ) {
-        if (sm != null) property(AutoFlowStyles.key, AutoFlowStyles.sm(), smProperties)
-        if (md != null) property(AutoFlowStyles.key, AutoFlowStyles.md(), mdProperties)
-        if (lg != null) property(AutoFlowStyles.key, AutoFlowStyles.lg(), lgProperties)
-        if (xl != null) property(AutoFlowStyles.key, AutoFlowStyles.xl(), xlProperties)
+        if (sm != null) property(AutoFlowValues.key, AutoFlowValues.sm(), smProperties)
+        if (md != null) property(AutoFlowValues.key, AutoFlowValues.md(), mdProperties)
+        if (lg != null) property(AutoFlowValues.key, AutoFlowValues.lg(), lgProperties)
+        if (xl != null) property(AutoFlowValues.key, AutoFlowValues.xl(), xlProperties)
     }
 
     /*
@@ -165,10 +167,10 @@ interface GridLayout : StyleParams, Alignment {
     }
 
     fun areas(
-        sm: (GridAreaContext.() -> Unit)? = null,
-        md: (GridAreaContext.() -> Unit)? = null,
-        lg: (GridAreaContext.() -> Unit)? = null,
-        xl: (GridAreaContext.() -> Unit)? = null
+            sm: (GridAreaContext.() -> Unit)? = null,
+            md: (GridAreaContext.() -> Unit)? = null,
+            lg: (GridAreaContext.() -> Unit)? = null,
+            xl: (GridAreaContext.() -> Unit)? = null
     ) {
         if (sm != null) {
             val target = StringBuilder()
@@ -198,12 +200,12 @@ interface GridLayout : StyleParams, Alignment {
     fun columnGap(value: ScaledValueProperty) = property(columnGapKey, theme().gridGap, value)
 
     fun columnGap(
-        sm: ScaledValueProperty? = null,
-        md: ScaledValueProperty? = null,
-        lg: ScaledValueProperty? = null,
-        xl: ScaledValueProperty? = null
+            sm: ScaledValueProperty? = null,
+            md: ScaledValueProperty? = null,
+            lg: ScaledValueProperty? = null,
+            xl: ScaledValueProperty? = null
     ) =
-        property(columnGapKey, theme().gridGap, sm, md, lg, xl)
+            property(columnGapKey, theme().gridGap, sm, md, lg, xl)
 
     /*
      * row-gap
@@ -211,12 +213,12 @@ interface GridLayout : StyleParams, Alignment {
     fun rowGap(value: ScaledValueProperty) = property(rowGapKey, theme().gridGap, value)
 
     fun rowGap(
-        sm: ScaledValueProperty? = null,
-        md: ScaledValueProperty? = null,
-        lg: ScaledValueProperty? = null,
-        xl: ScaledValueProperty? = null
+            sm: ScaledValueProperty? = null,
+            md: ScaledValueProperty? = null,
+            lg: ScaledValueProperty? = null,
+            xl: ScaledValueProperty? = null
     ) =
-        property(rowGapKey, theme().gridGap, sm, md, lg, xl)
+            property(rowGapKey, theme().gridGap, sm, md, lg, xl)
 
     /*
      * gap
@@ -227,10 +229,10 @@ interface GridLayout : StyleParams, Alignment {
     }
 
     fun gap(
-        sm: ScaledValueProperty? = null,
-        md: ScaledValueProperty? = null,
-        lg: ScaledValueProperty? = null,
-        xl: ScaledValueProperty? = null
+            sm: ScaledValueProperty? = null,
+            md: ScaledValueProperty? = null,
+            lg: ScaledValueProperty? = null,
+            xl: ScaledValueProperty? = null
     ) {
         columnGap(sm, md, lg, xl)
         rowGap(sm, md, lg, xl)

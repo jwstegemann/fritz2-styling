@@ -3,34 +3,38 @@ package dev.fritz2.styling.params
 import dev.fritz2.styling.Property
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+typealias DirectionProperty = Property
+
 object DirectionValues : PropertyValues {
     override val key = "flex-direction: "
 
-    const val row: Property = "row"
-    const val column: Property = "column"
-    const val rowReverse: Property = "row-reverse"
-    const val columnReverse: Property = "column-reverse"
+    const val row: DirectionProperty = "row"
+    const val column: DirectionProperty = "column"
+    const val rowReverse: DirectionProperty = "row-reverse"
+    const val columnReverse: DirectionProperty = "column-reverse"
 }
+
+typealias WrapProperty = Property
 
 object WrapValues : PropertyValues {
     override val key = "flex-wrap: "
 
-    const val wrap: Property = "wrap"
-    const val nowrap: Property = "nowrap"
-    const val wrapReverse: Property = "wrap-reverse"
+    const val wrap: WrapProperty = "wrap"
+    const val nowrap: WrapProperty = "nowrap"
+    const val wrapReverse: WrapProperty = "wrap-reverse"
 }
 
 @ExperimentalCoroutinesApi
 interface Flexbox : StyleParams, Alignment {
 
-    fun direction(value: DirectionValues.() -> Property) =
+    fun direction(value: DirectionValues.() -> DirectionProperty) =
         property(DirectionValues.key, DirectionValues.value(), smProperties)
 
     fun direction(
-        sm: (DirectionValues.() -> Property)? = null,
-        md: (DirectionValues.() -> Property)? = null,
-        lg: (DirectionValues.() -> Property)? = null,
-        xl: (DirectionValues.() -> Property)? = null
+        sm: (DirectionValues.() -> DirectionProperty)? = null,
+        md: (DirectionValues.() -> DirectionProperty)? = null,
+        lg: (DirectionValues.() -> DirectionProperty)? = null,
+        xl: (DirectionValues.() -> DirectionProperty)? = null
     ) {
         if (sm != null) property(DirectionValues.key, DirectionValues.sm(), smProperties)
         if (md != null) property(DirectionValues.key, DirectionValues.md(), mdProperties)
@@ -38,14 +42,14 @@ interface Flexbox : StyleParams, Alignment {
         if (xl != null) property(DirectionValues.key, DirectionValues.xl(), xlProperties)
     }
 
-    fun wrap(value: WrapValues.() -> Property) =
+    fun wrap(value: WrapValues.() -> WrapProperty) =
         property(WrapValues.key, WrapValues.value(), smProperties)
 
     fun wrap(
-        sm: (WrapValues.() -> Property)? = null,
-        md: (WrapValues.() -> Property)? = null,
-        lg: (WrapValues.() -> Property)? = null,
-        xl: (WrapValues.() -> Property)? = null
+        sm: (WrapValues.() -> WrapProperty)? = null,
+        md: (WrapValues.() -> WrapProperty)? = null,
+        lg: (WrapValues.() -> WrapProperty)? = null,
+        xl: (WrapValues.() -> WrapProperty)? = null
     ) {
         if (sm != null) property(WrapValues.key, WrapValues.sm(), smProperties)
         if (md != null) property(WrapValues.key, WrapValues.md(), mdProperties)

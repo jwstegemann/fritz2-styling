@@ -15,7 +15,7 @@ class PositionContext(
     fun top(value: ScaledValueProperty) = property("top: ", theme().space, value, target)
     fun left(value: ScaledValueProperty) = property("left: ", theme().space, value, target)
     fun bottom(value: ScaledValueProperty) = property("bottom: ", theme().space, value, target)
-    fun right(value: ScaledValueProperty) = property("right", theme().space, value, target)
+    fun right(value: ScaledValueProperty) = property("right: ", theme().space, value, target)
 
     fun vertical(value: ScaledValueProperty) {
         property("top: ", theme().space, value, target)

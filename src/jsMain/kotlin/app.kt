@@ -211,7 +211,7 @@ fun HtmlElements.gridDemo(): Div {
             }
             box({
                 grid { area { grid.SIDEBAR } }
-                bgColor { "yellow" }
+                background { color { "yellow" } }
             }) {
                 text { +"Sidebar" }
             }
@@ -246,7 +246,7 @@ fun HtmlElements.gridDemo(): Div {
             }
             box({
                 grid { area { grid.FOOTER } }
-                bgColor { "lime" }
+                background { color { "lime" }}
             }) {
                 text { +"Footer" }
             }

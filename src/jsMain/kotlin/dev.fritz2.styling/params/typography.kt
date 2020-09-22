@@ -3,51 +3,59 @@ package dev.fritz2.styling.params
 import dev.fritz2.styling.Fonts
 import dev.fritz2.styling.Property
 import dev.fritz2.styling.theme
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+typealias TextTransformProperty = Property
 
 object TextTransforms : PropertyValues {
     override val key = "text-transform: "
 
-    const val none: Property = "none"
-    const val capitalize: Property = "capitalize"
-    const val uppercase: Property = "uppercase"
-    const val lowercase: Property = "lowercase"
-    const val initial: Property = "initial"
-    const val inherit: Property = "inherit"
+    const val none: TextTransformProperty = "none"
+    const val capitalize: TextTransformProperty = "capitalize"
+    const val uppercase: TextTransformProperty = "uppercase"
+    const val lowercase: TextTransformProperty = "lowercase"
+    const val initial: TextTransformProperty = "initial"
+    const val inherit: TextTransformProperty = "inherit"
 }
+
+typealias FontStyleProperty = Property
 
 object FontStyles : PropertyValues {
     override val key = "font-style: "
 
-    const val normal: Property = "normal"
-    const val italic: Property = "italic"
-    const val oblique: Property = "oblique"
-    const val initial: Property = "initial"
-    const val inherit: Property = "inherit"
+    const val normal: FontStyleProperty = "normal"
+    const val italic: FontStyleProperty = "italic"
+    const val oblique: FontStyleProperty = "oblique"
+    const val initial: FontStyleProperty = "initial"
+    const val inherit: FontStyleProperty = "inherit"
 }
+
+typealias  TextAlignProperty = Property
 
 object TextAligns : PropertyValues {
     override val key = "text-align: "
 
-    const val left: Property = "left"
-    const val right: Property = "right"
-    const val center: Property = "center"
-    const val justify: Property = "justify"
-    const val initial: Property = "initial"
-    const val inherit: Property = "inherit"
+    const val left: TextAlignProperty = "left"
+    const val right: TextAlignProperty = "right"
+    const val center: TextAlignProperty = "center"
+    const val justify: TextAlignProperty = "justify"
+    const val initial: TextAlignProperty = "initial"
+    const val inherit: TextAlignProperty = "inherit"
 }
+
+typealias FontWeightProperty = Property
 
 object FontWeights : PropertyValues {
     override val key = "font-weight: "
 
-    const val normal: Property = "normal"
-    const val bold: Property = "bold"
-    const val medium: Property = "500"
-    const val semiBold: Property = "600"
-    const val bolder: Property = "bolder"
-    const val lighter: Property = "lighter"
-    const val initial: Property = "initial"
-    const val inherit: Property = "inherit"
+    const val normal: FontWeightProperty = "normal"
+    const val bold: FontWeightProperty = "bold"
+    const val medium: FontWeightProperty = "500"
+    const val semiBold: FontWeightProperty = "600"
+    const val bolder: FontWeightProperty = "bolder"
+    const val lighter: FontWeightProperty = "lighter"
+    const val initial: FontWeightProperty = "initial"
+    const val inherit: FontWeightProperty = "inherit"
 }
 
 internal const val fontSizeKey = "font-size: "
@@ -56,6 +64,7 @@ internal const val lineHeightKey = "line-height: "
 
 
 //FIXME: make abstract class to allow inline?
+@ExperimentalCoroutinesApi
 interface Typo : StyleParams {
 
     /*
@@ -87,13 +96,13 @@ interface Typo : StyleParams {
     /*
      * font-weight
      */
-    fun fontWeight(value: FontWeights.() -> Property) = property(FontWeights, value)
+    fun fontWeight(value: FontWeights.() -> FontWeightProperty) = property(FontWeights, value)
 
     fun fontWeight(
-        sm: (FontWeights.() -> Property)? = null,
-        md: (FontWeights.() -> Property)? = null,
-        lg: (FontWeights.() -> Property)? = null,
-        xl: (FontWeights.() -> Property)? = null,
+        sm: (FontWeights.() -> FontWeightProperty)? = null,
+        md: (FontWeights.() -> FontWeightProperty)? = null,
+        lg: (FontWeights.() -> FontWeightProperty)? = null,
+        xl: (FontWeights.() -> FontWeightProperty)? = null,
     ) =
         property(FontWeights, sm, md, lg, xl)
 
@@ -126,39 +135,39 @@ interface Typo : StyleParams {
     /*
      * text-align
      */
-    fun textAlign(value: TextAligns.() -> Property) = property(TextAligns, value)
+    fun textAlign(value: TextAligns.() -> TextAlignProperty) = property(TextAligns, value)
 
     fun textAlign(
-        sm: (TextAligns.() -> Property)? = null,
-        md: (TextAligns.() -> Property)? = null,
-        lg: (TextAligns.() -> Property)? = null,
-        xl: (TextAligns.() -> Property)? = null,
+        sm: (TextAligns.() -> TextAlignProperty)? = null,
+        md: (TextAligns.() -> TextAlignProperty)? = null,
+        lg: (TextAligns.() -> TextAlignProperty)? = null,
+        xl: (TextAligns.() -> TextAlignProperty)? = null,
     ) =
         property(TextAligns, sm, md, lg, xl)
 
     /*
      * text-transform
      */
-    fun textTransform(value: TextTransforms.() -> Property) = property(TextTransforms, value)
+    fun textTransform(value: TextTransforms.() -> TextTransformProperty) = property(TextTransforms, value)
 
     fun textTransform(
-        sm: (TextTransforms.() -> Property)? = null,
-        md: (TextTransforms.() -> Property)? = null,
-        lg: (TextTransforms.() -> Property)? = null,
-        xl: (TextTransforms.() -> Property)? = null,
+        sm: (TextTransforms.() -> TextTransformProperty)? = null,
+        md: (TextTransforms.() -> TextTransformProperty)? = null,
+        lg: (TextTransforms.() -> TextTransformProperty)? = null,
+        xl: (TextTransforms.() -> TextTransformProperty)? = null,
     ) =
         property(TextTransforms, sm, md, lg, xl)
 
     /*
      * font-style
      */
-    fun fontStyle(value: FontStyles.() -> Property) = property(FontStyles, value)
+    fun fontStyle(value: FontStyles.() -> FontStyleProperty) = property(FontStyles, value)
 
     fun fontStyle(
-        sm: (FontStyles.() -> Property)? = null,
-        md: (FontStyles.() -> Property)? = null,
-        lg: (FontStyles.() -> Property)? = null,
-        xl: (FontStyles.() -> Property)? = null,
+        sm: (FontStyles.() -> FontStyleProperty)? = null,
+        md: (FontStyles.() -> FontStyleProperty)? = null,
+        lg: (FontStyles.() -> FontStyleProperty)? = null,
+        xl: (FontStyles.() -> FontStyleProperty)? = null,
     ) =
         property(FontStyles, sm, md, lg, xl)
 }
