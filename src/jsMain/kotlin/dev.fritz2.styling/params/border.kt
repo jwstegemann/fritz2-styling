@@ -603,7 +603,10 @@ interface Border : StyleParams {
      *
      * Example call:
      * ```
-     * radius { small }
+     * radius(
+     *     sm = { small }
+     *     lg = { normal }
+     * )
      * ```
      *
      * @param sm scale value for small media devices, recommended to use predefined values via [dev.fritz2.styling.Theme.radii]
@@ -646,10 +649,10 @@ interface Border : StyleParams {
      * Example call:
      * ```
      * radii(
-     *     sm {
+     *     sm = {
      *         // some functions of [RadiiContext] with appropriate values for *all devices*
      *     },
-     *     lg {
+     *     lg = {
      *         // some functions of [RadiiContext] with appropriate values for *all devices*
      *     }
      * }
