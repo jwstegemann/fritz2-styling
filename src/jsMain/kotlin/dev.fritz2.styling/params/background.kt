@@ -3,6 +3,9 @@ package dev.fritz2.styling.params
 import dev.fritz2.dom.HtmlTagMarker
 import dev.fritz2.styling.Property
 
+/**
+ * Alias for the specific [BackgroundRepeats] properties
+ */
 typealias BackgroundRepeatProperty = Property
 
 /**
@@ -20,6 +23,9 @@ object BackgroundRepeats {
     const val inherit: BackgroundRepeatProperty = "inherit"
 }
 
+/**
+ * Alias for the specific [BackgroundBlendModes] properties
+ */
 typealias BackgroundBlendModeProperty = Property
 
 /**
@@ -45,6 +51,9 @@ object BackgroundBlendModes {
     const val luminosity: BackgroundBlendModeProperty = "luminosity"
 }
 
+/**
+ * Alias for the specific [BackgroundPositions] properties
+ */
 typealias BackgroundPositionProperty = Property
 
 /**
@@ -88,6 +97,9 @@ class BackgroundPositionContext(private val values: MutableList<Property>) {
             values.add(BackgroundPositions.value())
 }
 
+/**
+ * Alias for the specific [BackgroundSizes] properties
+ */
 typealias  BackgroundSizeProperty = Property
 
 /**
@@ -391,6 +403,7 @@ class BackgroundContext(
      * ```
      * background {
      *     color { rgba(255, 0, 0, 50)  }
+     *     // color { secondary }
      *     // color { "white" } (currently we don't provide predefined CSS colors, so you have to provide a String literal)
      * }
      * ```
