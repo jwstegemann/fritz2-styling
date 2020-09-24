@@ -480,7 +480,7 @@ class RadiiContext(
 interface Border : StyleParams {
 
     /**
-     * This function opens the context for defining the border related properties for the default media device.
+     * This function opens the context for defining the border related properties for all media devices.
      *
      * Example call:
      * ```
@@ -533,7 +533,7 @@ interface Border : StyleParams {
 
     /**
      * This function opens the _intermediate context_ for defining the border related properties independently for each
-     * side for the default media device.
+     * side for all media devices.
      *
      * Example call:
      * ```
@@ -585,7 +585,7 @@ interface Border : StyleParams {
     }
 
     /**
-     * This function sets the radius property for the default media device.
+     * This function sets the radius property for all media devices.
      *
      * Example call:
      * ```
@@ -610,7 +610,7 @@ interface Border : StyleParams {
      * ```
      *
      * @param sm scale value for small media devices, recommended to use predefined values via [dev.fritz2.styling.Theme.radii]
-     * @param md scale value for middle sized media devices, recommended to use predefined values via [dev.fritz2.styling.Theme.radii]
+     * @param md scale value for medium sized media devices, recommended to use predefined values via [dev.fritz2.styling.Theme.radii]
      * @param lg scale value for large media devices, recommended to use predefined values via [dev.fritz2.styling.Theme.radii]
      * @param xl scale value for extra large media devices, recommended to use predefined values via [dev.fritz2.styling.Theme.radii]
      */
@@ -628,7 +628,7 @@ interface Border : StyleParams {
 
     /**
      * This function opens the context for defining the radius related properties for each corner independently
-     * for the default media device.
+     * for all media devices.
      *
      * Example call:
      * ```
@@ -661,7 +661,7 @@ interface Border : StyleParams {
      * @param sm extension function parameter to bring the specialized corner or side related functions
      *           of the [RadiiContext] into the scope of the functional expression for small media devices
      * @param md extension function parameter to bring the specialized corner or side related functions
-     *           of the [RadiiContext] into the scope of the functional expression for middle sized media devices
+     *           of the [RadiiContext] into the scope of the functional expression for medium sized media devices
      * @param lg extension function parameter to bring the specialized corner or side related functions
      *           of the [RadiiContext] into the scope of the functional expression for large media devices
      * @param xl extension function parameter to bring the specialized corner or side related functions

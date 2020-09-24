@@ -23,7 +23,7 @@ interface Color : StyleParams {
 
     /**
      * This function sets the [color](https://developer.mozilla.org/de/docs/Web/CSS/color) property
-     * for the default media device.
+     * for all media devices.
      *
      * Example call:
      * ```
@@ -52,7 +52,7 @@ interface Color : StyleParams {
      *
      * @param sm extension function parameter with color type return value for small media devices, recommended to use
      *           predefined values via [dev.fritz2.styling.Theme.colors] that offer the properties of [Colors]
-     * @param md extension function parameter with color type return value for middle sized media devices, recommended to use
+     * @param md extension function parameter with color type return value for medium sized media devices, recommended to use
      *           predefined values via [dev.fritz2.styling.Theme.colors] that offer the properties of [Colors]
      * @param lg extension function parameter with color type return value for large media devices, recommended to use
      *           predefined values via [dev.fritz2.styling.Theme.colors] that offer the properties of [Colors]
@@ -70,7 +70,7 @@ interface Color : StyleParams {
 
     /**
      * This function sets the [opacity](https://developer.mozilla.org/de/docs/Web/CSS/opacity) property
-     * for the default media device.
+     * for all media devices.
      *
      * Example call:
      * ```
@@ -78,7 +78,7 @@ interface Color : StyleParams {
      * // opacity { "0.1" }
      * ```
      *
-     * @param value extension function parameter with a [WeightedValueProperty] type return value,
+     * @param value provide a value of type [WeightedValueProperty] that defines the opacity,
      *              recommended to use predefined values via [dev.fritz2.styling.Theme.opacities]
      */
     fun opacity(value: WeightedValueProperty) = property(opacityKey, theme().opacities, value)
@@ -97,7 +97,7 @@ interface Color : StyleParams {
      *
      * @param sm extension function parameter with a [WeightedValueProperty] type return value for small media devices,
      *           recommended to use predefined values via [dev.fritz2.styling.Theme.opacities]
-     * @param md extension function parameter with a [WeightedValueProperty] type return value for middle sized media devices,
+     * @param md extension function parameter with a [WeightedValueProperty] type return value for medium sized media devices,
      *           recommended to use predefined values via [dev.fritz2.styling.Theme.opacities]
      * @param lg extension function parameter with a [WeightedValueProperty] type return value for large media devices,
      *           recommended to use predefined values via [dev.fritz2.styling.Theme.opacities]

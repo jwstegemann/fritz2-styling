@@ -68,7 +68,7 @@ object WrapValues : PropertyValues {
  *     // inherited from [Alignment]
  *     justifyContent { center }
  * }) {
- *     // content of the flex component
+ *     // child content of the flex container
  * }
  * ```
  *
@@ -79,7 +79,7 @@ interface Flexbox : StyleParams, Alignment {
 
     /**
      * This function sets the [flex-direction](https://developer.mozilla.org/de/docs/Web/CSS/flex-direction) property
-     * for the default media device.
+     * for all media devices.
      *
      * Example call:
      * ```
@@ -107,7 +107,7 @@ interface Flexbox : StyleParams, Alignment {
      * @param sm extension function parameter to bring the predefined properties of [DirectionValues]
      *           into the scope of the functional expression for small media devices
      * @param md extension function parameter to bring the predefined properties of [DirectionValues]
-     *           into the scope of the functional expression for middle sized media devices
+     *           into the scope of the functional expression for medium sized media devices
      * @param lg extension function parameter to bring the predefined properties of [DirectionValues]
      *           into the scope of the functional expression for large media devices
      * @param xl extension function parameter to bring the predefined properties of [DirectionValues]
@@ -127,7 +127,7 @@ interface Flexbox : StyleParams, Alignment {
 
     /**
      * This function sets the [flex-wrap](https://developer.mozilla.org/de/docs/Web/CSS/flex-wrap) property
-     * for the default media device.
+     * for all media devices.
      *
      * Example call:
      * ```
@@ -142,7 +142,7 @@ interface Flexbox : StyleParams, Alignment {
 
     /**
      * This function sets the [flex-wrap](https://developer.mozilla.org/de/docs/Web/CSS/flex-wrap) property
-     * for the default media device.
+     * for each media device independently.
      *
      * Example call:
      * ```
@@ -155,7 +155,7 @@ interface Flexbox : StyleParams, Alignment {
      * @param sm extension function parameter to bring the predefined properties of [WrapValues]
      *           into the scope of the functional expression for small media devices
      * @param md extension function parameter to bring the predefined properties of [WrapValues]
-     *           into the scope of the functional expression for middle sized media devices
+     *           into the scope of the functional expression for medium sized media devices
      * @param lg extension function parameter to bring the predefined properties of [WrapValues]
      *           into the scope of the functional expression for large media devices
      * @param xl extension function parameter to bring the predefined properties of [WrapValues]

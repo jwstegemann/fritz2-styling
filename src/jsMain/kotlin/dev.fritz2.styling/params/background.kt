@@ -422,7 +422,7 @@ class BackgroundContext(
 interface Background : StyleParams {
 
     /**
-     * This function opens the context for defining the background related properties for the default media device.
+     * This function opens the context for defining the background related properties for all media devices.
      *
      * Example call:
      * ```
@@ -452,13 +452,13 @@ interface Background : StyleParams {
      * ```
      *
      * @param sm extension function parameter to bring the specialized topical functions of the [BackgroundContext]
-     *           into the scope of the functional expression
+     *           into the scope of the functional expression for small media devices
      * @param md extension function parameter to bring the specialized topical functions of the [BackgroundContext]
-     *           into the scope of the functional expression
+     *           into the scope of the functional expression for medium sized media devices
      * @param lg extension function parameter to bring the specialized topical functions of the [BackgroundContext]
-     *           into the scope of the functional expression
+     *           into the scope of the functional expression for large media devices
      * @param xl extension function parameter to bring the specialized topical functions of the [BackgroundContext]
-     *           into the scope of the functional expression
+     *           into the scope of the functional expression for extra large media devices
      */
     fun background(
             sm: (BackgroundContext.() -> Unit)? = null,
