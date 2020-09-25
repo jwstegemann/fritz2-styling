@@ -35,9 +35,9 @@ fun <T> StyleParams.property(
     xl: T? = null
 ) {
     if (sm != null) property(key, sm, smProperties)
-    if (md != null) property(key, sm, mdProperties)
-    if (lg != null) property(key, sm, lgProperties)
-    if (xl != null) property(key, sm, xlProperties)
+    if (md != null) property(key, md, mdProperties)
+    if (lg != null) property(key, lg, lgProperties)
+    if (xl != null) property(key, xl, xlProperties)
 }
 
 /*

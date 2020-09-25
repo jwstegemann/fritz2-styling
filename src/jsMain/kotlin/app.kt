@@ -37,8 +37,8 @@ fun main() {
                 link({
                     flex {
                         //grow { "2" }
-                        order { "1" }
-                        alignSelf { flexStart }
+                        //order { "1" }
+                        //alignSelf { flexStart }
                     }
                 }) {
                     href = const("#")
@@ -82,8 +82,6 @@ fun HtmlElements.flexDemo(theme: ExtendedTheme): Div {
                 }
                 flex({
                     boxShadow { flat }
-                    //TODO: add all()?
-                    margins(md = { top { large } })
                     margin { small }
                     padding { small }
                     border {
@@ -92,18 +90,23 @@ fun HtmlElements.flexDemo(theme: ExtendedTheme): Div {
                         color { dark }
                     }
                     radius { large }
-                    //theme.teaserText()
-                    //backgroundSize(theme.test.a) // access custom value added by specific theme, for colors, etc.
                     direction(sm = { column }, md = { row })
                 }) {
-                    box({ /* flexShrink("0") */
-                        margins { left { small } }
+                    box({
                         zIndex { layer(1) }
+                        margins(
+                                {
+                                    top { small }
+                                    bottom { large }
+                                },
+                                md = { left { normal } }
+                        )
+                        flex { shrink { "0" } }
                     }) {
                         image({
+                            width(sm = { normal }, md = { tiny })
                             boxShadow { flat }
-//                            borderRadius(theme.radii[1])
-                            width { small }
+                            radius { large }
                         }) {
                             src = const("https://bit.ly/2jYM25F")
                             alt = const("Woman paying for a purchase")
@@ -111,12 +114,8 @@ fun HtmlElements.flexDemo(theme: ExtendedTheme): Div {
                     }
                     //val header = gridTemplate()
                     box({
-                        //position { static }
-                        position {
-                            relative { vertical { small } }
-                        }
                         zIndex { base }
-                        width { "300px" }
+                        //width { "300px" }
                         margins(
                                 {
                                     top { small }
@@ -128,7 +127,6 @@ fun HtmlElements.flexDemo(theme: ExtendedTheme): Div {
                         text(theme.teaserText) { +"Marketing" }
                         link({
                             margins { top { tiny } }
-//                            display("block")
                             fontSize { normal }
                             lineHeight { normal }
                             fontWeight { bold }
