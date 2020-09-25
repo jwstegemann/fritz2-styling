@@ -122,6 +122,8 @@ interface Colors {
     val disabled: Property
 }
 
+typealias ShadowProperty = Property
+
 fun shadow(
     offsetHorizontal: String,
     offsetVertical: String = offsetHorizontal,
@@ -129,8 +131,7 @@ fun shadow(
     spread: String? = null,
     color: String? = null,
     inset: Boolean = false
-): Property = buildString {
-
+): ShadowProperty = buildString {
     append(offsetHorizontal, " ", offsetVertical)
     if (blur != null) append(" ", blur)
     if (spread != null) append(" ", spread)
@@ -138,19 +139,17 @@ fun shadow(
     if (inset) append(" inset")
 }
 
-class Shadows(
-    normal: Property,
-    small: Property = normal,
-    smaller: Property = small,
-    tiny: Property = smaller,
-    large: Property = normal,
-    larger: Property = large,
-    huge: Property = larger,
-    full: Property = large
-) : ScaledValue<Property>(normal, small, smaller, tiny, large, larger, huge, full = full) {
+infix fun ShadowProperty.and(other: ShadowProperty): ShadowProperty = "$this, $other"
 
-    override val none: Property = "none"
-}
+class Shadows(
+    val flat: ShadowProperty,
+    val raised: ShadowProperty,
+    val raisedFurther: ShadowProperty = raised,
+    val top: ShadowProperty = raisedFurther,
+    val lowered: ShadowProperty,
+    val bottom: ShadowProperty = lowered,
+    val glowing: ShadowProperty,
+)
 
 interface Theme {
     val breakPoints: ResponsiveValue<Property>
@@ -290,38 +289,16 @@ open class DefaultTheme : ExtendedTheme {
     }
 
     override val shadows = Shadows(
-        smaller = shadow("0", "1px", "2px", color = "rgba(0, 0, 0, 0.05)"),
-        small = shadow("0", "1px", "3px", "0", color = "rgba(0, 0, 0, 0.1)") + ", " + shadow(
-            "0",
-            "1px",
-            "2px",
-            "0",
-            color = "rgba(0, 0, 0, 0.06)"
-        ),
-        normal = shadow("0", "4px", "6px", "-1px", "rgba(0, 0, 0, 0.1)") + ", " + shadow(
-            "0",
-            "2px",
-            "4px",
-            "-1px",
-            "rgba(0, 0, 0, 0.06)"
-        ),
-        large = shadow("0", "10px", "15px", "-3px", "rgba(0, 0, 0, 0.1)") + ", " + shadow(
-            "0",
-            "4px",
-            "6px",
-            "-2px",
-            "rgba(0, 0, 0, 0.05)"
-        ),
-        larger = shadow("0", "20px", "25px", "-5px", "rgba(0, 0, 0, 0.1)") + ", " + shadow(
-            "0",
-            "10px",
-            "10px",
-            "-5px",
-            "rgba(0, 0, 0, 0.04)"
-        ),
-        huge = shadow("0", "25px", "50px", "-12px", "rgba(0, 0, 0, 0.25)"),
-        tiny = shadow("0", spread = "3px", color = "rgba(66, 153, 225, 0.6)"),
-        full = shadow("0", "2px", "4px", color = "rgba(0,0,0,0.06)", inset = true)
+        flat = shadow("0", "1px", "3px", color = rgba(0, 0, 0, 0.12))
+                and shadow("0", "1px", "2px", rgba(0, 0, 0, 0.24)),
+        raised = shadow("0", "14px", "28px", rgba(0, 0, 0, 0.25))
+                and shadow(" 0", "10px", "10px", rgba(0, 0, 0, 0.22)),
+        raisedFurther = shadow("0", "14px", "28px", rgba(0, 0, 0, 0.25))
+                and shadow("0", "10px", "10px", rgba(0, 0, 0, 0.22)),
+        top = shadow("0", "19px", "38px", rgba(0, 0, 0, 0.30))
+                and shadow("0", "15px", "12px", rgba(0, 0, 0, 0.22)),
+        lowered = shadow("0", "2px", "4px", color = rgba(0, 0, 0, 0.06), inset = true),
+        glowing = shadow("0", "0", "2px", color = rgba(0, 0, 255, 0.5))
     )
 
     override val zIndices = ZIndices(1, 100, 2, 200, 300, 2, 400, 2)
@@ -335,7 +312,7 @@ open class DefaultTheme : ExtendedTheme {
         textTransform { uppercase }
         fontSize { smaller }
         letterSpacing { large }
-        textShadow { small }
+        textShadow { glowing }
         color { info }
     }
 

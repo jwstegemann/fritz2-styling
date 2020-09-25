@@ -10,7 +10,6 @@ import dev.fritz2.routing.router
 import dev.fritz2.styling.*
 import dev.fritz2.styling.components.*
 import dev.fritz2.styling.params.AreaName
-import dev.fritz2.styling.params.GridTemplateContext
 import dev.fritz2.styling.params.end
 import dev.fritz2.styling.params.start
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -82,7 +81,7 @@ fun HtmlElements.flexDemo(theme: ExtendedTheme): Div {
                     changes.selectedIndex() handledBy themeStore.selectTheme
                 }
                 flex({
-//                    boxShadow { tiny }
+                    boxShadow { flat }
                     //TODO: add all()?
                     margins(md = { top { large } })
                     margin { small }
@@ -104,7 +103,7 @@ fun HtmlElements.flexDemo(theme: ExtendedTheme): Div {
                         zIndex { layer(1) }
                     }) {
                         image({
-                            boxShadow { larger }
+                            boxShadow { flat }
 //                            borderRadius(theme.radii[1])
                             width { small }
                         }) {
