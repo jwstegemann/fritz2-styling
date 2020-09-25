@@ -20,6 +20,10 @@ internal fun generateAlphabeticName(code: Int): String {
 }
 
 //FIXME: move to fritz2
+/**
+ * watches the data-[Flow] of a [Store].
+ * You have to use this, if you never bind your [Store]'s data flow but want to run it's [Handler]s anyway.
+ */
 fun <T> Store<T>.watch(): Store<T> {
     data.watch()
     return this

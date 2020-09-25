@@ -10,20 +10,71 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.w3c.dom.Element
 
+/**
+ * alias to easily create predefined styles based on [BasicStyleParams]
+ */
 typealias PredefinedBasicStyle = BasicStyleParams.() -> Unit
+
+/**
+ * alias to easily create predefined styles based on [FlexStyleParams]
+ */
 typealias PredefinedFlexStyle = FlexStyleParams.() -> Unit
+
+/**
+ * alias to easily create predefined styles based on [GridStyleParams]
+ */
 typealias PredefinedGridStyle = GridStyleParams.() -> Unit
+
+/**
+ * alias to easily create predefined styles based on [BoxStyleParams]
+ */
 typealias PredefinedBoxStyle = BoxStyleParams.() -> Unit
 
+/**
+ * alias for property values
+ */
 typealias Property = String
 
+/**
+ * Defines a responsive [Property] that can have different values for different screen sizes.
+ * Per default the value for a certain screen size is the same as the value for the next smaller screen size.
+ * You can define the concrete screen sizes that apply in the [Theme] you use.
+ *
+ * @param sm value for small screens like phones (and default for all the others)
+ * @param md value for middle screens like tablets  (and default for all the others)
+ * @param lg value for large screens (and default for all the others)
+ * @param xl value for extra large screens (and default for all the others)
+ */
 class ResponsiveValue<T : Property>(val sm: T, val md: T = sm, val lg: T = md, val xl: T = lg)
 
-fun rgb(r: Int, g: Int, b: Int) = "rgb($r,$g,$b)"
-fun rgba(r: Int, g: Int, b: Int, a: Double) = "rgb($r,$g,$b,$a)"
-fun hsl(h: Int, s: Int, l: Int) = "hsl($h,$s%,$l%)"
-fun hsla(h: Int, s: Int, l: Int, a: Double) = "hsl($h,$s%,$l%,$a)"
+/**
+ * alias for colors
+ */
+typealias ColorProperty = Property
 
+/**
+ * creates a [ColorProperty] from rgb-values
+ */
+fun rgb(r: Int, g: Int, b: Int) = "rgb($r,$g,$b)"
+
+/**
+ * creates a [ColorProperty] from rgba-values
+ */
+fun rgba(r: Int, g: Int, b: Int, a: Double) = "rgb($r,$g,$b,$a)"
+
+/**
+ * creates a [ColorProperty] from hsl-values
+ */
+fun hsl(h: Int, s: Int, l: Int) = "hsl($h,$s%,$l%)"
+
+/**
+ * creates a [ColorProperty] from hsla-values
+ */
+fun hsla(h: Int, s: Int, l: Int, a: Double) = "hsl($h,$s% c vn,,$l%,$a)"
+
+/**
+ * Defines a value that has different expressions for different scales.
+ */
 open class ScaledValue<T : Property>(
     val normal: T,
     val small: T = normal,
@@ -40,6 +91,9 @@ open class ScaledValue<T : Property>(
     val auto: T = "auto".unsafeCast<T>()
 }
 
+/**
+ * Defines a value that has different expressions for different weights.
+ */
 class WeightedValue<T : Property>(
     val normal: T,
     val lighter: T = normal,
@@ -53,6 +107,9 @@ class WeightedValue<T : Property>(
     val inherit: T = "inherit".unsafeCast<T>()
 }
 
+/**
+ * Defines a value that has different expressions for different thicknesses.
+ */
 class Thickness<T : Property>(
     val normal: T,
     val thin: T = normal,
@@ -107,8 +164,6 @@ interface Fonts {
     val mono: Property
 }
 
-//factory- methods for colors (rgb/a)
-
 interface Colors {
     val primary: Property
     val secondary: Property
@@ -151,29 +206,104 @@ class Shadows(
     val glowing: ShadowProperty,
 )
 
+//FIXME: move to package theme
+/**
+ * Standard interface for themes in fritz2
+ */
 interface Theme {
+    /**
+     * break points for different screen sizes that apply when working with [ResponsiveValue]s
+     */
     val breakPoints: ResponsiveValue<Property>
 
+    /**
+     * the media query used for middle sized screens
+     */
     val mediaQueryMd: String
+
+    /**
+     * the media query used for large screens
+     */
     val mediaQueryLg: String
+
+    /**
+     * the media query used for extra-large screens
+     */
     val mediaQueryXl: String
 
+    /**
+     * definition of the space-scale
+     */
     val space: ScaledValue<Property>
+
+    /**
+     * definition of the position-scale
+     */
     val position: ScaledValue<Property>
+
+    /**
+     * definition of the font-size-scale
+     */
     val fontSizes: ScaledValue<Property>
+
+    /**
+     * definition of the theme's colors
+     */
     val colors: Colors
+
+    /**
+     * definition of the theme's fonts
+     */
     val fonts: Fonts
+
+    /**
+     * definition of the scale for line-heights
+     */
     val lineHeights: ScaledValue<Property>
+
+    /**
+     * definition of the scale for letter-spacings
+     */
     val letterSpacings: ScaledValue<Property>
+
+    /**
+     * definition of the theme's sizes
+     */
     val sizes: Sizes
+
+    /**
+     * definition of the scale for border-widths
+     */
     val borderWidths: Thickness<Property>
+
+    /**
+     * definition of the scale for border-radii
+     */
     val radii: ScaledValue<Property>
+
+    /**
+     * definition of the theme's shadows
+     */
     val shadows: Shadows
+
+    /**
+     * definition of the theme's z-indices
+     */
     val zIndices: ZIndices
+
+    /**
+     * definition of the scale for opacities
+     */
     val opacities: WeightedValue<Property>
+
+    /**
+     * definition of the scale for gaps
+     */
+    //FIXME: rename to gaps?
     val gridGap: ScaledValue<Property>
 }
 
+//FIXME: move to example
 interface ExtendedTheme : Theme {
     interface MyProp {
         val a: Property
@@ -185,7 +315,11 @@ interface ExtendedTheme : Theme {
     val teaserText: PredefinedBasicStyle
 }
 
-
+//FIXME: move to own file
+//FIXME: Inherit just from theme
+/**
+ * defines the default values and scales for fritz2
+ */
 open class DefaultTheme : ExtendedTheme {
     final override val breakPoints = ResponsiveValue("30em", "48em", "62em", "80em")
 
@@ -319,6 +453,7 @@ open class DefaultTheme : ExtendedTheme {
 
 }
 
+//FIXME: remove
 class Default2 : DefaultTheme() {
     override val fontSizes = ScaledValue<Property>(
         smaller = "1.125rem",
@@ -331,15 +466,28 @@ class Default2 : DefaultTheme() {
 }
 
 
+/**
+ * [StateFlow] that holds the current selected [Theme]
+ */
 @ExperimentalCoroutinesApi
 val currentTheme = MutableStateFlow<Theme>(DefaultTheme())
 
+/**
+ * get the currently selected [Theme]
+ */
 @ExperimentalCoroutinesApi
 fun theme(): Theme = currentTheme.value
 
+/**
+ * get the currently selected [Theme] correctly casted
+ */
 @ExperimentalCoroutinesApi
 fun <T : Theme> theme(): Theme = currentTheme.value.unsafeCast<T>()
 
+/**
+ * convenience function to create a render-context that provides a specialized theme correctly typed
+ */
+//TODO: add for Flow.render and each().render
 @ExperimentalCoroutinesApi
 inline fun <E : Element, T : Theme> render(crossinline content: HtmlElements.(T) -> Tag<E>): Tag<E> =
     dev.fritz2.dom.html.render {

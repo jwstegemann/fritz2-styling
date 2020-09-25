@@ -1,7 +1,7 @@
 @file:JsModule("murmurhash")
 @file:JsNonModule
 
-package hash
+package dev.fritz2.styling.hash
 
-external fun v3(input: String): Int
+internal external fun v3(input: String): Int
 

@@ -1,12 +1,12 @@
 @file:JsModule("stylis")
 @file:JsNonModule
 
-package stylis
+package dev.fritz2.styling.stylis
 
-external fun compile(css: String): Array<dynamic>
+internal external fun compile(css: String): Array<dynamic>
 
-external fun serialize(children: dynamic, callback: dynamic): String
+internal external fun serialize(children: dynamic, callback: dynamic): String
 
-external fun stringify(element: dynamic, index: dynamic, children: dynamic, callback: dynamic): dynamic
+internal external fun stringify(element: dynamic, index: dynamic, children: dynamic, callback: dynamic): dynamic
 
-external fun middleware(collection: dynamic): dynamic
+internal external fun middleware(collection: dynamic): dynamic
