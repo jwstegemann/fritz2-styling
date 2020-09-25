@@ -98,8 +98,6 @@ fun HtmlElements.flexDemo(theme: ExtendedTheme): Div {
                 }) {
                     box({ /* flexShrink("0") */
                         margins { left { small } }
-
-                        //position { relative }
                         zIndex { layer(1) }
                     }) {
                         image({
@@ -113,13 +111,11 @@ fun HtmlElements.flexDemo(theme: ExtendedTheme): Div {
                     }
                     //val header = gridTemplate()
                     box({
+                        //position { static }
                         position {
-                            top { small }
-                            relative
+                            relative { vertical { small } }
                         }
                         zIndex { base }
-                        //position { absolute }
-                        //bottom("3em")
                         width { "300px" }
                         margins(
                                 {
@@ -128,7 +124,6 @@ fun HtmlElements.flexDemo(theme: ExtendedTheme): Div {
                                 },
                                 md = { left { normal } }
                         )
-                        //top("-3em")
                     }) {
                         text(theme.teaserText) { +"Marketing" }
                         link({
@@ -246,7 +241,7 @@ fun HtmlElements.gridDemo(): Div {
             }
             box({
                 grid { area { grid.FOOTER } }
-                background { color { "lime" }}
+                background { color { "lime" } }
             }) {
                 text { +"Footer" }
             }

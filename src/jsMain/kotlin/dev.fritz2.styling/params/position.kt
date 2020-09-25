@@ -8,15 +8,16 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 internal const val positionKey = "position: "
 
 /**
- * This _context class_ enables the definition of positional properties for the four directions of _top_, _right_,
+ * This _context class_ enables the definition of positioning properties for the four directions of _top_, _right_,
  * _bottom_ and _left_ and convenience functions for defining the _horizontal_ or _vertical_ aspects at once.
  *
  * This enables to define the position as follows:
  * ```
  * position { /* it == PositionContext.() */
- *     top { large } // use predefined property of the theme
- *     right { "2em" } // use a custom value
- *     fixed // ALWAYS return some position attribute!
+ *     absolute { /* it == PositioningContext.() */
+ *         top { large } // use predefined property of the theme
+ *         right { "2em" } // use a custom value
+ *     }
  * }
  * ```
  *
@@ -24,7 +25,7 @@ internal const val positionKey = "position: "
  * @param target the defined output [StringBuilder] to write the generated CSS into
  */
 @ExperimentalCoroutinesApi
-class PositionContext(
+class PositioningContext(
         val styleParams: StyleParams,
         private val target: StringBuilder
 ) : StyleParams by styleParams {
@@ -126,31 +127,79 @@ class PositionContext(
         property("left: ", theme().space, value, target)
         property("right: ", theme().space, value, target)
     }
+}
+
+/**
+ * This _context class_ acts as an _intermediate context_ to set the position of an element and to specify the actual
+ * positioning concerning the sides distances too.
+ *
+ * It offers primarily functions to define the type of the position, like [absolute] or [relative].
+ * Further more those functions opens another _subcontext_ named [PositioningContext], which brings functions to
+ * ultimately define the side distances.
+ *
+ * @param styleParams basic context scope interface
+ * @param target the defined output [StringBuilder] to write the generated CSS into
+ */
+@ExperimentalCoroutinesApi
+class PositionContext(
+        val styleParams: StyleParams,
+        private val target: StringBuilder
+) : StyleParams by styleParams {
 
     /**
-     * Predefined value for the [position](https://developer.mozilla.org/de/docs/Web/CSS/position) property
+     * This property sets the ``static`` value for the [position](https://developer.mozilla.org/de/docs/Web/CSS/position)
+     * property.
+     *
+     * Hint: As this value disables _positioning_, there is no need to open up the [PositioningContext]! That is why
+     * a simple property fits here best.
      */
-    val static: Property = "static"
+    val static = property(positionKey, "static", target)
 
     /**
-     * Predefined value for the [position](https://developer.mozilla.org/de/docs/Web/CSS/position) property
+     * This function sets the ``relative`` value for the
+     * [position](https://developer.mozilla.org/de/docs/Web/CSS/position) property and opens up the [PositioningContext]
+     * in order to enable the definition of side distances.
+     *
+     * @param value extension function parameter to open the [PositioningContext] as scope of the functional expression
+     *              in order to use its specific styling functions.
      */
-    val relative: Property = "relative"
+    fun relative(value: PositioningContext.() -> Unit) = positioning(value, "relative")
 
     /**
-     * Predefined value for the [position](https://developer.mozilla.org/de/docs/Web/CSS/position) property
+     * This function sets the ``absolute`` value for the
+     * [position](https://developer.mozilla.org/de/docs/Web/CSS/position) property and opens up the [PositioningContext]
+     * in order to enable the definition of side distances.
+     *
+     * @param value extension function parameter to open the [PositioningContext] as scope of the functional expression
+     *              in order to use its specific styling functions.
      */
-    val absolute: Property = "absolute"
+    fun absolute(value: PositioningContext.() -> Unit) = positioning(value, "absolute")
 
     /**
-     * Predefined value for the [position](https://developer.mozilla.org/de/docs/Web/CSS/position) property
+     * This function sets the ``sticky`` value for the
+     * [position](https://developer.mozilla.org/de/docs/Web/CSS/position) property and opens up the [PositioningContext]
+     * in order to enable the definition of side distances.
+     *
+     * @param value extension function parameter to open the [PositioningContext] as scope of the functional expression
+     *              in order to use its specific styling functions.
      */
-    val sticky: Property = "sticky "
+    fun sticky(value: PositioningContext.() -> Unit) = positioning(value, "sticky")
 
     /**
-     * Predefined value for the [position](https://developer.mozilla.org/de/docs/Web/CSS/position) property
+     * This function sets the ``fixed`` value for the
+     * [position](https://developer.mozilla.org/de/docs/Web/CSS/position) property and opens up the [PositioningContext]
+     * in order to enable the definition of side distances.
+     *
+     * @param value extension function parameter to open the [PositioningContext] as scope of the functional expression
+     *              in order to use its specific styling functions.
      */
-    val fixed: Property = "fixed"
+    fun fixed(value: PositioningContext.() -> Unit) = positioning(value, "fixed")
+
+    private fun positioning(value: PositioningContext.() -> Unit, positionValue: Property) {
+        val tempCss = StringBuilder()
+        PositioningContext(this, tempCss).value()
+        property(positionKey, "$positionValue$cssDelimiter$tempCss", target)
+    }
 }
 
 /**
@@ -223,21 +272,22 @@ interface Position : StyleParams {
      * for all media devices at once.
      *
      * the actual definition is done within a dedicated _context_ class [PositionContext].
-     * This class offers functions to specify the position concerning the four sides and also predefined values for
-     * the position itself like [PositionContext.absolute] for example.
+     * This class offers functions to specify the position like [PositionContext.absolute] for example.
      *
-     * example call:
+     * example calls:
      * ```
      * position {
-     *     // optionally call some of [PositionContext] functions
-     *     absolute // use predefined value from [PositionContext]
+     *     absolute {
+     *         // call functions from the [PositioningContext] for setting side distances
+     *     }
      * }
+     *
+     * position { static }
      * ```
      *
      * @param value extension function parameter in order to bring [PositionContext] functions into scope.
-     *              Be aware that this functional expression must return a positional attribute!
      */
-    fun position(value: PositionContext.() -> Property) =
+    fun position(value: PositionContext.() -> Unit) =
             property(positionKey, PositionContext(this, smProperties).value())
 
     /**
@@ -250,30 +300,32 @@ interface Position : StyleParams {
      * ```
      * position(
      *     sm = {
-     *         // call some of [PositionContext] functions for defining the behaviour for small media devices
-     *         relative
+     *         absolute {
+     *             // call functions from the [PositioningContext] for setting side distances
+     *         }
      *     },
      *     lg = {
-     *         // call some of [PositionContext] functions for defining the behaviour for large media devices
-     *         absolute
+     *         relative {
+     *              // call functions from the [PositioningContext] for setting side distances
+     *         }
      *     }
      * )
      * ```
      *
      * @param sm extension function parameter in order to bring [PositionContext] functions into scope
-     *           for small media devices. Be aware that this functional expression must return a positional attribute!
+     *           for small media devices.
      * @param md extension function parameter in order to bring [PositionContext] functions into scope
-     *           for medium sized media devices. Be aware that this functional expression must return a positional attribute!
+     *           for medium sized media devices.
      * @param lg extension function parameter in order to bring [PositionContext] functions into scope
-     *           for large media devices. Be aware that this functional expression must return a positional attribute!
+     *           for large media devices.
      * @param xl extension function parameter in order to bring [PositionContext] functions into scope
-     *           for extra large media devices. Be aware that this functional expression must return a positional attribute!
+     *           for extra large media devices.
      */
     fun position(
-            sm: (PositionContext.() -> Property)? = null,
-            md: (PositionContext.() -> Property)? = null,
-            lg: (PositionContext.() -> Property)? = null,
-            xl: (PositionContext.() -> Property)? = null
+            sm: (PositionContext.() -> Unit)? = null,
+            md: (PositionContext.() -> Unit)? = null,
+            lg: (PositionContext.() -> Unit)? = null,
+            xl: (PositionContext.() -> Unit)? = null
     ) {
         if (sm != null) property(positionKey, PositionContext(this, smProperties).sm())
         if (md != null) property(positionKey, PositionContext(this, mdProperties).md())
