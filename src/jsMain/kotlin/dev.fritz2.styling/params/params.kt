@@ -122,7 +122,7 @@ class StyleParamsImpl<X : Theme>(private val theme: X) : BasicStyleParams, Flexb
 typealias Style<T> = T.() -> Unit
 
 @ExperimentalCoroutinesApi
-interface BasicStyleParams : Space, Color, Border, Typo, Background, Position, Shadow, Layout {
+interface BasicStyleParams : Space, Color, Border, Typo, Background, Position, Shadow, Layout, Interact {
     operator fun PredefinedBasicStyle.invoke() = this(this@BasicStyleParams)
 }
 
